@@ -17,8 +17,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: honk.php
-msgid "Honk – Notifications for Sites, Forms and WooCommerce"
-msgstr "Honk – Notificaciones de sitios web, formularios y WooCommerce"
+msgid "Honk – Notifications for Sites, Shops and Forms"
+msgstr "Honk – Notificaciones de webs, tiendas y formularios"
 
 #. Plugin URI of the plugin
 #: honk.php

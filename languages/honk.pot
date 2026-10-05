@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Honk – Notifications for Sites, Forms and WooCommerce 0.1.0\n"
+"Project-Id-Version: Honk – Notifications for Sites, Shops and Forms 0.1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/honk-me/honk-wordpress/issues\n"
 "Last-Translator: Honk <sdk@honk-me.app>\n"
 "Language-Team: Honk <sdk@honk-me.app>\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: honk.php
-msgid "Honk – Notifications for Sites, Forms and WooCommerce"
+msgid "Honk – Notifications for Sites, Shops and Forms"
 msgstr ""
 
 #. Plugin URI of the plugin

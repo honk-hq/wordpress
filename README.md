@@ -6,7 +6,7 @@ The official WordPress plugin for [Honk](https://honk-me.app), the calm notifica
 orders, payments, stock, sign-ins, site health and form submissions from WordPress, WooCommerce
 and the popular form plugins, in your Honk inbox, on iPhone, Apple Watch and the web.
 
-- WordPress.org slug: **`honk`**, name "Honk – Notifications for Sites, Forms and WooCommerce".
+- WordPress.org slug: **`honk`**, name "Honk – Notifications for Sites, Shops and Forms".
 - PHP 7.4+, WordPress 6.4+ (tested up to 7.1), WooCommerce optional (HPOS and block checkout
   compatible). No Composer runtime dependencies: requests go through the WordPress HTTP API.
 - GPL-2.0-or-later. The user-facing documentation is [`readme.txt`](readme.txt) (the

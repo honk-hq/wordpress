@@ -1,4 +1,4 @@
-=== Honk – Notifications for Sites, Forms and WooCommerce ===
+=== Honk – Notifications for Sites, Shops and Forms ===
 Contributors: honkhonk
 Tags: notifications, woocommerce, security, contact form, monitoring
 Requires at least: 6.4

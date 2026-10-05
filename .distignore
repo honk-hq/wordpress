@@ -1,0 +1,21 @@
+# Files that are not part of the plugin as published on WordPress.org
+# (read by bin/build.sh and by 10up/action-wordpress-plugin-deploy).
+/.git
+/.github
+/.wordpress-org
+/.phpunit.cache
+/bin
+/build
+/node_modules
+/tests
+/vendor
+.distignore
+.gitattributes
+.gitignore
+.phpunit.result.cache
+CHANGELOG.md
+README.md
+composer.json
+composer.lock
+phpcs.xml.dist
+phpunit.xml.dist

@@ -1,0 +1,1239 @@
+# Translation of Honk in French (France).
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Honk 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/honk-me/honk-wordpress/issues\n"
+"Last-Translator: Honk <sdk@honk-me.app>\n"
+"Language-Team: Honk <sdk@honk-me.app>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"POT-Creation-Date: 2026-10-05T11:01:18+00:00\n"
+"PO-Revision-Date: 2026-10-05 14:30+0000\n"
+"X-Domain: honk\n"
+
+#. Plugin Name of the plugin
+#: honk.php
+msgid "Honk – Notifications for Sites, Forms and WooCommerce"
+msgstr "Honk – Notifications pour sites, formulaires et WooCommerce"
+
+#. Plugin URI of the plugin
+#: honk.php
+msgid "https://honk-me.app"
+msgstr "https://honk-me.app/fr"
+
+#. Description of the plugin
+#: honk.php
+msgid "Orders, failed payments, form entries, suspicious sign-ins and site errors from WordPress and WooCommerce, in your Honk inbox on iPhone, Apple Watch and the web."
+msgstr "Commandes, paiements échoués, formulaires reçus, connexions suspectes et erreurs de votre site WordPress ou WooCommerce, dans votre boîte de réception Honk sur iPhone, Apple Watch et le web."
+
+#. Author of the plugin
+#: honk.php
+#: includes/class-honk-admin.php:57
+#: includes/class-honk-admin.php:174
+#: includes/class-honk-admin.php:652
+#: includes/class-honk-admin.php:664
+msgid "Honk"
+msgstr "Honk"
+
+#: includes/class-honk-admin.php:78
+msgid "Sending…"
+msgstr "Envoi en cours…"
+
+#: includes/class-honk-admin.php:79
+msgid "The test couldn’t run. Reload the page and try again."
+msgstr "Le test n’a pas pu être lancé. Rechargez la page et réessayez."
+
+#: includes/class-honk-admin.php:91
+#: includes/class-honk-admin.php:177
+msgid "Settings"
+msgstr "Réglages"
+
+#: includes/class-honk-admin.php:107
+msgid "Honk is almost set up. Add your API key to start getting notifications."
+msgstr "Honk est presque prêt. Ajoutez votre clé API pour commencer à recevoir des notifications."
+
+#: includes/class-honk-admin.php:109
+#: includes/class-honk-admin.php:666
+msgid "Open Honk settings"
+msgstr "Ouvrir les réglages de Honk"
+
+#: includes/class-honk-admin.php:142
+msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-me.app) or to another Honk server the site owner chose."
+msgstr "Ce site utilise Honk pour informer son propriétaire de l’activité du site, comme les commandes, les formulaires envoyés et les alertes de sécurité. Ces notifications sont envoyées au service Honk (honk-me.app) ou à un autre serveur Honk choisi par le propriétaire du site."
+
+#: includes/class-honk-admin.php:143
+msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include the name and email address of a customer, user or commenter, the text of comments and reviews, and what was entered in forms."
+msgstr "Par défaut, ces notifications ne contiennent aucune donnée personnelle : une commande n’est décrite que par son numéro, son total et son nombre d’articles. Si le propriétaire du site active « Inclure les noms et e-mails des clients », les notifications peuvent aussi contenir le nom et l’adresse e-mail d’un client, d’un utilisateur ou de l’auteur d’un commentaire, le texte des commentaires et des avis, ainsi que les informations saisies dans les formulaires."
+
+#. translators: %s: link to the Honk privacy policy
+#: includes/class-honk-admin.php:146
+#, php-format
+msgid "Honk privacy policy: %s"
+msgstr "Politique de confidentialité de Honk : %s"
+
+#: includes/class-honk-admin.php:175
+msgid "Get this site’s orders, form entries and alerts in Honk, on your iPhone, Apple Watch and the web."
+msgstr "Recevez les commandes, les formulaires et les alertes de ce site dans Honk, sur votre iPhone, votre Apple Watch et le web."
+
+#: includes/class-honk-admin.php:176
+msgid "Secondary menu"
+msgstr "Menu secondaire"
+
+#: includes/class-honk-admin.php:178
+msgid "Delivery log"
+msgstr "Journal d’envoi"
+
+#: includes/class-honk-admin.php:206
+msgid "Connection"
+msgstr "Connexion"
+
+#: includes/class-honk-admin.php:209
+msgid "Server URL"
+msgstr "URL du serveur"
+
+#: includes/class-honk-admin.php:212
+msgid "Leave this as https://honk-me.app unless you run your own Honk server."
+msgstr "Laissez https://honk-me.app, sauf si vous avez votre propre serveur Honk."
+
+#: includes/class-honk-admin.php:216
+msgid "API key"
+msgstr "Clé API"
+
+#. translators: %s: masked key, e.g. honk_ab12cd34_••••••••
+#: includes/class-honk-admin.php:224
+#, php-format
+msgid "Saved key: %s. Leave the field empty to keep it."
+msgstr "Clé enregistrée : %s. Laissez le champ vide pour la conserver."
+
+#: includes/class-honk-admin.php:228
+msgid "In Honk, open your project, go to Keys and create a new key. Nothing is sent until you save one here."
+msgstr "Dans Honk, ouvrez votre projet, puis l’onglet Clés, et créez une nouvelle clé. Rien n’est envoyé tant que vous n’avez pas enregistré de clé ici."
+
+#: includes/class-honk-admin.php:233
+msgid "Remove the saved key (stops all notifications)"
+msgstr "Supprimer la clé enregistrée (arrête toutes les notifications)"
+
+#: includes/class-honk-admin.php:238
+msgid "Test"
+msgstr "Test"
+
+#: includes/class-honk-admin.php:240
+msgid "Send test notification"
+msgstr "Envoyer une notification de test"
+
+#: includes/class-honk-admin.php:243
+msgid "Uses the server URL and key above, so you can try them before saving."
+msgstr "Utilise l’URL du serveur et la clé ci-dessus : vous pouvez les essayer avant d’enregistrer."
+
+#: includes/class-honk-admin.php:248
+msgid "Privacy and language"
+msgstr "Confidentialité et langue"
+
+#: includes/class-honk-admin.php:251
+#: includes/class-honk-admin.php:254
+msgid "Personal data"
+msgstr "Données personnelles"
+
+#: includes/class-honk-admin.php:255
+msgid "Include customer names and emails"
+msgstr "Inclure les noms et e-mails des clients"
+
+#: includes/class-honk-admin.php:256
+msgid "Off: no names or email addresses. An order reads “Order #1234 · €84.00 · 2 items” and a form entry only says which form was used. On: names, email addresses, comments and form fields are included."
+msgstr "Désactivé : aucun nom ni adresse e-mail. Une commande apparaît sous la forme « Commande n°1234 · 84,00 € · 2 articles » et un formulaire indique seulement lequel a été utilisé. Activé : les noms, adresses e-mail, commentaires et champs de formulaire sont inclus."
+
+#: includes/class-honk-admin.php:261
+msgid "Environment"
+msgstr "Environnement"
+
+#. translators: %s: detected environment, e.g. production
+#: includes/class-honk-admin.php:267
+#, php-format
+msgid "Automatic (%s)"
+msgstr "Automatique (%s)"
+
+#: includes/class-honk-admin.php:274
+msgid "Tells Honk whether this is your live site or a test copy. Automatic uses the environment type set in WordPress."
+msgstr "Indique à Honk s’il s’agit de votre site en ligne ou d’une copie de test. Automatique reprend le type d’environnement défini dans WordPress."
+
+#: includes/class-honk-admin.php:278
+msgid "Notification language"
+msgstr "Langue des notifications"
+
+#: includes/class-honk-admin.php:281
+msgid "Site language"
+msgstr "Langue du site"
+
+#: includes/class-honk-admin.php:290
+msgid "Events"
+msgstr "Événements"
+
+#: includes/class-honk-admin.php:291
+msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk groups repeats, so you only get a push when something needs you."
+msgstr "Choisissez ce que vous voulez suivre et le volume de chaque alerte, du « Petit coup de klaxon » au « Klaxon continu ». Honk regroupe les répétitions et ne vous envoie une notification que lorsque quelque chose demande votre attention."
+
+#: includes/class-honk-admin.php:336
+msgid "WooCommerce isn’t active. Its events show up here once it is."
+msgstr "WooCommerce n’est pas actif. Ses événements apparaîtront ici dès qu’il le sera."
+
+#: includes/class-honk-admin.php:342
+msgid "No supported form plugin is active. Honk works with Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms."
+msgstr "Aucune extension de formulaire compatible n’est active. Honk fonctionne avec Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms et Ninja Forms."
+
+#: includes/class-honk-admin.php:345
+msgid "Found automatically. Each notification is titled with the form’s name. What people entered is included only if you allow personal data above."
+msgstr "Détectées automatiquement. Chaque notification porte le nom du formulaire. Les réponses saisies ne sont incluses que si vous autorisez les données personnelles plus haut."
+
+#: includes/class-honk-admin.php:354
+#: includes/class-honk-admin.php:470
+msgid "Event"
+msgstr "Événement"
+
+#: includes/class-honk-admin.php:355
+msgid "Send"
+msgstr "Envoyer"
+
+#: includes/class-honk-admin.php:356
+msgid "Level"
+msgstr "Niveau"
+
+#: includes/class-honk-admin.php:357
+msgid "Priority"
+msgstr "Priorité"
+
+#. translators: 1: number input (failures), 2: number input (minutes)
+#: includes/class-honk-admin.php:395
+#, php-format
+msgid "Notify me after %1$s or more failed sign-ins within %2$s minutes."
+msgstr "M’avertir à partir de %1$s échecs de connexion en %2$s minutes."
+
+#: includes/class-honk-admin.php:396
+msgid "Failed sign-ins"
+msgstr "Échecs de connexion"
+
+#: includes/class-honk-admin.php:397
+msgid "Minutes"
+msgstr "Minutes"
+
+#. translators: %s: event name
+#: includes/class-honk-admin.php:407
+#, php-format
+msgid "Level for %s"
+msgstr "Niveau (%s)"
+
+#. translators: %s: event name
+#: includes/class-honk-admin.php:414
+#, php-format
+msgid "Priority for %s"
+msgstr "Priorité (%s)"
+
+#: includes/class-honk-admin.php:433
+msgid "Heartbeat"
+msgstr "Signal de vie"
+
+#: includes/class-honk-admin.php:436
+msgid "Check in every 5 minutes"
+msgstr "Signal toutes les 5 minutes"
+
+#: includes/class-honk-admin.php:439
+msgid "Tell me when this site stops checking in"
+msgstr "M’avertir quand ce site ne donne plus signe de vie"
+
+#: includes/class-honk-admin.php:444
+msgid "Coming soon."
+msgstr "Bientôt disponible."
+
+#: includes/class-honk-admin.php:444
+msgid "Honk will let you know when this site goes quiet, even if it’s too broken to say so itself. The option appears here once your Honk server supports it."
+msgstr "Honk vous préviendra quand ce site ne donnera plus signe de vie, même s’il est trop en panne pour le signaler lui-même. L’option apparaîtra ici dès que votre serveur Honk la prendra en charge."
+
+#: includes/class-honk-admin.php:462
+msgid "Delivery log cleared."
+msgstr "Journal d’envoi vidé."
+
+#: includes/class-honk-admin.php:465
+msgid "The last 50 notifications this site sent to Honk, newest first. They’re sent in the background and retried if Honk is busy or can’t be reached."
+msgstr "Les 50 dernières notifications envoyées à Honk par ce site, de la plus récente à la plus ancienne. Elles partent en arrière-plan et sont renvoyées si Honk est occupé ou injoignable."
+
+#: includes/class-honk-admin.php:469
+msgid "Time"
+msgstr "Date"
+
+#: includes/class-honk-admin.php:471
+msgid "Title"
+msgstr "Titre"
+
+#: includes/class-honk-admin.php:472
+msgid "Status"
+msgstr "État"
+
+#: includes/class-honk-admin.php:473
+msgid "Details"
+msgstr "Détails"
+
+#: includes/class-honk-admin.php:478
+msgid "Nothing sent yet."
+msgstr "Rien n’a encore été envoyé."
+
+#: includes/class-honk-admin.php:483
+msgid "(hidden: may contain personal data)"
+msgstr "(masqué : peut contenir des données personnelles)"
+
+#: includes/class-honk-admin.php:499
+msgid "Clear log"
+msgstr "Vider le journal"
+
+#: includes/class-honk-admin.php:514
+msgid "Queued"
+msgstr "En file d’attente"
+
+#: includes/class-honk-admin.php:516
+msgid "Sent"
+msgstr "Envoyé"
+
+#: includes/class-honk-admin.php:518
+msgid "Already sent"
+msgstr "Déjà envoyé"
+
+#: includes/class-honk-admin.php:520
+msgid "Will retry"
+msgstr "Nouvel essai prévu"
+
+#: includes/class-honk-admin.php:522
+msgid "Failed"
+msgstr "Échec"
+
+#. translators: %d: number of attempts
+#: includes/class-honk-admin.php:549
+#, php-format
+msgid "%d attempt"
+msgid_plural "%d attempts"
+msgstr[0] "%d tentative"
+msgstr[1] "%d tentatives"
+
+#. translators: %s: time of the next attempt
+#: includes/class-honk-admin.php:553
+#, php-format
+msgid "next try at %s"
+msgstr "prochain essai à %s"
+
+#: includes/class-honk-admin.php:565
+#: includes/class-honk-admin.php:581
+msgid "Sorry, you are not allowed to do that."
+msgstr "Désolé, vous n’avez pas l’autorisation de faire cela."
+
+#: includes/class-honk-admin.php:589
+msgid "The server URL must start with https:// (http:// works only for local addresses)."
+msgstr "L’URL du serveur doit commencer par https:// (http:// ne fonctionne que pour les adresses locales)."
+
+#: includes/class-honk-admin.php:592
+msgid "Enter your API key first."
+msgstr "Saisissez d’abord votre clé API."
+
+#. translators: %s: site name
+#: includes/class-honk-admin.php:599
+#, php-format
+msgid "Test from %s"
+msgstr "Test depuis %s"
+
+#: includes/class-honk-admin.php:600
+msgid "If you can read this, your site is connected to Honk. Sent from Settings → Honk."
+msgstr "Si vous lisez ceci, votre site est bien relié à Honk. Envoyé depuis Réglages → Honk."
+
+#. translators: 1: message id, 2: duration in milliseconds
+#: includes/class-honk-admin.php:626
+#, php-format
+msgid "It works. The test notification should be in your Honk inbox now (ID %1$s, %2$d ms)."
+msgstr "Tout fonctionne. La notification de test devrait déjà se trouver dans votre boîte de réception Honk (ID %1$s, %2$d ms)."
+
+#. translators: 1: server URL, 2: error message
+#: includes/class-honk-admin.php:635
+#, php-format
+msgid "Couldn’t reach %1$s: %2$s"
+msgstr "Impossible de joindre %1$s : %2$s"
+
+#: includes/class-honk-admin.php:637
+msgid "Honk didn’t accept this key. Check that you copied all of it and that it hasn’t been revoked in Honk."
+msgstr "Honk n’a pas accepté cette clé. Vérifiez que vous l’avez copiée en entier et qu’elle n’a pas été révoquée dans Honk."
+
+#. translators: 1: HTTP status, 2: error code, 3: error message
+#: includes/class-honk-admin.php:640
+#, php-format
+msgid "Honk returned an error (%1$d %2$s): %3$s"
+msgstr "Honk a renvoyé une erreur (%1$d %2$s) : %3$s"
+
+#: includes/class-honk-admin.php:665
+msgid "Order, payment, stock, customer and review notifications are set up under Settings → Honk, with the rest of the site’s notifications."
+msgstr "Les notifications de commandes, de paiements, de stock, de clients et d’avis se règlent dans Réglages → Honk, avec les autres notifications du site."
+
+#: includes/class-honk-events.php:151
+msgid "Security"
+msgstr "Sécurité"
+
+#: includes/class-honk-events.php:152
+msgid "Site health"
+msgstr "Santé du site"
+
+#: includes/class-honk-events.php:153
+msgid "Content & users"
+msgstr "Contenu et comptes"
+
+#: includes/class-honk-events.php:154
+msgid "Forms"
+msgstr "Formulaires"
+
+#: includes/class-honk-events.php:155
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: includes/class-honk-events.php:168
+msgid "Administrator signs in from a new device"
+msgstr "Connexion d’un compte administrateur depuis un nouvel appareil"
+
+#: includes/class-honk-events.php:168
+msgid "An account that can manage the site signs in from a new browser, device or network. Devices are recognized without storing IP addresses or browser details."
+msgstr "Un compte qui peut gérer le site se connecte depuis un navigateur, un appareil ou un réseau inconnu. Pour reconnaître les appareils, Honk n’enregistre ni adresse IP ni informations sur le navigateur."
+
+#: includes/class-honk-events.php:170
+#: includes/modules/class-honk-module-security.php:312
+msgid "Many failed sign-ins"
+msgstr "Nombreux échecs de connexion"
+
+#: includes/class-honk-events.php:170
+msgid "Someone may be trying to guess a password. You’ll get an all-clear once it stops."
+msgstr "Quelqu’un essaie peut-être de deviner un mot de passe. Honk vous prévient dès que les tentatives cessent."
+
+#: includes/class-honk-events.php:172
+msgid "New administrator"
+msgstr "Nouveau compte administrateur"
+
+#: includes/class-honk-events.php:172
+msgid "Someone was added as an administrator or given the Administrator role."
+msgstr "Un compte a été créé avec les droits d’administration, ou un compte existant les a reçus."
+
+#: includes/class-honk-events.php:174
+msgid "User role changed"
+msgstr "Changement de rôle"
+
+#: includes/class-honk-events.php:174
+msgid "Someone’s role was changed, added or removed."
+msgstr "Le rôle d’un compte a été modifié, ajouté ou retiré."
+
+#: includes/class-honk-events.php:176
+msgid "Admin email or site address changed"
+msgstr "Changement de l’e-mail d’administration ou de l’adresse du site"
+
+#: includes/class-honk-events.php:176
+msgid "The administration email, the WordPress address or the site address changed."
+msgstr "L’adresse e-mail d’administration, l’adresse web de WordPress ou l’adresse web du site a été modifiée."
+
+#: includes/class-honk-events.php:178
+msgid "Plugin installed, activated, deactivated or deleted"
+msgstr "Extension installée, activée, désactivée ou supprimée"
+
+#: includes/class-honk-events.php:180
+msgid "Theme installed, switched or deleted"
+msgstr "Thème installé, activé ou supprimé"
+
+#: includes/class-honk-events.php:182
+msgid "Theme or plugin file edited in the dashboard"
+msgstr "Fichier de thème ou d’extension modifié depuis le tableau de bord"
+
+#: includes/class-honk-events.php:184
+msgid "Updates installed"
+msgstr "Mises à jour installées"
+
+#: includes/class-honk-events.php:184
+msgid "WordPress, a plugin or a theme was updated, by hand or automatically."
+msgstr "WordPress, une extension ou un thème a été mis à jour, manuellement ou automatiquement."
+
+#: includes/class-honk-events.php:186
+#: includes/modules/class-honk-module-health.php:138
+msgid "Critical error"
+msgstr "Erreur critique"
+
+#: includes/class-honk-events.php:186
+msgid "A PHP error crashed a page and WordPress showed its “critical error” message. This doesn’t replace WordPress’s own email."
+msgstr "Une erreur PHP a fait planter une page et WordPress a affiché son message « Il y a eu une erreur critique sur ce site ». Cela ne remplace pas l’e-mail que WordPress envoie lui-même."
+
+#: includes/class-honk-events.php:188
+msgid "Site Health critical issues"
+msgstr "Problèmes critiques dans Santé du site"
+
+#: includes/class-honk-events.php:188
+msgid "Checked daily. You’ll get an all-clear once they’re fixed."
+msgstr "Vérification quotidienne. Honk vous prévient dès qu’ils sont résolus."
+
+#: includes/class-honk-events.php:190
+msgid "Automatic update failed"
+msgstr "Échec d’une mise à jour automatique"
+
+#: includes/class-honk-events.php:192
+msgid "Updates available"
+msgstr "Mises à jour disponibles"
+
+#: includes/class-honk-events.php:192
+msgid "Checked daily. One notification lists the WordPress, plugin and theme updates whenever the list changes."
+msgstr "Vérification quotidienne. Une seule notification liste les mises à jour de WordPress, des extensions et des thèmes, chaque fois que la liste change."
+
+#: includes/class-honk-events.php:194
+msgid "Scheduled tasks running late"
+msgstr "Tâches planifiées en retard"
+
+#: includes/class-honk-events.php:194
+msgid "WordPress’s scheduled tasks (WP-Cron) are more than 30 minutes late."
+msgstr "Les tâches planifiées de WordPress (WP-Cron) ont plus de 30 minutes de retard."
+
+#: includes/class-honk-events.php:196
+#: includes/modules/class-honk-module-health.php:650
+msgid "Disk almost full"
+msgstr "Disque presque plein"
+
+#: includes/class-honk-events.php:196
+msgid "Less than 5% or 1 GB of disk space left. Only works if your host lets WordPress check it."
+msgstr "Moins de 5 % ou de 1 Go d’espace disque libre. Ne fonctionne que si votre hébergeur permet à WordPress de le vérifier."
+
+#: includes/class-honk-events.php:198
+#: includes/modules/class-honk-module-content.php:62
+msgid "New user registration"
+msgstr "Inscription d’un nouveau compte"
+
+#: includes/class-honk-events.php:200
+#: includes/modules/class-honk-module-content.php:112
+msgid "Comment awaiting moderation"
+msgstr "Commentaire en attente de modération"
+
+#: includes/class-honk-events.php:202
+msgid "Post pending review"
+msgstr "Article en attente de relecture"
+
+#: includes/class-honk-events.php:204
+msgid "Post published"
+msgstr "Article publié"
+
+#: includes/class-honk-events.php:218
+msgid "New order"
+msgstr "Nouvelle commande"
+
+#: includes/class-honk-events.php:218
+msgid "When an order is paid or put on hold, just like WooCommerce’s “New order” email."
+msgstr "Quand une commande est payée ou mise en attente, comme l’e-mail « Nouvelle commande » de WooCommerce."
+
+#: includes/class-honk-events.php:220
+msgid "Order status changed"
+msgstr "Changement d’état de commande"
+
+#: includes/class-honk-events.php:220
+msgid "Other status changes, such as Completed or Cancelled."
+msgstr "Les autres changements d’état, par exemple vers Terminée ou Annulée."
+
+#: includes/class-honk-events.php:222
+msgid "Failed payment"
+msgstr "Échec de paiement"
+
+#: includes/class-honk-events.php:224
+msgid "Refund"
+msgstr "Remboursement"
+
+#: includes/class-honk-events.php:226
+msgid "Low stock"
+msgstr "Stock faible"
+
+#: includes/class-honk-events.php:226
+#: includes/class-honk-events.php:228
+msgid "You’ll get an all-clear when it’s back in stock."
+msgstr "Honk vous prévient dès que le produit est de nouveau en stock."
+
+#: includes/class-honk-events.php:228
+msgid "Out of stock"
+msgstr "Rupture de stock"
+
+#: includes/class-honk-events.php:230
+msgid "New customer account"
+msgstr "Nouveau compte client"
+
+#: includes/class-honk-events.php:232
+msgid "New product review"
+msgstr "Nouvel avis sur un produit"
+
+#: includes/class-honk-events.php:234
+msgid "Subscription renewal failed"
+msgstr "Échec du renouvellement d’un abonnement"
+
+#: includes/class-honk-events.php:234
+msgid "WooCommerce Subscriptions."
+msgstr "WooCommerce Subscriptions."
+
+#: includes/class-honk-events.php:236
+msgid "Daily sales summary"
+msgstr "Récapitulatif quotidien des ventes"
+
+#: includes/class-honk-events.php:236
+msgid "Yesterday’s orders and revenue, every morning at 8:00 site time."
+msgstr "Les commandes et le chiffre d’affaires de la veille, chaque matin à 8 h (heure du site)."
+
+#: includes/class-honk-heartbeat.php:50
+msgid "Every 5 minutes (Honk heartbeat)"
+msgstr "Toutes les 5 minutes (signal de vie Honk)"
+
+#: includes/class-honk-notifier.php:100
+msgid "a scheduled task"
+msgstr "une tâche planifiée"
+
+#: includes/class-honk-notifier.php:100
+msgid "WordPress"
+msgstr "WordPress"
+
+#: includes/class-honk-notifier.php:116
+msgid "unknown user"
+msgstr "compte inconnu"
+
+#. translators: %d: user id
+#: includes/class-honk-notifier.php:126
+#, php-format
+msgid "user #%d"
+msgstr "compte n°%d"
+
+#: includes/class-honk-settings.php:342
+msgid "The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept."
+msgstr "L’URL du serveur doit commencer par https:// (http:// ne fonctionne que pour les adresses locales). L’URL précédente a été conservée."
+
+#: includes/class-honk-settings.php:353
+msgid "That doesn’t look like a Honk API key (they start with honk_). Your previous key was kept."
+msgstr "Cette clé ne ressemble pas à une clé API Honk (elles commencent par honk_). La clé précédente a été conservée."
+
+#: includes/class-honk-settings.php:446
+msgid "Light honk"
+msgstr "Petit coup de klaxon"
+
+#: includes/class-honk-settings.php:448
+msgid "Beep-beep"
+msgstr "Bip-bip"
+
+#: includes/class-honk-settings.php:450
+msgid "Loud honk"
+msgstr "Coup de klaxon appuyé"
+
+#: includes/class-honk-settings.php:452
+msgid "Long honk"
+msgstr "Long coup de klaxon"
+
+#: includes/class-honk-settings.php:454
+msgid "Blast"
+msgstr "Klaxon continu"
+
+#: includes/class-honk-settings.php:468
+msgid "Low"
+msgstr "Basse"
+
+#: includes/class-honk-settings.php:470
+msgid "Normal"
+msgstr "Normale"
+
+#: includes/class-honk-settings.php:472
+msgid "High"
+msgstr "Haute"
+
+#: includes/class-honk-settings.php:474
+msgid "Urgent"
+msgstr "Urgente"
+
+#. translators: %s: role names
+#: includes/modules/class-honk-module-content.php:58
+#, php-format
+msgid "Role: %s"
+msgstr "Rôle : %s"
+
+#: includes/modules/class-honk-module-content.php:63
+msgid "A new user account was created."
+msgstr "Un nouveau compte a été créé."
+
+#. translators: %s: post title
+#: includes/modules/class-honk-module-content.php:103
+#, php-format
+msgid "On “%s”"
+msgstr "Sur « %s »"
+
+#: includes/modules/class-honk-module-content.php:107
+msgid "Anonymous"
+msgstr "Anonyme"
+
+#. translators: %s: post title
+#: includes/modules/class-honk-module-content.php:152
+#, php-format
+msgid "Pending review: %s"
+msgstr "En attente de relecture : %s"
+
+#. translators: 1: post type name (e.g. Post), 2: author
+#: includes/modules/class-honk-module-content.php:155
+#, php-format
+msgid "%1$s by %2$s is waiting for review."
+msgstr "%1$s par %2$s, en attente de relecture."
+
+#. translators: %s: post title
+#: includes/modules/class-honk-module-content.php:180
+#, php-format
+msgid "Published: %s"
+msgstr "Publié : %s"
+
+#. translators: 1: post type name (e.g. Post), 2: author
+#: includes/modules/class-honk-module-content.php:183
+#, php-format
+msgid "%1$s by %2$s."
+msgstr "%1$s par %2$s."
+
+#: includes/modules/class-honk-module-content.php:208
+msgid "(no title)"
+msgstr "(pas de titre)"
+
+#: includes/modules/class-honk-module-forms.php:236
+msgid "Form"
+msgstr "Formulaire"
+
+#. translators: %s: form name
+#: includes/modules/class-honk-module-forms.php:241
+#, php-format
+msgid "Someone sent the “%s” form."
+msgstr "Le formulaire « %s » vient d’être envoyé."
+
+#: includes/modules/class-honk-module-forms.php:275
+msgid "(file attached)"
+msgstr "(fichier joint)"
+
+#. translators: %s: theme name
+#: includes/modules/class-honk-module-health.php:134
+#, php-format
+msgid "Critical error in the %s theme"
+msgstr "Erreur critique dans le thème %s"
+
+#. translators: %s: plugin name
+#: includes/modules/class-honk-module-health.php:136
+#, php-format
+msgid "Critical error in the %s plugin"
+msgstr "Erreur critique dans l’extension %s"
+
+#. translators: 1: file, 2: line number
+#: includes/modules/class-honk-module-health.php:143
+#, php-format
+msgid "%1$s, line %2$d"
+msgstr "%1$s, ligne %2$d"
+
+#: includes/modules/class-honk-module-health.php:146
+msgid "WordPress emailed the site administrator a link to fix it in recovery mode."
+msgstr "WordPress a envoyé à l’adresse e-mail d’administration un lien pour corriger le problème en mode de récupération."
+
+#: includes/modules/class-honk-module-health.php:255
+msgid "Site Health: no critical issues"
+msgstr "Santé du site : aucun problème critique"
+
+#: includes/modules/class-honk-module-health.php:256
+msgid "The critical issues found earlier are resolved."
+msgstr "Les problèmes critiques détectés précédemment sont résolus."
+
+#. translators: %d: number of critical issues
+#: includes/modules/class-honk-module-health.php:282
+#, php-format
+msgid "Site Health: %d critical issue"
+msgid_plural "Site Health: %d critical issues"
+msgstr[0] "Santé du site : %d problème critique"
+msgstr[1] "Santé du site : %d problèmes critiques"
+
+#. translators: %d: number of failed updates
+#: includes/modules/class-honk-module-health.php:395
+#, php-format
+msgid "%d automatic update failed"
+msgid_plural "%d automatic updates failed"
+msgstr[0] "%d mise à jour automatique a échoué"
+msgstr[1] "%d mises à jour automatiques ont échoué"
+
+#. translators: %d: number of updates
+#: includes/modules/class-honk-module-health.php:428
+#, php-format
+msgid "%d update available"
+msgid_plural "%d updates available"
+msgstr[0] "%d mise à jour disponible"
+msgstr[1] "%d mises à jour disponibles"
+
+#: includes/modules/class-honk-module-health.php:519
+msgid "Scheduled tasks are running again"
+msgstr "Tâches planifiées : retour à la normale"
+
+#: includes/modules/class-honk-module-health.php:520
+msgid "Scheduled tasks are on time again."
+msgstr "Les tâches planifiées s’exécutent de nouveau à l’heure."
+
+#. translators: 1: number of tasks, 2: duration, e.g. "2 hours"
+#: includes/modules/class-honk-module-health.php:561
+#, php-format
+msgid "%1$d scheduled task is late, the oldest by %2$s."
+msgid_plural "%1$d scheduled tasks are late, the oldest by %2$s."
+msgstr[0] "%1$d tâche planifiée est en retard de %2$s."
+msgstr[1] "%1$d tâches planifiées sont en retard, jusqu’à %2$s pour la plus ancienne."
+
+#. translators: %s: hook name
+#: includes/modules/class-honk-module-health.php:566
+#, php-format
+msgid "Oldest task: %s"
+msgstr "Tâche la plus en retard : %s"
+
+#: includes/modules/class-honk-module-health.php:569
+msgid "DISABLE_WP_CRON is on, so a server cron job has to run wp-cron.php. Check that it’s still running."
+msgstr "DISABLE_WP_CRON est activé : une tâche cron du serveur doit donc lancer wp-cron.php. Vérifiez qu’elle fonctionne toujours."
+
+#: includes/modules/class-honk-module-health.php:571
+msgid "WordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job."
+msgstr "WordPress lance les tâches planifiées quand quelqu’un visite le site. Cherchez des erreurs de requête de bouclage dans Outils → Santé du site, ou demandez à votre hébergeur de configurer une tâche cron sur le serveur."
+
+#: includes/modules/class-honk-module-health.php:575
+msgid "Scheduled tasks are running late"
+msgstr "Les tâches planifiées sont en retard"
+
+#. translators: 1: free space, 2: total space, 3: percent free
+#: includes/modules/class-honk-module-health.php:653
+#, php-format
+msgid "%1$s free of %2$s (%3$s%%)."
+msgstr "%1$s libres sur %2$s (%3$s %%)."
+
+#: includes/modules/class-honk-module-health.php:675
+msgid "Disk space is fine again"
+msgstr "Espace disque de nouveau suffisant"
+
+#. translators: %s: free space
+#: includes/modules/class-honk-module-health.php:677
+#, php-format
+msgid "%s free."
+msgstr "%s libres."
+
+#. translators: %s: browser and operating system, e.g. "Chrome on macOS"
+#: includes/modules/class-honk-module-security.php:134
+#, php-format
+msgid "Device: %s"
+msgstr "Appareil : %s"
+
+#. translators: %s: IP address or network, e.g. 203.0.113.0/24
+#: includes/modules/class-honk-module-security.php:138
+#, php-format
+msgid "Network: %s"
+msgstr "Réseau : %s"
+
+#: includes/modules/class-honk-module-security.php:140
+msgid "This account hasn’t used this browser and device before."
+msgstr "Ce compte n’avait encore jamais utilisé ce navigateur ni cet appareil."
+
+#: includes/modules/class-honk-module-security.php:140
+msgid "This account hasn’t signed in from this network before."
+msgstr "Ce compte ne s’était encore jamais connecté depuis ce réseau."
+
+#: includes/modules/class-honk-module-security.php:141
+msgid "If this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile."
+msgstr "Si ce n’était pas vous, changez le mot de passe et cliquez sur « Déconnecter partout ailleurs » dans Comptes → Profil."
+
+#. translators: %s: user login
+#: includes/modules/class-honk-module-security.php:145
+#, php-format
+msgid "%s signed in from a new device"
+msgstr "Connexion de %s depuis un nouvel appareil"
+
+#. translators: 1: number of failed sign-ins, 2: duration, e.g. "5 mins"
+#: includes/modules/class-honk-module-security.php:296
+#, php-format
+msgid "%1$d failed sign-in within %2$s."
+msgid_plural "%1$d failed sign-ins within %2$s."
+msgstr[0] "%1$d échec de connexion en %2$s."
+msgstr[1] "%1$d échecs de connexion en %2$s."
+
+#. translators: %d: number of IP addresses
+#: includes/modules/class-honk-module-security.php:302
+#, php-format
+msgid "From %d IP address."
+msgid_plural "From %d IP addresses."
+msgstr[0] "Depuis %d adresse IP."
+msgstr[1] "Depuis %d adresses IP."
+
+#. translators: %s: comma-separated usernames
+#: includes/modules/class-honk-module-security.php:308
+#, php-format
+msgid "Usernames tried: %s"
+msgstr "Identifiants essayés : %s"
+
+#: includes/modules/class-honk-module-security.php:310
+msgid "You’ll get an all-clear once they stop."
+msgstr "Honk vous préviendra dès que les tentatives cesseront."
+
+#: includes/modules/class-honk-module-security.php:415
+msgid "Failed sign-ins have stopped"
+msgstr "Les échecs de connexion ont cessé"
+
+#. translators: 1: number of failed sign-ins, 2: time
+#: includes/modules/class-honk-module-security.php:440
+#, php-format
+msgid "%1$d failed sign-in at %2$s."
+msgid_plural "%1$d failed sign-ins at %2$s."
+msgstr[0] "%1$d échec de connexion à %2$s."
+msgstr[1] "%1$d échecs de connexion à %2$s."
+
+#. translators: 1: number of failed sign-ins, 2: start time, 3: end time
+#: includes/modules/class-honk-module-security.php:443
+#, php-format
+msgid "%1$d failed sign-in between %2$s and %3$s."
+msgid_plural "%1$d failed sign-ins between %2$s and %3$s."
+msgstr[0] "%1$d échec de connexion entre %2$s et %3$s."
+msgstr[1] "%1$d échecs de connexion entre %2$s et %3$s."
+
+#. translators: %s: user login
+#: includes/modules/class-honk-module-security.php:607
+#, php-format
+msgid "New administrator: %s"
+msgstr "Nouveau compte administrateur : %s"
+
+#. translators: 1: user, 2: who did it
+#: includes/modules/class-honk-module-security.php:613
+#, php-format
+msgid "%1$s was created as an administrator by %2$s."
+msgstr "%2$s a créé le compte administrateur %1$s."
+
+#. translators: 1: user, 2: who did it
+#: includes/modules/class-honk-module-security.php:615
+#, php-format
+msgid "%1$s was made an administrator by %2$s."
+msgstr "%2$s a donné les droits d’administration à %1$s."
+
+#: includes/modules/class-honk-module-security.php:616
+msgid "If you didn’t expect this, check the account now."
+msgstr "Si vous ne vous y attendiez pas, vérifiez ce compte sans attendre."
+
+#. translators: %s: user
+#: includes/modules/class-honk-module-security.php:652
+#, php-format
+msgid "Role changed for %s"
+msgstr "Changement de rôle pour %s"
+
+#. translators: 1: previous value, 2: new value, 3: who did it
+#: includes/modules/class-honk-module-security.php:655
+#: includes/modules/class-honk-module-security.php:714
+#: includes/modules/class-honk-module-security.php:720
+#, php-format
+msgid "%1$s → %2$s, by %3$s."
+msgstr "%1$s → %2$s, par %3$s."
+
+#: includes/modules/class-honk-module-security.php:678
+msgid "no role"
+msgstr "aucun rôle"
+
+#: includes/modules/class-honk-module-security.php:711
+msgid "Administration email address changed"
+msgstr "Adresse e-mail d’administration modifiée"
+
+#. translators: %s: who did it
+#: includes/modules/class-honk-module-security.php:716
+#, php-format
+msgid "Changed by %s."
+msgstr "Modifiée par %s."
+
+#: includes/modules/class-honk-module-security.php:718
+msgid "WordPress address (URL) changed"
+msgstr "Adresse web de WordPress (URL) modifiée"
+
+#: includes/modules/class-honk-module-security.php:718
+msgid "Site address (URL) changed"
+msgstr "Adresse web du site (URL) modifiée"
+
+#: includes/modules/class-honk-module-security.php:722
+msgid "If you didn’t expect this, check Settings → General now."
+msgstr "Si vous ne vous y attendiez pas, vérifiez dès maintenant Réglages → Général."
+
+#. translators: %s: plugin name
+#: includes/modules/class-honk-module-security.php:810
+#, php-format
+msgid "Plugin activated: %s"
+msgstr "Extension activée : %s"
+
+#. translators: %s: plugin name
+#: includes/modules/class-honk-module-security.php:814
+#, php-format
+msgid "Plugin deactivated: %s"
+msgstr "Extension désactivée : %s"
+
+#. translators: %s: plugin name
+#: includes/modules/class-honk-module-security.php:818
+#, php-format
+msgid "Plugin deleted: %s"
+msgstr "Extension supprimée : %s"
+
+#. translators: %s: plugin name
+#: includes/modules/class-honk-module-security.php:822
+#, php-format
+msgid "Plugin installed: %s"
+msgstr "Extension installée : %s"
+
+#. translators: %s: who did it
+#: includes/modules/class-honk-module-security.php:825
+#: includes/modules/class-honk-module-security.php:976
+#: includes/modules/class-honk-module-security.php:1055
+#, php-format
+msgid "By %s."
+msgstr "Par %s."
+
+#: includes/modules/class-honk-module-security.php:827
+msgid "Network-wide."
+msgstr "Sur tout le réseau."
+
+#: includes/modules/class-honk-module-security.php:965
+msgid "WordPress updated"
+msgstr "WordPress mis à jour"
+
+#. translators: %d: number of themes
+#: includes/modules/class-honk-module-security.php:969
+#, php-format
+msgid "%d theme updated"
+msgid_plural "%d themes updated"
+msgstr[0] "%d thème mis à jour"
+msgstr[1] "%d thèmes mis à jour"
+
+#. translators: %d: number of plugins
+#: includes/modules/class-honk-module-security.php:973
+#, php-format
+msgid "%d plugin updated"
+msgid_plural "%d plugins updated"
+msgstr[0] "%d extension mise à jour"
+msgstr[1] "%d extensions mises à jour"
+
+#. translators: %s: who did it
+#: includes/modules/class-honk-module-security.php:976
+msgid "Updated automatically."
+msgstr "Mise à jour automatique."
+
+#. translators: %s: theme name
+#: includes/modules/class-honk-module-security.php:1044
+#, php-format
+msgid "Theme switched to %s"
+msgstr "Nouveau thème activé : %s"
+
+#. translators: %s: theme name
+#: includes/modules/class-honk-module-security.php:1048
+#, php-format
+msgid "Theme deleted: %s"
+msgstr "Thème supprimé : %s"
+
+#. translators: %s: theme name
+#: includes/modules/class-honk-module-security.php:1052
+#, php-format
+msgid "Theme installed: %s"
+msgstr "Thème installé : %s"
+
+#. translators: %s: previous theme name
+#: includes/modules/class-honk-module-security.php:1058
+#, php-format
+msgid "Previous theme: %s"
+msgstr "Thème précédent : %s"
+
+#. translators: %s: theme name
+#: includes/modules/class-honk-module-security.php:1139
+#, php-format
+msgid "Theme file edited: %s"
+msgstr "Fichier de thème modifié : %s"
+
+#. translators: %s: plugin name
+#: includes/modules/class-honk-module-security.php:1141
+#, php-format
+msgid "Plugin file edited: %s"
+msgstr "Fichier d’extension modifié : %s"
+
+#. translators: 1: file, 2: who did it
+#: includes/modules/class-honk-module-security.php:1144
+#, php-format
+msgid "%1$s was edited in the file editor by %2$s."
+msgstr "%2$s a modifié %1$s dans l’éditeur de fichiers."
+
+#: includes/modules/class-honk-module-security.php:1147
+msgid "Tip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php."
+msgstr "Astuce : pour désactiver les éditeurs de fichiers, définissez DISALLOW_FILE_EDIT sur true dans wp-config.php."
+
+#. translators: %s: order number
+#: includes/modules/class-honk-module-woocommerce.php:175
+#, php-format
+msgid "New order #%s"
+msgstr "Nouvelle commande n°%s"
+
+#. translators: 1: order number, 2: new status
+#: includes/modules/class-honk-module-woocommerce.php:243
+#, php-format
+msgid "Order #%1$s: %2$s"
+msgstr "Commande n°%1$s : %2$s"
+
+#. translators: %s: payment method
+#: includes/modules/class-honk-module-woocommerce.php:278
+#, php-format
+msgid "Payment method: %s"
+msgstr "Moyen de paiement : %s"
+
+#. translators: %s: order number
+#: includes/modules/class-honk-module-woocommerce.php:290
+#, php-format
+msgid "Payment failed for order #%s"
+msgstr "Échec du paiement de la commande n°%s"
+
+#. translators: 1: amount, 2: order number
+#: includes/modules/class-honk-module-woocommerce.php:322
+#, php-format
+msgid "Full refund of %1$s on order #%2$s."
+msgstr "Remboursement intégral de %1$s pour la commande n°%2$s."
+
+#. translators: 1: amount, 2: order number
+#: includes/modules/class-honk-module-woocommerce.php:324
+#, php-format
+msgid "Partial refund of %1$s on order #%2$s."
+msgstr "Remboursement partiel de %1$s pour la commande n°%2$s."
+
+#. translators: %s: refund reason
+#: includes/modules/class-honk-module-woocommerce.php:329
+#, php-format
+msgid "Reason: %s"
+msgstr "Motif : %s"
+
+#. translators: 1: amount, 2: order number
+#: includes/modules/class-honk-module-woocommerce.php:335
+#, php-format
+msgid "Refund of %1$s for order #%2$s"
+msgstr "Remboursement de %1$s pour la commande n°%2$s"
+
+#. translators: %s: product name
+#: includes/modules/class-honk-module-woocommerce.php:407
+#, php-format
+msgid "Out of stock: %s"
+msgstr "Rupture de stock : %s"
+
+#. translators: %s: product name
+#: includes/modules/class-honk-module-woocommerce.php:411
+#, php-format
+msgid "Low stock: %s"
+msgstr "Stock faible : %s"
+
+#. translators: %s: product name
+#: includes/modules/class-honk-module-woocommerce.php:415
+#, php-format
+msgid "Back in stock: %s"
+msgstr "De nouveau en stock : %s"
+
+#. translators: %d: units in stock
+#: includes/modules/class-honk-module-woocommerce.php:420
+#, php-format
+msgid "%d unit in stock."
+msgid_plural "%d units in stock."
+msgstr[0] "%d unité en stock."
+msgstr[1] "%d unités en stock."
+
+#. translators: %d: units in stock
+#: includes/modules/class-honk-module-woocommerce.php:422
+#, php-format
+msgid "%d unit left."
+msgid_plural "%d units left."
+msgstr[0] "Stock restant : %d."
+msgstr[1] "Stock restant : %d."
+
+#. translators: %s: SKU
+#: includes/modules/class-honk-module-woocommerce.php:426
+#, php-format
+msgid "SKU: %s"
+msgstr "UGS : %s"
+
+#: includes/modules/class-honk-module-woocommerce.php:503
+msgid "New customer"
+msgstr "Nouveau client"
+
+#: includes/modules/class-honk-module-woocommerce.php:504
+msgid "A customer account was created."
+msgstr "Un compte client a été créé."
+
+#. translators: %d: rating from 1 to 5
+#: includes/modules/class-honk-module-woocommerce.php:539
+#, php-format
+msgid "%d of 5"
+msgstr "%d sur 5"
+
+#: includes/modules/class-honk-module-woocommerce.php:542
+msgid "Awaiting moderation."
+msgstr "En attente de modération."
+
+#. translators: %s: product name
+#: includes/modules/class-honk-module-woocommerce.php:551
+#, php-format
+msgid "New review: %s"
+msgstr "Nouvel avis : %s"
+
+#: includes/modules/class-honk-module-woocommerce.php:552
+msgid "A new product review."
+msgstr "Nouvel avis sur un produit."
+
+#. translators: %s: amount
+#: includes/modules/class-honk-module-woocommerce.php:585
+#, php-format
+msgid "The %s renewal couldn’t be charged."
+msgstr "Le paiement du renouvellement (%s) n’a pas abouti."
+
+#. translators: %s: order number
+#: includes/modules/class-honk-module-woocommerce.php:589
+#, php-format
+msgid "Renewal order #%s"
+msgstr "Commande de renouvellement n°%s"
+
+#. translators: %s: subscription number
+#: includes/modules/class-honk-module-woocommerce.php:600
+#, php-format
+msgid "Subscription #%s: renewal failed"
+msgstr "Abonnement n°%s : échec du renouvellement"
+
+#. translators: %s: date
+#: includes/modules/class-honk-module-woocommerce.php:658
+#, php-format
+msgid "Sales on %s"
+msgstr "Ventes du %s"
+
+#: includes/modules/class-honk-module-woocommerce.php:659
+msgid "No orders."
+msgstr "Aucune commande."
+
+#. translators: %d: number of orders
+#: includes/modules/class-honk-module-woocommerce.php:666
+#, php-format
+msgid "%d order"
+msgid_plural "%d orders"
+msgstr[0] "%d commande"
+msgstr[1] "%d commandes"
+
+#. translators: %d: number of items
+#: includes/modules/class-honk-module-woocommerce.php:668
+#: includes/modules/class-honk-module-woocommerce.php:760
+#, php-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d article"
+msgstr[1] "%d articles"
+
+#. translators: %s: revenue
+#: includes/modules/class-honk-module-woocommerce.php:674
+#, php-format
+msgid "Revenue: %s"
+msgstr "Chiffre d’affaires : %s"
+
+#. translators: %s: refunded amount
+#: includes/modules/class-honk-module-woocommerce.php:683
+#, php-format
+msgid "Refunded: %s"
+msgstr "Remboursements : %s"
+
+#. translators: 1: date, 2: revenue
+#: includes/modules/class-honk-module-woocommerce.php:688
+#, php-format
+msgid "Sales on %1$s: %2$s"
+msgstr "Ventes du %1$s : %2$s"
+
+#. translators: %s: order number
+#: includes/modules/class-honk-module-woocommerce.php:757
+#, php-format
+msgid "Order #%s"
+msgstr "Commande n°%s"

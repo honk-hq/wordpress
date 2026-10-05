@@ -1,0 +1,72 @@
+# Tests on every push and pull request; release.yml calls it before deploying to WordPress.org.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php:
+    name: php ${{ matrix.php }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4'] # Requires PHP: 7.4
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Lint every PHP file
+        run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+      - run: composer validate --strict
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      - name: PHPUnit (Brain Monkey)
+        run: vendor/bin/phpunit
+
+  coding-standards:
+    name: phpcs (WordPress-Extra, PHP 7.4+)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: none
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      - run: vendor/bin/phpcs -q --report=full
+      - name: Translations compile (msgfmt -c) and match the POT
+        run: |
+          sudo apt-get install -y --no-install-recommends gettext >/dev/null
+          for po in languages/*.po; do msgfmt -c --statistics -o /dev/null "$po"; done
+
+  plugin-check:
+    name: plugin check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Build the plugin as published (.distignore)
+        run: bin/build.sh build
+      - uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: build/honk
+          include-experimental: true

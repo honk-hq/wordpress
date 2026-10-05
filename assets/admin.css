@@ -1,0 +1,55 @@
+/* Settings → Honk: layout only; colours and controls are WordPress's own. */
+.honk-settings .honk-intro {
+	max-width: 46em;
+}
+
+.honk-settings .honk-events {
+	max-width: 960px;
+	margin-bottom: 1.5em;
+}
+
+.honk-settings .honk-events .honk-col-event {
+	width: auto;
+}
+
+.honk-settings .honk-events .honk-col-send {
+	width: 4em;
+	text-align: center;
+}
+
+.honk-settings .honk-events .honk-col-level,
+.honk-settings .honk-events .honk-col-priority {
+	width: 13em;
+}
+
+.honk-settings .honk-events td.honk-col-send input[type="checkbox"] {
+	margin: 0.2em 0 0;
+}
+
+.honk-settings .honk-events select {
+	max-width: 100%;
+}
+
+.honk-settings .honk-events .description {
+	margin: 0.25em 0 0;
+}
+
+.honk-settings .honk-test-result .notice {
+	margin: 0.75em 0 0;
+}
+
+.honk-settings .honk-log {
+	margin-bottom: 1em;
+}
+
+.honk-settings #honk-test-spinner {
+	float: none;
+	margin-top: 0;
+}
+
+@media screen and (max-width: 782px) {
+	.honk-settings .honk-events .honk-col-level,
+	.honk-settings .honk-events .honk-col-priority {
+		width: 9em;
+	}
+}

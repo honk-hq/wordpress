@@ -1,0 +1,104 @@
+# Runs when a tag vX.Y.Z is pushed (the monorepo's sdk-mirror workflow pushes it for a monorepo
+# tag sdk-wordpress-vX.Y.Z). Checks that the tag, honk.php, readme.txt and CHANGELOG.md agree,
+# runs the tests, deploys the plugin to the WordPress.org SVN repository (trunk, tags/X.Y.Z and
+# the .wordpress-org assets) and attaches the zip to the GitHub release.
+#
+# Secrets, in the environment "wordpress-org": SVN_USERNAME and SVN_PASSWORD (the WordPress.org
+# username and the SVN password from the account's profile, not the login password). A
+# pre-release tag (vX.Y.Z-rc.1) is tested and released on GitHub only.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      prerelease: ${{ steps.v.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - id: v
+        name: The tag, honk.php, readme.txt and CHANGELOG.md agree
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::tag $GITHUB_REF_NAME is not vX.Y.Z"; exit 1; }
+          constant="$(sed -nE "s/^define\( 'HONK_VERSION', '([^']+)' \);$/\1/p" honk.php)"
+          header="$(sed -nE 's/^ \* Version:[[:space:]]+(.+)$/\1/p' honk.php)"
+          stable="$(sed -nE 's/^Stable tag:[[:space:]]+(.+)$/\1/p' readme.txt)"
+          for pair in "HONK_VERSION:$constant" "Version header:$header" "readme.txt Stable tag:$stable"; do
+            [ "${pair#*:}" = "$v" ] || { echo "::error::${pair%%:*} is '${pair#*:}' but the tag is $GITHUB_REF_NAME"; exit 1; }
+          done
+          grep -qF "## [$v]" CHANGELOG.md || { echo "::error::CHANGELOG.md has no '## [$v]' section"; exit 1; }
+          grep -qF "= $v =" readme.txt || { echo "::error::readme.txt has no '= $v =' changelog entry"; exit 1; }
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if [[ "$v" == *-* ]]; then echo "prerelease=true" >> "$GITHUB_OUTPUT"; else echo "prerelease=false" >> "$GITHUB_OUTPUT"; fi
+
+  test:
+    needs: verify
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: [verify, test]
+    runs-on: ubuntu-24.04
+    environment:
+      name: wordpress-org
+      url: https://wordpress.org/plugins/honk/
+    permissions:
+      contents: write # the GitHub release
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Subversion (not preinstalled on ubuntu-24.04)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq subversion >/dev/null
+      - name: Deploy to WordPress.org (trunk, tags/${{ needs.verify.outputs.version }}, assets)
+        id: deploy
+        if: needs.verify.outputs.prerelease != 'true'
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: honk
+          VERSION: ${{ needs.verify.outputs.version }}
+          ASSETS_DIR: .wordpress-org
+      - name: The zip (pre-releases are not deployed, so build it here)
+        id: zip
+        env:
+          DEPLOY_ZIP: ${{ steps.deploy.outputs.zip-path }}
+        run: |
+          if [ -n "$DEPLOY_ZIP" ] && [ -f "$DEPLOY_ZIP" ]; then
+            echo "path=$DEPLOY_ZIP" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=$(bin/build.sh "$RUNNER_TEMP/build")" >> "$GITHUB_OUTPUT"
+          fi
+      - name: GitHub release with the CHANGELOG entry and the zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.verify.outputs.version }}
+          PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+          ZIP: ${{ steps.zip.outputs.path }}
+        run: |
+          awk -v h="## [$VERSION]" 'index($0, h) == 1 {f = 1; next} f && /^## \[/ {exit} f' CHANGELOG.md > notes.md
+          printf '\nWordPress.org: https://wordpress.org/plugins/honk/\n' >> notes.md
+          cp "$ZIP" "honk-$VERSION.zip"
+          flags=()
+          [ "$PRERELEASE" = true ] && flags+=(--prerelease)
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "honk-$VERSION.zip" --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md "${flags[@]}" "honk-$VERSION.zip"
+          fi

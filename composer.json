@@ -1,0 +1,35 @@
+{
+    "name": "honk-me/honk-wordpress",
+    "description": "Honk – Notifications for WordPress and WooCommerce. Composer is used for development tools only; the plugin has no runtime dependencies.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://honk-me.app",
+    "support": {
+        "issues": "https://github.com/honk-me/honk-wordpress/issues",
+        "source": "https://github.com/honk-me/honk-wordpress"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "brain/monkey": "^2.6",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "phpunit/phpunit": "^9.6",
+        "wp-coding-standards/wpcs": "^3.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "platform": {
+            "php": "7.4.33"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "phpcs",
+        "fix": "phpcbf"
+    }
+}

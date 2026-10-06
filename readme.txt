@@ -18,6 +18,8 @@ Honk groups repeats instead of sending each one: the first failed payment is a p
 
 You decide what you hear about. Every event has its own on/off switch, a priority, and a level on the Honk scale: Light honk, Beep-beep, Loud honk, Long honk or Blast.
 
+You also decide what each notification says, without code. Open Details under an event to see what it can include, from the order total, the payment method and the products to the customer's name, phone and billing city, and tick what you want. A preview next to the choices shows how the notification will read in Honk.
+
 = WooCommerce =
 
 * New orders, once they're paid or on hold (classic and block checkout, plus orders created in the admin or through the REST API)
@@ -59,11 +61,11 @@ Works with High-Performance Order Storage (HPOS) and the block checkout.
 
 = Forms =
 
-Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms are found automatically. Each notification is titled with the form's name, and what people entered is included only if you allow personal data.
+Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms are found automatically. Each notification is titled with the form's name, and what people entered is included only if you allow personal data. With Contact Form 7, WPForms and Gravity Forms, you can also leave out single fields of each form.
 
 = Private by default =
 
-Out of the box, notifications contain no personal data: a new order reads "Order #1234 · €84.00 · 2 items". Turn on "Include customer names and emails" to also see names, email addresses, comments and form entries.
+Out of the box, notifications contain no personal data: a new order reads "Order #1234 · €84.00 · 2 items". Turn on "Include customer names and emails" to also see names, email addresses, comments and form entries, and use each event's Details to leave out what you don't need. Phone numbers, billing cities and customers' notes are only sent if you tick them. While the switch is off, nothing personal is sent, whatever is ticked.
 
 = Never slows your site down =
 
@@ -80,7 +82,7 @@ This plugin connects to the Honk API to deliver your notifications. Honk is a no
 What is sent, and when:
 
 * **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed).
-* **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24).
+* **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24). A customer's phone number, billing city and country and order note are sent only if you also tick them in an event's Details, and Details let you leave out any of the others.
 * **When you click "Send test notification"**, one test message is sent.
 * **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. This request contains no data about your site.
 * **The heartbeat** (once Honk supports it, and only if you turn it on) checks in every 5 minutes with your site's address and environment.
@@ -91,11 +93,11 @@ The plugin doesn't track you or your visitors, and it loads no external scripts,
 
 == Installation ==
 
-1. In your dashboard, go to Plugins → Add New Plugin, search for "Honk" and click Install Now. Or upload the `honk` folder to `/wp-content/plugins/`.
+1. In your dashboard, go to Plugins → Add Plugin, search for "Honk" and click Install Now. Or upload the `honk` folder to `/wp-content/plugins/`.
 2. Activate the plugin.
 3. In Honk (https://honk-me.app), open your project, go to Keys and create a new key. Copy it.
 4. In WordPress, go to Settings → Honk, paste the key into "API key" and click "Send test notification". The test should reach your Honk inbox within seconds.
-5. Choose your events, their levels and priorities, and click Save Changes.
+5. Choose your events, their levels and priorities. Open Details under an event to choose what its notification says, then click Save Changes.
 
 WooCommerce stores also get a Honk tab under WooCommerce → Settings that links to the same page.
 
@@ -119,7 +121,7 @@ The plugin tries again with longer and longer pauses, for up to about two hours,
 
 = What personal data is sent? =
 
-None by default. Orders are described by their number, total and number of items, and form entries only by the form's name. If you turn on "Include customer names and emails," names, email addresses, comments, reviews and form entries are included. While it's off, the delivery log hides titles that might contain personal data.
+None by default. Orders are described by their number, total and number of items, and form entries only by the form's name. If you turn on "Include customer names and emails," names, email addresses, comments, reviews and form entries are included, and each event's Details let you leave out what you don't need or add a customer's phone number, billing city or note. While the switch is off, none of these are sent, whatever is ticked, and the delivery log hides titles that might contain personal data.
 
 = Which form plugins are supported? =
 
@@ -137,9 +139,13 @@ Things that start and stop, such as many failed sign-ins, a product out of stock
 
 For administrators, the plugin remembers the browser, operating system and IP network of recent sign-ins (up to 20, for 180 days), stored only as hashes, never as readable details. A sign-in that matches none of them is reported. The very first sign-in after you install the plugin is only remembered.
 
+= Can I choose what a notification says? =
+
+Yes. In Settings → Honk, open Details under an event. It lists what that notification always includes, such as the order number and a link to the order, and what you can add or leave out, with a preview of how it will read in Honk. Your choices apply to every notification of that event from then on.
+
 = Can I change a message before it's sent? =
 
-Yes, if you're a developer: use the `honk_message` filter. It receives the message fields and the event ID; return an empty array to drop the message.
+Most changes don't need code: use an event's Details. Developers can also use the `honk_message` filter. It receives the message fields and the event ID; return an empty array to drop the message.
 
 = Where's the heartbeat? =
 
@@ -149,15 +155,16 @@ The heartbeat ("tell me when my site stops checking in") needs support on the Ho
 
 1. Settings → Honk: connection, test button, privacy and language.
 2. Events grouped into Security, Site health, Content & users, Forms and WooCommerce, each with its own level and priority.
-3. The result of "Send test notification".
-4. The delivery log: the last 50 notifications and their status.
-5. WooCommerce orders and a failed payment in the Honk inbox.
-6. Many failed sign-ins as one episode in Honk, closed by its all-clear.
+3. An event's Details: choose what the notification says, with a preview of how it will read in Honk.
+4. The result of "Send test notification".
+5. The delivery log: the last 50 notifications and their status.
+6. A new administrator, low stock and a failed payment in the Honk inbox.
+7. Many failed sign-ins as one episode in Honk, closed by its all-clear.
 
 == Changelog ==
 
 = 0.1.0 =
-* First release: WooCommerce, security, site health, content and form notifications, plus a test button; background sending with automatic retries; English, Romanian, Spanish, French and German.
+* First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview; background sending with automatic retries; English, Romanian, Spanish, French and German.
 
 == Upgrade Notice ==
 

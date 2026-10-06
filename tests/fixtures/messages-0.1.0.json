@@ -1,0 +1,1844 @@
+{
+    "woo_new_order": {
+        "off": [
+            {
+                "event": "woo_new_order",
+                "pii": false,
+                "payload": {
+                    "title": "New order #1234",
+                    "message": "Order #1234 · €84.00 · 2 items\nProcessing · Card",
+                    "severity": "success",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/orders",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "occurred_at": "2026-10-05T09:36:40Z",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "processing",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_new_order",
+                "pii": true,
+                "payload": {
+                    "title": "New order #1234",
+                    "message": "Order #1234 · €84.00 · 2 items\nProcessing · Card\nAna Pop · ana@example.com",
+                    "severity": "success",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/orders",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "occurred_at": "2026-10-05T09:36:40Z",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "processing",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2
+                    }
+                }
+            }
+        ]
+    },
+    "woo_new_order_sparse": {
+        "off": [
+            {
+                "event": "woo_new_order",
+                "pii": false,
+                "payload": {
+                    "title": "New order #1235",
+                    "message": "Order #1235 · €84.00 · 1 item\nProcessing",
+                    "severity": "success",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/orders",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=78",
+                    "occurred_at": "2026-10-05T09:36:40Z",
+                    "metadata": {
+                        "order_id": 78,
+                        "order_number": "1235",
+                        "status": "processing",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 1
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_new_order",
+                "pii": true,
+                "payload": {
+                    "title": "New order #1235",
+                    "message": "Order #1235 · €84.00 · 1 item\nProcessing",
+                    "severity": "success",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/orders",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=78",
+                    "occurred_at": "2026-10-05T09:36:40Z",
+                    "metadata": {
+                        "order_id": 78,
+                        "order_number": "1235",
+                        "status": "processing",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 1
+                    }
+                }
+            }
+        ]
+    },
+    "woo_order_status": {
+        "off": [
+            {
+                "event": "woo_order_status",
+                "pii": false,
+                "payload": {
+                    "title": "Order #1234: Completed",
+                    "message": "Processing → Completed\nOrder #1234 · €84.00 · 2 items",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/orders/status",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "completed",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_order_status",
+                "pii": true,
+                "payload": {
+                    "title": "Order #1234: Completed",
+                    "message": "Processing → Completed\nOrder #1234 · €84.00 · 2 items\nAna Pop · ana@example.com",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/orders/status",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "completed",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2
+                    }
+                }
+            }
+        ]
+    },
+    "woo_payment_failed": {
+        "off": [
+            {
+                "event": "woo_payment_failed",
+                "pii": false,
+                "payload": {
+                    "title": "Payment failed for order #1234",
+                    "message": "Order #1234 · €84.00 · 2 items\nPayment method: Card",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/payments/failed",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "failed",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_payment_failed",
+                "pii": true,
+                "payload": {
+                    "title": "Payment failed for order #1234",
+                    "message": "Order #1234 · €84.00 · 2 items\nPayment method: Card\nAna Pop · ana@example.com",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/payments/failed",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "failed",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2
+                    }
+                }
+            }
+        ]
+    },
+    "woo_refund": {
+        "off": [
+            {
+                "event": "woo_refund",
+                "pii": false,
+                "payload": {
+                    "title": "Refund of €20.00 for order #1234",
+                    "message": "Partial refund of €20.00 on order #1234.\nOrder #1234 · €84.00 · 2 items\nReason: Damaged in transit",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/refunds",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "processing",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2,
+                        "refund": 20
+                    }
+                }
+            },
+            {
+                "event": "woo_refund",
+                "pii": false,
+                "payload": {
+                    "title": "Refund of €84.00 for order #1236",
+                    "message": "Full refund of €84.00 on order #1236.\nOrder #1236 · €84.00 · 2 items",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/refunds",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=79",
+                    "metadata": {
+                        "order_id": 79,
+                        "order_number": "1236",
+                        "status": "refunded",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2,
+                        "refund": 84
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_refund",
+                "pii": false,
+                "payload": {
+                    "title": "Refund of €20.00 for order #1234",
+                    "message": "Partial refund of €20.00 on order #1234.\nOrder #1234 · €84.00 · 2 items\nReason: Damaged in transit",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/refunds",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=77",
+                    "metadata": {
+                        "order_id": 77,
+                        "order_number": "1234",
+                        "status": "processing",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2,
+                        "refund": 20
+                    }
+                }
+            },
+            {
+                "event": "woo_refund",
+                "pii": false,
+                "payload": {
+                    "title": "Refund of €84.00 for order #1236",
+                    "message": "Full refund of €84.00 on order #1236.\nOrder #1236 · €84.00 · 2 items",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/refunds",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-orders&action=edit&id=79",
+                    "metadata": {
+                        "order_id": 79,
+                        "order_number": "1236",
+                        "status": "refunded",
+                        "total": 84,
+                        "currency": "EUR",
+                        "items": 2,
+                        "refund": 84
+                    }
+                }
+            }
+        ]
+    },
+    "woo_stock": {
+        "off": [
+            {
+                "event": "woo_low_stock",
+                "pii": false,
+                "payload": {
+                    "title": "Low stock: Linen Apron",
+                    "message": "2 units left.\nSKU: APR-02",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/stock/12",
+                    "event_type": "problem",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=12&action=edit",
+                    "metadata": {
+                        "product_id": 12,
+                        "stock": 2
+                    }
+                }
+            },
+            {
+                "event": "woo_out_of_stock",
+                "pii": false,
+                "payload": {
+                    "title": "Out of stock: Linen Apron",
+                    "message": "0 units left.\nSKU: APR-02",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/stock/12",
+                    "event_type": "problem",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=12&action=edit",
+                    "metadata": {
+                        "product_id": 12,
+                        "stock": 0
+                    }
+                }
+            },
+            {
+                "event": "woo_out_of_stock",
+                "pii": false,
+                "payload": {
+                    "title": "Back in stock: Linen Apron",
+                    "message": "10 units in stock.\nSKU: APR-02",
+                    "severity": "success",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/stock/12",
+                    "event_type": "recovery",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=12&action=edit",
+                    "metadata": {
+                        "product_id": 12,
+                        "stock": 10
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_low_stock",
+                "pii": false,
+                "payload": {
+                    "title": "Low stock: Linen Apron",
+                    "message": "2 units left.\nSKU: APR-02",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/stock/12",
+                    "event_type": "problem",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=12&action=edit",
+                    "metadata": {
+                        "product_id": 12,
+                        "stock": 2
+                    }
+                }
+            },
+            {
+                "event": "woo_out_of_stock",
+                "pii": false,
+                "payload": {
+                    "title": "Out of stock: Linen Apron",
+                    "message": "0 units left.\nSKU: APR-02",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/stock/12",
+                    "event_type": "problem",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=12&action=edit",
+                    "metadata": {
+                        "product_id": 12,
+                        "stock": 0
+                    }
+                }
+            },
+            {
+                "event": "woo_out_of_stock",
+                "pii": false,
+                "payload": {
+                    "title": "Back in stock: Linen Apron",
+                    "message": "10 units in stock.\nSKU: APR-02",
+                    "severity": "success",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/stock/12",
+                    "event_type": "recovery",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=12&action=edit",
+                    "metadata": {
+                        "product_id": 12,
+                        "stock": 10
+                    }
+                }
+            }
+        ]
+    },
+    "woo_new_customer": {
+        "off": [
+            {
+                "event": "woo_new_customer",
+                "pii": false,
+                "payload": {
+                    "title": "New customer",
+                    "message": "A customer account was created.",
+                    "severity": "success",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/customers",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=21",
+                    "metadata": {
+                        "customer_id": 21
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_new_customer",
+                "pii": true,
+                "payload": {
+                    "title": "New customer",
+                    "message": "Ana Pop · ana.pop · ana@example.com",
+                    "severity": "success",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/customers",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=21",
+                    "metadata": {
+                        "customer_id": 21
+                    }
+                }
+            }
+        ]
+    },
+    "woo_new_review": {
+        "off": [
+            {
+                "event": "woo_new_review",
+                "pii": false,
+                "payload": {
+                    "title": "New review: Linen Apron",
+                    "message": "★★★★☆ 4 of 5\nAwaiting moderation.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/reviews",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/edit.php?post_type=product&page=product-reviews",
+                    "metadata": {
+                        "product_id": 12,
+                        "rating": 4
+                    }
+                }
+            },
+            {
+                "event": "woo_new_review",
+                "pii": false,
+                "payload": {
+                    "title": "New review: Linen Apron",
+                    "message": "A new product review.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/reviews",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/edit.php?post_type=product&page=product-reviews",
+                    "metadata": {
+                        "product_id": 12,
+                        "rating": 0
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_new_review",
+                "pii": true,
+                "payload": {
+                    "title": "New review: Linen Apron",
+                    "message": "★★★★☆ 4 of 5\nAwaiting moderation.\nAna Pop · ana@example.com\nLovely fabric, and it washes well. The pocket could be deeper, but I would buy it again.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/reviews",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/edit.php?post_type=product&page=product-reviews",
+                    "metadata": {
+                        "product_id": 12,
+                        "rating": 4
+                    }
+                }
+            },
+            {
+                "event": "woo_new_review",
+                "pii": true,
+                "payload": {
+                    "title": "New review: Linen Apron",
+                    "message": "Tom\nFine.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/reviews",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/edit.php?post_type=product&page=product-reviews",
+                    "metadata": {
+                        "product_id": 12,
+                        "rating": 0
+                    }
+                }
+            }
+        ]
+    },
+    "woo_subscription_failed": {
+        "off": [
+            {
+                "event": "woo_subscription_failed",
+                "pii": false,
+                "payload": {
+                    "title": "Subscription #300: renewal failed",
+                    "message": "The €19.00 renewal couldn’t be charged.\nRenewal order #301",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/subscriptions/renewal-failed",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=300&action=edit",
+                    "metadata": {
+                        "subscription_id": 300
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_subscription_failed",
+                "pii": true,
+                "payload": {
+                    "title": "Subscription #300: renewal failed",
+                    "message": "The €19.00 renewal couldn’t be charged.\nRenewal order #301\nAna Pop · ana@example.com",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/subscriptions/renewal-failed",
+                    "category": "payments",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=300&action=edit",
+                    "metadata": {
+                        "subscription_id": 300
+                    }
+                }
+            }
+        ]
+    },
+    "woo_daily_summary": {
+        "off": [
+            {
+                "event": "woo_daily_summary",
+                "pii": false,
+                "payload": {
+                    "title": "Sales on October 4, 2026: €100.00",
+                    "message": "2 orders · 3 items\nRevenue: €100.00\nRefunded: €10.00",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/summary",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-admin",
+                    "metadata": {
+                        "orders": 2,
+                        "items": 3
+                    }
+                }
+            },
+            {
+                "event": "woo_daily_summary",
+                "pii": false,
+                "payload": {
+                    "title": "Sales on October 3, 2026",
+                    "message": "No orders.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/summary",
+                    "category": "sales"
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "woo_daily_summary",
+                "pii": false,
+                "payload": {
+                    "title": "Sales on October 4, 2026: €100.00",
+                    "message": "2 orders · 3 items\nRevenue: €100.00\nRefunded: €10.00",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/summary",
+                    "category": "sales",
+                    "url": "https://shop.example.com/wp-admin/admin.php?page=wc-admin",
+                    "metadata": {
+                        "orders": 2,
+                        "items": 3
+                    }
+                }
+            },
+            {
+                "event": "woo_daily_summary",
+                "pii": false,
+                "payload": {
+                    "title": "Sales on October 3, 2026",
+                    "message": "No orders.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "woocommerce",
+                    "group_key": "woo/summary",
+                    "category": "sales"
+                }
+            }
+        ]
+    },
+    "user_registered": {
+        "off": [
+            {
+                "event": "user_registered",
+                "pii": false,
+                "payload": {
+                    "title": "New user registration",
+                    "message": "Role: Subscriber",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/users/registrations",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=31",
+                    "metadata": {
+                        "user_id": 31
+                    }
+                }
+            },
+            {
+                "event": "user_registered",
+                "pii": false,
+                "payload": {
+                    "title": "New user registration",
+                    "message": "Role: Subscriber",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/users/registrations",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=32",
+                    "metadata": {
+                        "user_id": 32
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "user_registered",
+                "pii": true,
+                "payload": {
+                    "title": "New user registration",
+                    "message": "Mara Ionescu · mara · mara@example.com\nRole: Subscriber",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/users/registrations",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=31",
+                    "metadata": {
+                        "user_id": 31
+                    }
+                }
+            },
+            {
+                "event": "user_registered",
+                "pii": true,
+                "payload": {
+                    "title": "New user registration",
+                    "message": "sam · sam@example.com\nRole: Subscriber",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/users/registrations",
+                    "category": "customers",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=32",
+                    "metadata": {
+                        "user_id": 32
+                    }
+                }
+            }
+        ]
+    },
+    "comment_pending": {
+        "off": [
+            {
+                "event": "comment_pending",
+                "pii": false,
+                "payload": {
+                    "title": "Comment awaiting moderation",
+                    "message": "On “Hello world”",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/comments/moderation",
+                    "category": "other",
+                    "url": "https://shop.example.com/wp-admin/edit-comments.php?comment_status=moderated",
+                    "metadata": {
+                        "comment_id": 601,
+                        "post_id": 41
+                    }
+                }
+            },
+            {
+                "event": "comment_pending",
+                "pii": false,
+                "payload": {
+                    "title": "Comment awaiting moderation",
+                    "message": "On “Hello world”",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/comments/moderation",
+                    "category": "other",
+                    "url": "https://shop.example.com/wp-admin/edit-comments.php?comment_status=moderated",
+                    "metadata": {
+                        "comment_id": 602,
+                        "post_id": 41
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "comment_pending",
+                "pii": true,
+                "payload": {
+                    "title": "Comment awaiting moderation",
+                    "message": "On “Hello world”\nDan · dan@example.com\nGreat post. Do you ship to Austria as well?",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/comments/moderation",
+                    "category": "other",
+                    "url": "https://shop.example.com/wp-admin/edit-comments.php?comment_status=moderated",
+                    "metadata": {
+                        "comment_id": 601,
+                        "post_id": 41
+                    }
+                }
+            },
+            {
+                "event": "comment_pending",
+                "pii": true,
+                "payload": {
+                    "title": "Comment awaiting moderation",
+                    "message": "On “Hello world”\nAnonymous\nAnonymous question.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/comments/moderation",
+                    "category": "other",
+                    "url": "https://shop.example.com/wp-admin/edit-comments.php?comment_status=moderated",
+                    "metadata": {
+                        "comment_id": 602,
+                        "post_id": 41
+                    }
+                }
+            }
+        ]
+    },
+    "post_pending": {
+        "off": [
+            {
+                "event": "post_pending",
+                "pii": false,
+                "payload": {
+                    "title": "Pending review: Autumn sale",
+                    "message": "Post by lena is waiting for review.",
+                    "severity": "info",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/posts/pending",
+                    "category": "other",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=42&action=edit",
+                    "metadata": {
+                        "post_id": 42,
+                        "post_type": "post"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "post_pending",
+                "pii": false,
+                "payload": {
+                    "title": "Pending review: Autumn sale",
+                    "message": "Post by lena is waiting for review.",
+                    "severity": "info",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/posts/pending",
+                    "category": "other",
+                    "url": "https://shop.example.com/wp-admin/post.php?post=42&action=edit",
+                    "metadata": {
+                        "post_id": 42,
+                        "post_type": "post"
+                    }
+                }
+            }
+        ]
+    },
+    "post_published": {
+        "off": [
+            {
+                "event": "post_published",
+                "pii": false,
+                "payload": {
+                    "title": "Published: Opening hours",
+                    "message": "Post by user #31.",
+                    "severity": "success",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/posts/published",
+                    "category": "other",
+                    "url": "https://shop.example.com/?p=43",
+                    "metadata": {
+                        "post_id": 43,
+                        "post_type": "post"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "post_published",
+                "pii": false,
+                "payload": {
+                    "title": "Published: Opening hours",
+                    "message": "Post by user #31.",
+                    "severity": "success",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "content",
+                    "group_key": "wp/posts/published",
+                    "category": "other",
+                    "url": "https://shop.example.com/?p=43",
+                    "metadata": {
+                        "post_id": 43,
+                        "post_type": "post"
+                    }
+                }
+            }
+        ]
+    },
+    "admin_login_new_device": {
+        "off": [
+            {
+                "event": "admin_login_new_device",
+                "pii": false,
+                "payload": {
+                    "title": "admin signed in from a new device",
+                    "message": "Device: Firefox on Linux\nNetwork: 203.0.113.0/24\nThis account hasn’t used this browser and device before.\nIf this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admin-login",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/profile.php",
+                    "metadata": {
+                        "user_id": 1
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "admin_login_new_device",
+                "pii": true,
+                "payload": {
+                    "title": "admin signed in from a new device",
+                    "message": "Device: Firefox on Linux\nNetwork: 203.0.113.77\nThis account hasn’t used this browser and device before.\nIf this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admin-login",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/profile.php",
+                    "metadata": {
+                        "user_id": 1
+                    }
+                }
+            }
+        ]
+    },
+    "login_failures_burst": {
+        "off": [
+            {
+                "event": "login_failures_burst",
+                "pii": false,
+                "payload": {
+                    "title": "Many failed sign-ins",
+                    "message": "10 failed sign-ins within 5 mins.\nFrom 1 IP address.\nYou’ll get an all-clear once they stop.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/login-burst",
+                    "event_type": "problem",
+                    "category": "security",
+                    "metadata": {
+                        "failures": 10,
+                        "minutes": 5,
+                        "ips": 1
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "login_failures_burst",
+                "pii": true,
+                "payload": {
+                    "title": "Many failed sign-ins",
+                    "message": "10 failed sign-ins within 5 mins.\nFrom 1 IP address.\nUsernames tried: root\nYou’ll get an all-clear once they stop.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/login-burst",
+                    "event_type": "problem",
+                    "category": "security",
+                    "metadata": {
+                        "failures": 10,
+                        "minutes": 5,
+                        "ips": 1
+                    }
+                }
+            }
+        ]
+    },
+    "new_administrator": {
+        "off": [
+            {
+                "event": "new_administrator",
+                "pii": false,
+                "payload": {
+                    "title": "New administrator: ops",
+                    "message": "ops was created as an administrator by admin.\nIf you didn’t expect this, check the account now.",
+                    "severity": "critical",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=51",
+                    "metadata": {
+                        "user_id": 51
+                    }
+                }
+            },
+            {
+                "event": "new_administrator",
+                "pii": false,
+                "payload": {
+                    "title": "New administrator: eve",
+                    "message": "eve was made an administrator by admin.\nIf you didn’t expect this, check the account now.",
+                    "severity": "critical",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=52",
+                    "metadata": {
+                        "user_id": 52
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "new_administrator",
+                "pii": true,
+                "payload": {
+                    "title": "New administrator: ops",
+                    "message": "Ops Team · ops · ops@example.com was created as an administrator by admin.\nIf you didn’t expect this, check the account now.",
+                    "severity": "critical",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=51",
+                    "metadata": {
+                        "user_id": 51
+                    }
+                }
+            },
+            {
+                "event": "new_administrator",
+                "pii": true,
+                "payload": {
+                    "title": "New administrator: eve",
+                    "message": "Eve Martin · eve · eve@example.com was made an administrator by admin.\nIf you didn’t expect this, check the account now.",
+                    "severity": "critical",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=52",
+                    "metadata": {
+                        "user_id": 52
+                    }
+                }
+            }
+        ]
+    },
+    "role_changed": {
+        "off": [
+            {
+                "event": "role_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Role changed for li",
+                    "message": "Author → Editor, by admin.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/roles",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=53",
+                    "metadata": {
+                        "user_id": 53
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "role_changed",
+                "pii": true,
+                "payload": {
+                    "title": "Role changed for li",
+                    "message": "Author → Editor, by admin.\nLi Wang · li · li@example.com",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/roles",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=53",
+                    "metadata": {
+                        "user_id": 53
+                    }
+                }
+            }
+        ]
+    },
+    "site_identity_changed": {
+        "off": [
+            {
+                "event": "site_identity_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Administration email address changed",
+                    "message": "Changed by admin.\nIf you didn’t expect this, check Settings → General now.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/site-identity",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/options-general.php",
+                    "metadata": {
+                        "option": "admin_email"
+                    }
+                }
+            },
+            {
+                "event": "site_identity_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Site address (URL) changed",
+                    "message": "https://old.example.com → https://shop.example.com, by admin.\nIf you didn’t expect this, check Settings → General now.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/site-identity",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/options-general.php",
+                    "metadata": {
+                        "option": "home"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "site_identity_changed",
+                "pii": true,
+                "payload": {
+                    "title": "Administration email address changed",
+                    "message": "old@example.com → owner@example.com, by admin.\nIf you didn’t expect this, check Settings → General now.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/site-identity",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/options-general.php",
+                    "metadata": {
+                        "option": "admin_email"
+                    }
+                }
+            },
+            {
+                "event": "site_identity_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Site address (URL) changed",
+                    "message": "https://old.example.com → https://shop.example.com, by admin.\nIf you didn’t expect this, check Settings → General now.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/site-identity",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/options-general.php",
+                    "metadata": {
+                        "option": "home"
+                    }
+                }
+            }
+        ]
+    },
+    "plugin_changed": {
+        "off": [
+            {
+                "event": "plugin_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin activated: acme",
+                    "message": "By admin.\nacme/acme.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "acme/acme.php",
+                        "action": "activated"
+                    }
+                }
+            },
+            {
+                "event": "plugin_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin deactivated: hello-dolly",
+                    "message": "By admin. Network-wide.\nhello-dolly/hello.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "hello-dolly/hello.php",
+                        "action": "deactivated"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "plugin_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin activated: acme",
+                    "message": "By admin.\nacme/acme.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "acme/acme.php",
+                        "action": "activated"
+                    }
+                }
+            },
+            {
+                "event": "plugin_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin deactivated: hello-dolly",
+                    "message": "By admin. Network-wide.\nhello-dolly/hello.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "hello-dolly/hello.php",
+                        "action": "deactivated"
+                    }
+                }
+            }
+        ]
+    },
+    "theme_changed": {
+        "off": [
+            {
+                "event": "theme_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Theme switched to Twenty Twenty-Five",
+                    "message": "By admin.\nPrevious theme: Twenty Twenty-Four",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/themes",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/themes.php",
+                    "metadata": {
+                        "action": "switched"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "theme_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Theme switched to Twenty Twenty-Five",
+                    "message": "By admin.\nPrevious theme: Twenty Twenty-Four",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/themes",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/themes.php",
+                    "metadata": {
+                        "action": "switched"
+                    }
+                }
+            }
+        ]
+    },
+    "file_edited": {
+        "off": [
+            {
+                "event": "file_edited",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin file edited: Acme Tools",
+                    "message": "acme/acme.php was edited in the file editor by admin.\nTip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/file-edits",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugin-editor.php",
+                    "metadata": {
+                        "file": "acme/acme.php"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "file_edited",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin file edited: Acme Tools",
+                    "message": "acme/acme.php was edited in the file editor by admin.\nTip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/file-edits",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugin-editor.php",
+                    "metadata": {
+                        "file": "acme/acme.php"
+                    }
+                }
+            }
+        ]
+    },
+    "updates_installed": {
+        "off": [
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "2 plugins updated",
+                    "message": "WooCommerce 11.2.0\nAcme Tools 2.0.1\nBy admin.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            },
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "WordPress updated",
+                    "message": "WordPress 7.1\nUpdated automatically.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "2 plugins updated",
+                    "message": "WooCommerce 11.2.0\nAcme Tools 2.0.1\nBy admin.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            },
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "WordPress updated",
+                    "message": "WordPress 7.1\nUpdated automatically.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            }
+        ]
+    },
+    "fatal_error": {
+        "off": [
+            {
+                "event": "fatal_error",
+                "pii": false,
+                "payload": {
+                    "title": "Critical error in the Acme Tools plugin",
+                    "message": "Uncaught Error: Call to undefined function acme_boot() in wp-content/plugins/acme/acme.php:12\nwp-content/plugins/acme/acme.php, line 12\nWordPress emailed the site administrator a link to fix it in recovery mode.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/fatal",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "file": "wp-content/plugins/acme/acme.php",
+                        "line": 12
+                    }
+                }
+            },
+            {
+                "event": "fatal_error",
+                "pii": false,
+                "payload": {
+                    "title": "Critical error",
+                    "message": "Allowed memory size of 134217728 bytes exhausted\nwp-includes/class-wpdb.php, line 2300",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/fatal",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "file": "wp-includes/class-wpdb.php",
+                        "line": 2300
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "fatal_error",
+                "pii": false,
+                "payload": {
+                    "title": "Critical error in the Acme Tools plugin",
+                    "message": "Uncaught Error: Call to undefined function acme_boot() in wp-content/plugins/acme/acme.php:12\nwp-content/plugins/acme/acme.php, line 12\nWordPress emailed the site administrator a link to fix it in recovery mode.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/fatal",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "file": "wp-content/plugins/acme/acme.php",
+                        "line": 12
+                    }
+                }
+            },
+            {
+                "event": "fatal_error",
+                "pii": false,
+                "payload": {
+                    "title": "Critical error",
+                    "message": "Allowed memory size of 134217728 bytes exhausted\nwp-includes/class-wpdb.php, line 2300",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/fatal",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "file": "wp-includes/class-wpdb.php",
+                        "line": 2300
+                    }
+                }
+            }
+        ]
+    },
+    "auto_update_failed": {
+        "off": [
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "1 plugin updated",
+                    "message": "Akismet\nUpdated automatically.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            },
+            {
+                "event": "auto_update_failed",
+                "pii": false,
+                "payload": {
+                    "title": "2 automatic updates failed",
+                    "message": "Acme Tools: Download failed.\nTwenty Twenty-Five",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/updates-failed",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "1 plugin updated",
+                    "message": "Akismet\nUpdated automatically.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            },
+            {
+                "event": "auto_update_failed",
+                "pii": false,
+                "payload": {
+                    "title": "2 automatic updates failed",
+                    "message": "Acme Tools: Download failed.\nTwenty Twenty-Five",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/updates-failed",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            }
+        ]
+    },
+    "updates_available": {
+        "off": [
+            {
+                "event": "updates_available",
+                "pii": false,
+                "payload": {
+                    "title": "3 updates available",
+                    "message": "WordPress 7.0 → 7.1\nWooCommerce 11.1.2 → 11.2.0\nTwenty Twenty-Five 1.3 → 1.4",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/updates-available",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/update-core.php",
+                    "metadata": {
+                        "updates": 3
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "updates_available",
+                "pii": false,
+                "payload": {
+                    "title": "3 updates available",
+                    "message": "WordPress 7.0 → 7.1\nWooCommerce 11.1.2 → 11.2.0\nTwenty Twenty-Five 1.3 → 1.4",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/updates-available",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/update-core.php",
+                    "metadata": {
+                        "updates": 3
+                    }
+                }
+            }
+        ]
+    },
+    "cron_overdue": {
+        "off": [
+            {
+                "event": "cron_overdue",
+                "pii": false,
+                "payload": {
+                    "title": "Scheduled tasks are running late",
+                    "message": "1 scheduled task is late, the oldest by 136 mins.\nOldest task: wc_cleanup\nWordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/cron",
+                    "event_type": "problem",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/site-health.php",
+                    "metadata": {
+                        "overdue": 1,
+                        "late_minutes": 136
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "cron_overdue",
+                "pii": false,
+                "payload": {
+                    "title": "Scheduled tasks are running late",
+                    "message": "1 scheduled task is late, the oldest by 136 mins.\nOldest task: wc_cleanup\nWordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "health",
+                    "group_key": "wp/health/cron",
+                    "event_type": "problem",
+                    "category": "infrastructure",
+                    "url": "https://shop.example.com/wp-admin/site-health.php",
+                    "metadata": {
+                        "overdue": 1,
+                        "late_minutes": 136
+                    }
+                }
+            }
+        ]
+    },
+    "forms": {
+        "off": [
+            {
+                "event": "form_wpforms",
+                "pii": false,
+                "payload": {
+                    "title": "Contact",
+                    "message": "Someone sent the “Contact” form.",
+                    "severity": "info",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "forms",
+                    "group_key": "wp/forms/wpforms/3",
+                    "category": "customers",
+                    "metadata": {
+                        "form_plugin": "wpforms",
+                        "form_id": "3"
+                    }
+                }
+            },
+            {
+                "event": "form_cf7",
+                "pii": false,
+                "payload": {
+                    "title": "Form",
+                    "message": "Someone sent the “Form” form.",
+                    "severity": "info",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "forms",
+                    "group_key": "wp/forms/cf7/10",
+                    "category": "customers",
+                    "metadata": {
+                        "form_plugin": "cf7",
+                        "form_id": "10"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "form_wpforms",
+                "pii": true,
+                "payload": {
+                    "title": "Contact",
+                    "message": "Name: Ana, Pop\nEmail: ana@example.com\nMessage: \nLine one\nLine two",
+                    "severity": "info",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "forms",
+                    "group_key": "wp/forms/wpforms/3",
+                    "category": "customers",
+                    "metadata": {
+                        "form_plugin": "wpforms",
+                        "form_id": "3"
+                    }
+                }
+            },
+            {
+                "event": "form_cf7",
+                "pii": false,
+                "payload": {
+                    "title": "Form",
+                    "message": "Someone sent the “Form” form.",
+                    "severity": "info",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "forms",
+                    "group_key": "wp/forms/cf7/10",
+                    "category": "customers",
+                    "metadata": {
+                        "form_plugin": "cf7",
+                        "form_id": "10"
+                    }
+                }
+            }
+        ]
+    }
+}

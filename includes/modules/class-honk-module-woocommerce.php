@@ -155,28 +155,9 @@ final class Honk_Module_Woocommerce {
 			'woo_new_order',
 			'order-' . $order->get_id() . '-new',
 			function () use ( $order ) {
-				$pii   = Honk_Settings::include_pii();
-				$lines = array( self::order_summary( $order ) );
-				$extra = array( wc_get_order_status_name( $order->get_status() ) );
-				if ( $order->get_payment_method_title() ) {
-					$extra[] = $order->get_payment_method_title();
-				}
-				$lines[] = implode( ' · ', $extra );
-				if ( $pii ) {
-					$customer = self::customer_line( $order );
-					if ( '' !== $customer ) {
-						$lines[] = $customer;
-					}
-				}
 				return self::order_fields(
 					$order,
-					array(
-						/* translators: %s: order number */
-						'title'     => sprintf( __( 'New order #%s', 'honk' ), $order->get_order_number() ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'woo/orders',
-						'pii'       => $pii,
-					)
+					Honk_Details::fields( 'woo_new_order', self::new_order_spec( self::order_data( $order, 'woo_new_order' ) ), array( 'group_key' => 'woo/orders' ) )
 				);
 			}
 		);
@@ -225,26 +206,12 @@ final class Honk_Module_Woocommerce {
 			'woo_order_status',
 			'order-' . $order->get_id() . '-' . $from . '-' . $to . '-' . ( $modified ? $modified->getTimestamp() : '' ),
 			function () use ( $order, $from, $to ) {
-				$pii   = Honk_Settings::include_pii();
-				$lines = array(
-					wc_get_order_status_name( $from ) . ' → ' . wc_get_order_status_name( $to ),
-					self::order_summary( $order ),
-				);
-				if ( $pii ) {
-					$customer = self::customer_line( $order );
-					if ( '' !== $customer ) {
-						$lines[] = $customer;
-					}
-				}
+				$data         = self::order_data( $order, 'woo_order_status' );
+				$data['from'] = wc_get_order_status_name( $from );
+				$data['to']   = wc_get_order_status_name( $to );
 				return self::order_fields(
 					$order,
-					array(
-						/* translators: 1: order number, 2: new status */
-						'title'     => sprintf( __( 'Order #%1$s: %2$s', 'honk' ), $order->get_order_number(), wc_get_order_status_name( $to ) ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'woo/orders/status',
-						'pii'       => $pii,
-					)
+					Honk_Details::fields( 'woo_order_status', self::status_spec( $data ), array( 'group_key' => 'woo/orders/status' ) )
 				);
 			}
 		);
@@ -271,27 +238,9 @@ final class Honk_Module_Woocommerce {
 			'woo_payment_failed',
 			'order-' . $order->get_id() . '-failed-' . ( $modified ? $modified->getTimestamp() : '' ),
 			function () use ( $order ) {
-				$pii   = Honk_Settings::include_pii();
-				$lines = array( self::order_summary( $order ) );
-				if ( $order->get_payment_method_title() ) {
-					/* translators: %s: payment method */
-					$lines[] = sprintf( __( 'Payment method: %s', 'honk' ), $order->get_payment_method_title() );
-				}
-				if ( $pii ) {
-					$customer = self::customer_line( $order );
-					if ( '' !== $customer ) {
-						$lines[] = $customer;
-					}
-				}
 				return self::order_fields(
 					$order,
-					array(
-						/* translators: %s: order number */
-						'title'     => sprintf( __( 'Payment failed for order #%s', 'honk' ), $order->get_order_number() ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'woo/payments/failed',
-						'pii'       => $pii,
-					)
+					Honk_Details::fields( 'woo_payment_failed', self::payment_failed_spec( self::order_data( $order, 'woo_payment_failed' ) ), array( 'group_key' => 'woo/payments/failed' ) )
 				);
 			}
 		);
@@ -314,28 +263,19 @@ final class Honk_Module_Woocommerce {
 			'woo_refund',
 			'refund-' . absint( $refund_id ),
 			function () use ( $order, $refund ) {
-				$amount = Honk_Notifier::money( abs( (float) $refund->get_amount() ), $order->get_currency() );
-				$full   = 'refunded' === $order->get_status() || (float) $order->get_total() - (float) $order->get_total_refunded() <= 0;
-				$lines  = array(
-					$full
-						/* translators: 1: amount, 2: order number */
-						? sprintf( __( 'Full refund of %1$s on order #%2$s.', 'honk' ), $amount, $order->get_order_number() )
-						/* translators: 1: amount, 2: order number */
-						: sprintf( __( 'Partial refund of %1$s on order #%2$s.', 'honk' ), $amount, $order->get_order_number() ),
-					self::order_summary( $order ),
-				);
-				if ( $refund->get_reason() ) {
-					/* translators: %s: refund reason */
-					$lines[] = sprintf( __( 'Reason: %s', 'honk' ), $refund->get_reason() );
-				}
+				$data           = self::order_data( $order, 'woo_refund' );
+				$data['amount'] = Honk_Notifier::money( abs( (float) $refund->get_amount() ), $order->get_currency() );
+				$data['full']   = 'refunded' === $order->get_status() || (float) $order->get_total() - (float) $order->get_total_refunded() <= 0;
+				$data['reason'] = (string) $refund->get_reason();
 				return self::order_fields(
 					$order,
-					array(
-						/* translators: 1: amount, 2: order number */
-						'title'     => sprintf( __( 'Refund of %1$s for order #%2$s', 'honk' ), $amount, $order->get_order_number() ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'woo/refunds',
-						'metadata'  => array( 'refund' => (float) $refund->get_amount() ),
+					Honk_Details::fields(
+						'woo_refund',
+						self::refund_spec( $data ),
+						array(
+							'group_key' => 'woo/refunds',
+							'metadata'  => array( 'refund' => (float) $refund->get_amount() ),
+						)
 					)
 				);
 			}
@@ -400,36 +340,18 @@ final class Honk_Module_Woocommerce {
 		Honk_Notifier::emit(
 			$event,
 			'stock-' . $id . '-' . $state . '-' . $seq,
-			function () use ( $state, $qty, $name, $sku, $id, $product ) {
-				switch ( $state ) {
-					case 'out':
-						/* translators: %s: product name */
-						$title = sprintf( __( 'Out of stock: %s', 'honk' ), $name );
-						break;
-					case 'low':
-						/* translators: %s: product name */
-						$title = sprintf( __( 'Low stock: %s', 'honk' ), $name );
-						break;
-					default:
-						/* translators: %s: product name */
-						$title = sprintf( __( 'Back in stock: %s', 'honk' ), $name );
-				}
-				$lines = array(
-					'ok' === $state
-						/* translators: %d: units in stock */
-						? sprintf( _n( '%d unit in stock.', '%d units in stock.', $qty, 'honk' ), $qty )
-						/* translators: %d: units in stock */
-						: sprintf( _n( '%d unit left.', '%d units left.', $qty, 'honk' ), $qty ),
+			function () use ( $event, $state, $qty, $name, $sku, $id, $product ) {
+				$spec = self::stock_spec(
+					array(
+						'state' => $state,
+						'qty'   => $qty,
+						'name'  => $name,
+						'sku'   => (string) $sku,
+					)
 				);
-				if ( '' !== (string) $sku ) {
-					/* translators: %s: SKU */
-					$lines[] = sprintf( __( 'SKU: %s', 'honk' ), $sku );
-				}
 				$edit = $product->get_parent_id() ? $product->get_parent_id() : $id;
 				return Honk_Notifier::with_link(
-					array(
-						'title'      => $title,
-						'message'    => implode( "\n", $lines ),
+					Honk_Details::fields( $event, $spec ) + array(
 						'group_key'  => 'woo/stock/' . $id,
 						'event_type' => 'ok' === $state ? 'recovery' : 'problem',
 						'metadata'   => array(
@@ -497,14 +419,14 @@ final class Honk_Module_Woocommerce {
 			'woo_new_customer',
 			'customer-' . absint( $customer_id ),
 			function () use ( $user ) {
-				$pii = Honk_Settings::include_pii();
 				return Honk_Notifier::with_link(
-					array(
-						'title'     => __( 'New customer', 'honk' ),
-						'message'   => $pii ? Honk_Notifier::user_label( $user, true ) : __( 'A customer account was created.', 'honk' ),
-						'group_key' => 'woo/customers',
-						'pii'       => $pii,
-						'metadata'  => array( 'customer_id' => $user->ID ),
+					Honk_Details::fields(
+						'woo_new_customer',
+						self::customer_spec( Honk_Notifier::user_data( $user ) ),
+						array(
+							'group_key' => 'woo/customers',
+							'metadata'  => array( 'customer_id' => $user->ID ),
+						)
 					),
 					admin_url( 'user-edit.php?user_id=' . $user->ID )
 				);
@@ -531,31 +453,27 @@ final class Honk_Module_Woocommerce {
 			'woo_new_review',
 			'review-' . absint( $comment_id ),
 			function () use ( $comment, $rating ) {
-				$pii     = Honk_Settings::include_pii();
-				$product = Honk_Payload::plain( get_the_title( (int) $comment->comment_post_ID ), true );
-				$lines   = array();
-				if ( $rating > 0 ) {
-					/* translators: %d: rating from 1 to 5 */
-					$lines[] = str_repeat( '★', min( 5, $rating ) ) . str_repeat( '☆', max( 0, 5 - $rating ) ) . ' ' . sprintf( __( '%d of 5', 'honk' ), $rating );
-				}
-				if ( '0' === (string) $comment->comment_approved ) {
-					$lines[] = __( 'Awaiting moderation.', 'honk' );
-				}
-				if ( $pii ) {
-					$lines[] = trim( $comment->comment_author . ( $comment->comment_author_email ? ' · ' . $comment->comment_author_email : '' ) );
-					$lines[] = wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' );
-				}
-				return Honk_Notifier::with_link(
+				$spec = self::review_spec(
 					array(
-						/* translators: %s: product name */
-						'title'     => sprintf( __( 'New review: %s', 'honk' ), $product ),
-						'message'   => $lines ? implode( "\n", array_filter( $lines ) ) : __( 'A new product review.', 'honk' ),
-						'group_key' => 'woo/reviews',
-						'pii'       => $pii,
-						'metadata'  => array(
-							'product_id' => (int) $comment->comment_post_ID,
-							'rating'     => $rating,
-						),
+						'product' => Honk_Payload::plain( get_the_title( (int) $comment->comment_post_ID ), true ),
+						'rating'  => $rating,
+						'pending' => '0' === (string) $comment->comment_approved,
+						'name'    => trim( (string) $comment->comment_author ),
+						'email'   => (string) $comment->comment_author_email,
+						'text'    => Honk_Details::on( 'woo_new_review', 'text' ) ? wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' ) : '',
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields(
+						'woo_new_review',
+						$spec,
+						array(
+							'group_key' => 'woo/reviews',
+							'metadata'  => array(
+								'product_id' => (int) $comment->comment_post_ID,
+								'rating'     => $rating,
+							),
+						)
 					),
 					admin_url( 'edit.php?post_type=product&page=product-reviews' )
 				);
@@ -579,29 +497,23 @@ final class Honk_Module_Woocommerce {
 			'woo_subscription_failed',
 			'subscription-' . $subscription->get_id() . '-renewal-' . $renewal_id . '-failed',
 			function () use ( $subscription, $last_order ) {
-				$pii   = Honk_Settings::include_pii();
-				$lines = array(
-					/* translators: %s: amount */
-					sprintf( __( 'The %s renewal couldn’t be charged.', 'honk' ), Honk_Notifier::money( (float) $subscription->get_total(), $subscription->get_currency() ) ),
-				);
-				if ( is_object( $last_order ) && method_exists( $last_order, 'get_order_number' ) ) {
-					/* translators: %s: order number */
-					$lines[] = sprintf( __( 'Renewal order #%s', 'honk' ), $last_order->get_order_number() );
-				}
-				if ( $pii ) {
-					$customer = self::customer_line( $subscription );
-					if ( '' !== $customer ) {
-						$lines[] = $customer;
-					}
-				}
-				return Honk_Notifier::with_link(
+				$spec = self::subscription_spec(
 					array(
-						/* translators: %s: subscription number */
-						'title'     => sprintf( __( 'Subscription #%s: renewal failed', 'honk' ), $subscription->get_order_number() ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'woo/subscriptions/renewal-failed',
-						'pii'       => $pii,
-						'metadata'  => array( 'subscription_id' => $subscription->get_id() ),
+						'number'  => (string) $subscription->get_order_number(),
+						'amount'  => Honk_Notifier::money( (float) $subscription->get_total(), $subscription->get_currency() ),
+						'renewal' => is_object( $last_order ) && method_exists( $last_order, 'get_order_number' ) ? (string) $last_order->get_order_number() : '',
+						'name'    => trim( $subscription->get_billing_first_name() . ' ' . $subscription->get_billing_last_name() ),
+						'email'   => (string) $subscription->get_billing_email(),
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields(
+						'woo_subscription_failed',
+						$spec,
+						array(
+							'group_key' => 'woo/subscriptions/renewal-failed',
+							'metadata'  => array( 'subscription_id' => $subscription->get_id() ),
+						)
 					),
 					method_exists( $subscription, 'get_edit_order_url' ) ? $subscription->get_edit_order_url() : ''
 				);
@@ -651,50 +563,37 @@ final class Honk_Module_Woocommerce {
 			'woo_daily_summary',
 			'summary-' . $date,
 			function () use ( $stats, $start ) {
-				$label = wp_date( get_option( 'date_format' ), $start->getTimestamp() );
-				if ( 0 === $stats['orders'] ) {
-					return array(
-						/* translators: %s: date */
-						'title'     => sprintf( __( 'Sales on %s', 'honk' ), $label ),
-						'message'   => __( 'No orders.', 'honk' ),
-						'group_key' => 'woo/summary',
-					);
-				}
 				$revenue = array();
-				$lines   = array(
-					/* translators: %d: number of orders */
-					sprintf( _n( '%d order', '%d orders', $stats['orders'], 'honk' ), $stats['orders'] ) . ' · ' .
-					/* translators: %d: number of items */
-					sprintf( _n( '%d item', '%d items', $stats['items'], 'honk' ), $stats['items'] ),
-				);
 				foreach ( $stats['revenue'] as $currency => $amount ) {
 					$revenue[] = Honk_Notifier::money( $amount, $currency );
 				}
-				/* translators: %s: revenue */
-				$lines[] = sprintf( __( 'Revenue: %s', 'honk' ), implode( ' + ', $revenue ) );
 				$refunds = array();
 				foreach ( $stats['refunds'] as $currency => $amount ) {
 					if ( $amount > 0 ) {
 						$refunds[] = Honk_Notifier::money( $amount, $currency );
 					}
 				}
-				if ( $refunds ) {
-					/* translators: %s: refunded amount */
-					$lines[] = sprintf( __( 'Refunded: %s', 'honk' ), implode( ' + ', $refunds ) );
-				}
-				return Honk_Notifier::with_link(
-					array(
-						/* translators: 1: date, 2: revenue */
-						'title'     => sprintf( __( 'Sales on %1$s: %2$s', 'honk' ), $label, implode( ' + ', $revenue ) ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'woo/summary',
-						'metadata'  => array(
-							'orders' => $stats['orders'],
-							'items'  => $stats['items'],
-						),
+				$fields = Honk_Details::fields(
+					'woo_daily_summary',
+					self::summary_spec(
+						array(
+							'date'    => wp_date( get_option( 'date_format' ), $start->getTimestamp() ),
+							'orders'  => $stats['orders'],
+							'items'   => $stats['items'],
+							'revenue' => implode( ' + ', $revenue ),
+							'refunds' => implode( ' + ', $refunds ),
+						)
 					),
-					admin_url( 'admin.php?page=wc-admin' )
+					array( 'group_key' => 'woo/summary' )
 				);
+				if ( 0 === $stats['orders'] ) {
+					return $fields;
+				}
+				$fields['metadata'] = array(
+					'orders' => $stats['orders'],
+					'items'  => $stats['items'],
+				);
+				return Honk_Notifier::with_link( $fields, admin_url( 'admin.php?page=wc-admin' ) );
 			}
 		);
 	}
@@ -749,30 +648,359 @@ final class Honk_Module_Woocommerce {
 	 * @return string
 	 */
 	public static function order_summary( $order ) {
-		$items = (int) $order->get_item_count();
-		return implode(
-			' · ',
+		$data     = array(
+			'number' => (string) $order->get_order_number(),
+			'total'  => Honk_Notifier::money( (float) $order->get_total(), $order->get_currency() ),
+			'count'  => (int) $order->get_item_count(),
+		);
+		$composed = Honk_Details::compose(
+			'',
+			array( 'lines' => array( self::summary_line( $data ) ) ),
+			array(
+				'total' => true,
+				'count' => true,
+			)
+		);
+		return $composed['message'];
+	}
+
+	/**
+	 * What a message can say about an order, as plain text. Products, the billing city and the
+	 * customer's note are read only when the event shows them.
+	 *
+	 * @param WC_Order $order    Order (or subscription).
+	 * @param string   $event_id Event the data is for.
+	 * @return array
+	 */
+	public static function order_data( $order, $event_id ) {
+		$products = array();
+		if ( Honk_Details::on( $event_id, 'products' ) ) {
+			foreach ( (array) $order->get_items() as $item ) {
+				if ( is_object( $item ) && method_exists( $item, 'get_name' ) ) {
+					$products[] = array( Honk_Payload::plain( $item->get_name(), true ), method_exists( $item, 'get_quantity' ) ? (int) $item->get_quantity() : 1 );
+				}
+			}
+		}
+		return array(
+			'number'   => (string) $order->get_order_number(),
+			'total'    => Honk_Notifier::money( (float) $order->get_total(), $order->get_currency() ),
+			'count'    => (int) $order->get_item_count(),
+			'status'   => function_exists( 'wc_get_order_status_name' ) ? wc_get_order_status_name( $order->get_status() ) : (string) $order->get_status(),
+			'payment'  => (string) $order->get_payment_method_title(),
+			'products' => $products,
+			'shipping' => method_exists( $order, 'get_shipping_method' ) ? Honk_Payload::plain( $order->get_shipping_method(), true ) : '',
+			'name'     => trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() ),
+			'email'    => (string) $order->get_billing_email(),
+			'phone'    => method_exists( $order, 'get_billing_phone' ) ? (string) $order->get_billing_phone() : '',
+			'city'     => Honk_Details::on( $event_id, 'city' ) ? implode( ', ', array_filter( array( (string) $order->get_billing_city(), self::country_name( (string) $order->get_billing_country() ) ), 'strlen' ) ) : '',
+			'note'     => Honk_Details::on( $event_id, 'note' ) ? wp_trim_words( Honk_Payload::plain( $order->get_customer_note(), true ), 40, '…' ) : '',
+		);
+	}
+
+	/**
+	 * A country's name from its code (WooCommerce's list), or the code.
+	 *
+	 * @param string $code Country code.
+	 * @return string
+	 */
+	private static function country_name( $code ) {
+		if ( '' !== $code && function_exists( 'WC' ) && isset( WC()->countries ) && is_object( WC()->countries ) ) {
+			$countries = WC()->countries->get_countries();
+			if ( isset( $countries[ $code ] ) ) {
+				return Honk_Payload::plain( $countries[ $code ], true );
+			}
+		}
+		return $code;
+	}
+
+	/*
+	 * Message outlines (Honk_Details): the same for real orders and for the settings preview.
+	 */
+
+	/**
+	 * "Order #1234 · €84.00 · 2 items".
+	 *
+	 * @param array $d Order data.
+	 * @return array
+	 */
+	public static function summary_line( array $d ) {
+		return Honk_Details::line(
 			array(
 				/* translators: %s: order number */
-				sprintf( __( 'Order #%s', 'honk' ), $order->get_order_number() ),
-				Honk_Notifier::money( (float) $order->get_total(), $order->get_currency() ),
+				Honk_Details::part( sprintf( __( 'Order #%s', 'honk' ), $d['number'] ) ),
+				Honk_Details::part( $d['total'], 'total' ),
 				/* translators: %d: number of items */
-				sprintf( _n( '%d item', '%d items', $items, 'honk' ), $items ),
+				Honk_Details::part( sprintf( _n( '%d item', '%d items', $d['count'], 'honk' ), $d['count'] ), 'count' ),
 			)
 		);
 	}
 
 	/**
-	 * "Jane Doe · jane@example.com" from the billing address (only used when personal data is
-	 * allowed).
+	 * "Linen Apron, Ceramic Mug × 2 and 3 more".
 	 *
-	 * @param WC_Order $order Order or subscription.
+	 * @param array $products [ name, quantity ] pairs.
 	 * @return string
 	 */
-	public static function customer_line( $order ) {
-		$name  = trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() );
-		$email = (string) $order->get_billing_email();
-		return trim( $name . ( '' !== $name && '' !== $email ? ' · ' : '' ) . $email );
+	public static function products_text( array $products ) {
+		$names = array();
+		foreach ( array_slice( $products, 0, 3 ) as $product ) {
+			$names[] = $product[1] > 1 ? $product[0] . ' × ' . $product[1] : $product[0];
+		}
+		$more = count( $products ) - 3;
+		/* translators: %d: number of other products in the order */
+		return implode( ', ', $names ) . ( $more > 0 ? ' ' . sprintf( _n( 'and %d more', 'and %d more', $more, 'honk' ), $more ) : '' );
+	}
+
+	/**
+	 * The customer: name, email and phone on one line.
+	 *
+	 * @param array $d    Order data.
+	 * @param bool  $phone Whether the event can show the phone number.
+	 * @return array
+	 */
+	private static function customer_parts( array $d, $phone = true ) {
+		$parts = array(
+			Honk_Details::part( $d['name'], 'name' ),
+			Honk_Details::part( $d['email'], 'email' ),
+		);
+		if ( $phone ) {
+			$parts[] = Honk_Details::part( $d['phone'], 'phone' );
+		}
+		return Honk_Details::line( $parts );
+	}
+
+	/**
+	 * New order.
+	 *
+	 * @param array $d Order data.
+	 * @return array
+	 */
+	public static function new_order_spec( array $d ) {
+		return array(
+			/* translators: %s: order number */
+			'title' => array( Honk_Details::part( sprintf( __( 'New order #%s', 'honk' ), $d['number'] ) ) ),
+			'lines' => array(
+				self::summary_line( $d ),
+				Honk_Details::line(
+					array(
+						Honk_Details::part( $d['status'], 'status' ),
+						Honk_Details::part( $d['payment'], 'payment' ),
+					)
+				),
+				Honk_Details::text( self::products_text( $d['products'] ), 'products' ),
+				/* translators: %s: shipping method */
+				Honk_Details::text( '' !== $d['shipping'] ? sprintf( __( 'Shipping: %s', 'honk' ), $d['shipping'] ) : '', 'shipping' ),
+				self::customer_parts( $d ),
+				Honk_Details::text( $d['city'], 'city' ),
+				/* translators: %s: the note the customer left at checkout */
+				Honk_Details::text( '' !== $d['note'] ? sprintf( __( 'Note: %s', 'honk' ), $d['note'] ) : '', 'note' ),
+			),
+		);
+	}
+
+	/**
+	 * Order status changed (from, to: status names).
+	 *
+	 * @param array $d Order data.
+	 * @return array
+	 */
+	public static function status_spec( array $d ) {
+		return array(
+			/* translators: 1: order number, 2: new status */
+			'title' => array( Honk_Details::part( sprintf( __( 'Order #%1$s: %2$s', 'honk' ), $d['number'], $d['to'] ) ) ),
+			'lines' => array(
+				Honk_Details::text( $d['from'] . ' → ' . $d['to'] ),
+				self::summary_line( $d ),
+				Honk_Details::text( self::products_text( $d['products'] ), 'products' ),
+				/* translators: %s: payment method */
+				Honk_Details::text( '' !== $d['payment'] ? sprintf( __( 'Payment method: %s', 'honk' ), $d['payment'] ) : '', 'payment' ),
+				self::customer_parts( $d ),
+			),
+		);
+	}
+
+	/**
+	 * Failed payment.
+	 *
+	 * @param array $d Order data.
+	 * @return array
+	 */
+	public static function payment_failed_spec( array $d ) {
+		return array(
+			/* translators: %s: order number */
+			'title' => array( Honk_Details::part( sprintf( __( 'Payment failed for order #%s', 'honk' ), $d['number'] ) ) ),
+			'lines' => array(
+				self::summary_line( $d ),
+				/* translators: %s: payment method */
+				Honk_Details::text( '' !== $d['payment'] ? sprintf( __( 'Payment method: %s', 'honk' ), $d['payment'] ) : '', 'payment' ),
+				Honk_Details::text( self::products_text( $d['products'] ), 'products' ),
+				self::customer_parts( $d ),
+			),
+		);
+	}
+
+	/**
+	 * Refund (amount, full, reason).
+	 *
+	 * @param array $d Order data.
+	 * @return array
+	 */
+	public static function refund_spec( array $d ) {
+		return array(
+			/* translators: 1: amount, 2: order number */
+			'title' => array( Honk_Details::part( sprintf( __( 'Refund of %1$s for order #%2$s', 'honk' ), $d['amount'], $d['number'] ) ) ),
+			'lines' => array(
+				Honk_Details::text(
+					$d['full']
+						/* translators: 1: amount, 2: order number */
+						? sprintf( __( 'Full refund of %1$s on order #%2$s.', 'honk' ), $d['amount'], $d['number'] )
+						/* translators: 1: amount, 2: order number */
+						: sprintf( __( 'Partial refund of %1$s on order #%2$s.', 'honk' ), $d['amount'], $d['number'] )
+				),
+				self::summary_line( $d ),
+				/* translators: %s: refund reason */
+				Honk_Details::text( '' !== $d['reason'] ? sprintf( __( 'Reason: %s', 'honk' ), $d['reason'] ) : '', 'reason' ),
+				self::customer_parts( $d, false ),
+			),
+		);
+	}
+
+	/**
+	 * Low stock, out of stock, back in stock (state: low, out or ok).
+	 *
+	 * @param array $d state, qty, name, sku.
+	 * @return array
+	 */
+	public static function stock_spec( array $d ) {
+		$qty = (int) $d['qty'];
+		switch ( $d['state'] ) {
+			case 'out':
+				/* translators: %s: product name */
+				$title = sprintf( __( 'Out of stock: %s', 'honk' ), $d['name'] );
+				break;
+			case 'low':
+				/* translators: %s: product name */
+				$title = sprintf( __( 'Low stock: %s', 'honk' ), $d['name'] );
+				break;
+			default:
+				/* translators: %s: product name */
+				$title = sprintf( __( 'Back in stock: %s', 'honk' ), $d['name'] );
+		}
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => array(
+				Honk_Details::text(
+					'ok' === $d['state']
+						/* translators: %d: units in stock */
+						? sprintf( _n( '%d unit in stock.', '%d units in stock.', $qty, 'honk' ), $qty )
+						/* translators: %d: units in stock */
+						: sprintf( _n( '%d unit left.', '%d units left.', $qty, 'honk' ), $qty ),
+					'stock'
+				),
+				/* translators: %s: SKU */
+				Honk_Details::text( '' !== $d['sku'] ? sprintf( __( 'SKU: %s', 'honk' ), $d['sku'] ) : '', 'sku' ),
+			),
+		);
+	}
+
+	/**
+	 * New customer account (Honk_Notifier::user_data()).
+	 *
+	 * @param array $d User data.
+	 * @return array
+	 */
+	public static function customer_spec( array $d ) {
+		return array(
+			'title'    => array( Honk_Details::part( __( 'New customer', 'honk' ) ) ),
+			'lines'    => array( Honk_Notifier::user_line( $d ) ),
+			'fallback' => __( 'A customer account was created.', 'honk' ),
+		);
+	}
+
+	/**
+	 * New product review (product, rating, pending, name, email, text).
+	 *
+	 * @param array $d Review data.
+	 * @return array
+	 */
+	public static function review_spec( array $d ) {
+		$rating = (int) $d['rating'];
+		return array(
+			/* translators: %s: product name */
+			'title'    => array( Honk_Details::part( sprintf( __( 'New review: %s', 'honk' ), $d['product'] ) ) ),
+			'lines'    => array(
+				/* translators: %d: rating from 1 to 5 */
+				Honk_Details::text( $rating > 0 ? str_repeat( '★', min( 5, $rating ) ) . str_repeat( '☆', max( 0, 5 - $rating ) ) . ' ' . sprintf( __( '%d of 5', 'honk' ), $rating ) : '', 'rating' ),
+				Honk_Details::text( $d['pending'] ? __( 'Awaiting moderation.', 'honk' ) : '' ),
+				Honk_Details::line(
+					array(
+						Honk_Details::part( $d['name'], 'name' ),
+						Honk_Details::part( $d['email'], 'email' ),
+					)
+				),
+				Honk_Details::text( $d['text'], 'text' ),
+			),
+			'fallback' => __( 'A new product review.', 'honk' ),
+		);
+	}
+
+	/**
+	 * Subscription renewal failed (number, amount, renewal, name, email).
+	 *
+	 * @param array $d Subscription data.
+	 * @return array
+	 */
+	public static function subscription_spec( array $d ) {
+		return array(
+			/* translators: %s: subscription number */
+			'title' => array( Honk_Details::part( sprintf( __( 'Subscription #%s: renewal failed', 'honk' ), $d['number'] ) ) ),
+			'lines' => array(
+				/* translators: %s: amount */
+				Honk_Details::text( sprintf( __( 'The %s renewal couldn’t be charged.', 'honk' ), $d['amount'] ) ),
+				/* translators: %s: order number */
+				Honk_Details::text( '' !== $d['renewal'] ? sprintf( __( 'Renewal order #%s', 'honk' ), $d['renewal'] ) : '', 'renewal' ),
+				Honk_Details::line(
+					array(
+						Honk_Details::part( $d['name'], 'name' ),
+						Honk_Details::part( $d['email'], 'email' ),
+					)
+				),
+			),
+		);
+	}
+
+	/**
+	 * Daily sales summary (date, orders, items, revenue, refunds: formatted).
+	 *
+	 * @param array $d Summary data.
+	 * @return array
+	 */
+	public static function summary_spec( array $d ) {
+		if ( 0 === (int) $d['orders'] ) {
+			return array(
+				/* translators: %s: date */
+				'title' => array( Honk_Details::part( sprintf( __( 'Sales on %s', 'honk' ), $d['date'] ) ) ),
+				'lines' => array( Honk_Details::text( __( 'No orders.', 'honk' ) ) ),
+			);
+		}
+		return array(
+			/* translators: 1: date, 2: revenue */
+			'title' => array( Honk_Details::part( sprintf( __( 'Sales on %1$s: %2$s', 'honk' ), $d['date'], $d['revenue'] ) ) ),
+			'lines' => array(
+				Honk_Details::line(
+					array(
+						/* translators: %d: number of orders */
+						Honk_Details::part( sprintf( _n( '%d order', '%d orders', $d['orders'], 'honk' ), $d['orders'] ) ),
+						/* translators: %d: number of items */
+						Honk_Details::part( sprintf( _n( '%d item', '%d items', $d['items'], 'honk' ), $d['items'] ), 'items' ),
+					)
+				),
+				/* translators: %s: revenue */
+				Honk_Details::text( sprintf( __( 'Revenue: %s', 'honk' ), $d['revenue'] ) ),
+				/* translators: %s: refunded amount */
+				Honk_Details::text( '' !== $d['refunds'] ? sprintf( __( 'Refunded: %s', 'honk' ), $d['refunds'] ) : '', 'refunds' ),
+			),
+		);
 	}
 
 	/**

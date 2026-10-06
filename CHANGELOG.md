@@ -27,6 +27,12 @@ each entry in short.
 - Per-event switch, Honk-scale level and priority; privacy switch for customer names and emails
   (off by default); environment detected from `wp_get_environment_type()`; notification
   language (site language by default).
+- **Details** for every event: what its notification always includes and what can be added or
+  left out (for a new order: total, items, status, payment and shipping method, the first three
+  products, the customer's name, email, phone, billing city and note), with a preview of how it
+  reads in Honk. Personal details count only while the privacy switch is on. Contact Form 7,
+  WPForms and Gravity Forms fields can be left out one by one. With the defaults, messages are
+  the same as without the details.
 - Background delivery with Action Scheduler or WP-Cron, retries with backoff and `Retry-After`,
   idempotency keys, the 16 KiB body limit, a delivery log of the last 50 sends.
 - "Send test notification" in Settings → Honk; a Honk tab in WooCommerce → Settings.

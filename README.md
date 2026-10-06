@@ -15,8 +15,9 @@ and the popular form plugins, in your Honk inbox, on iPhone, Apple Watch and the
 ## How it works
 
 ```text
-WordPress hook ─▶ module (builds the text in the notification language)
-               ─▶ Honk_Notifier::emit()  event switch, level, priority, privacy, dedupe
+WordPress hook ─▶ module (an outline of the message, in the notification language)
+               ─▶ Honk_Details           keeps the parts whose details are on (and allowed)
+               ─▶ Honk_Notifier::emit()  event switch, level, priority, dedupe
                ─▶ Honk_Queue::push()      option honk_job_<id>, Action Scheduler or WP-Cron
                ─▶ honk_deliver            POST {server}/v1/messages, retries, delivery log
 ```
@@ -38,6 +39,32 @@ WordPress hook ─▶ module (builds the text in the notification language)
   metadata ≤ 16 keys, the whole body ≤ 16 KiB (the message is shortened first), `url` only when
   https (otherwise the link goes to `metadata.link`).
 - **User-Agent** `honk-wordpress/<version> (+https://honk-me.app)`.
+
+## What each notification says (Details)
+
+Every event lists, in Settings → Honk → Details, the facts its notification can include
+(`Honk_Details::FACTS`: per event, each detail with "personal data" and "on by default"), what it
+always includes, and a preview.
+
+- **Outlines.** A module builds its message as an outline (`*_spec()` in each module): the
+  title and the lines, made of parts, each tagged with the detail it shows (`Honk_Details::part()`,
+  `line()`, `text()`). `Honk_Details::compose()` keeps the parts whose details are on. The same
+  functions build the preview from sample data (`Honk_Preview`), and `assets/admin.js` has
+  the same composition rules (`compose()`), so the preview reads exactly like the message.
+- **Personal data stays behind the switch.** A personal detail counts only while "Include
+  customer names and emails" is on. Personal details are on by default, so with the switch on
+  messages read as in 0.1.0; phone, billing city and country and the customer's note are off by
+  default. On the screen they're disabled while the switch is off, and their saved choice travels
+  in a hidden field, so switching personal data off never loses it.
+- **Defaults are 0.1.0.** `tests/fixtures/messages-0.1.0.json` holds every event's payload as
+  0.1.0 built it, with personal data off and on; `MessagesTest` checks that the defaults (and
+  saving the untouched form) reproduce it byte for byte.
+- **Forms.** For Contact Form 7, WPForms and Gravity Forms, which list their forms' fields
+  (`Honk_Module_Forms::forms()`, the first 20 forms), single fields can be left out per form
+  (stored as `details.<event>.skip.<form id>`). Elementor Pro, Fluent Forms and Ninja Forms send
+  every field or none.
+- **Storage.** The choices live in `honk_settings` (`details`), next to the events, so
+  uninstalling removes them with the rest.
 
 ## Events
 
@@ -78,7 +105,7 @@ new administrator Blast. Every event has its own switch, level and priority in S
 | Comment awaiting moderation | `wp_insert_comment` (approved = 0) | `wp/comments/moderation` | `comment-<id>-pending` | Light honk, low |
 | Post pending review | `transition_post_status` → pending | `wp/posts/pending` | `post-<id>-pending-<modified>` | Light honk, normal |
 | Post published (off) | `transition_post_status` → publish | `wp/posts/published` | `post-<id>-published` | Beep-beep, low |
-| **Forms** (title = form name; fields only with personal data on) | | | | |
+| **Forms** (title = form name; what people entered only with personal data on, per form plugin in Details) | | | | |
 | Contact Form 7 | `wpcf7_submit` (mail sent or mail failed) | `wp/forms/cf7/<form>` | `form-cf7-<form>-<hash>` | Light honk, normal |
 | WPForms | `wpforms_process_complete` | `wp/forms/wpforms/<form>` | `form-wpforms-<form>-entry-<id>` | 〃 |
 | Gravity Forms | `gform_after_submission` | `wp/forms/gravityforms/<form>` | `form-gravityforms-<form>-entry-<id>` | 〃 |

@@ -34,6 +34,141 @@
 	margin: 0.25em 0 0;
 }
 
+/* Details: the button under each event, and the row it opens. */
+.honk-settings .honk-events .honk-details-toggle-wrap {
+	margin: 0.4em 0 0;
+}
+
+.honk-settings .honk-details-toggle {
+	text-decoration: none;
+}
+
+.honk-settings .honk-details-indicator::before {
+	content: "\f140";
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	font: normal 20px/1 dashicons;
+	vertical-align: middle;
+}
+
+.honk-settings .honk-details-toggle[aria-expanded="true"] .honk-details-indicator::before {
+	transform: rotate(180deg);
+}
+
+.honk-settings .honk-events tr.is-open > td {
+	padding-bottom: 4px;
+}
+
+.honk-settings .honk-events .honk-details-row > td {
+	padding: 4px 10px 18px;
+}
+
+.honk-settings .honk-details {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 22em);
+	gap: 16px 32px;
+	align-items: start;
+	padding-top: 12px;
+	border-top: 1px solid #dcdcde;
+}
+
+.honk-settings .honk-details fieldset {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.honk-settings .honk-details .honk-details-heading {
+	margin: 0 0 6px;
+	padding: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.honk-settings .honk-details .description {
+	margin: 0 0 8px;
+}
+
+.honk-settings .honk-choices {
+	columns: 2 14em;
+	column-gap: 24px;
+	margin: 8px 0 12px;
+}
+
+.honk-settings .honk-choices li {
+	margin: 0 0 6px;
+	break-inside: avoid;
+}
+
+.honk-settings .honk-facts-personal,
+.honk-settings .honk-form-fields {
+	margin-top: 4px;
+}
+
+.honk-settings .honk-facts-personal > legend,
+.honk-settings .honk-form-fields > legend {
+	margin: 0;
+	padding: 0;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.honk-settings .honk-details .honk-form-name {
+	margin: 8px 0 0;
+	color: #50575e;
+}
+
+.honk-settings .honk-choices label:has(input:disabled) {
+	color: #8c8f94;
+}
+
+/* The preview: a plain card, as quiet as the rest of the screen. */
+.honk-settings .honk-preview-card {
+	padding: 10px 12px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.honk-settings .honk-details .honk-preview-card p {
+	margin: 0;
+}
+
+.honk-settings .honk-details .honk-preview-meta {
+	margin-bottom: 4px;
+	font-size: 12px;
+	color: #646970;
+}
+
+.honk-settings .honk-details .honk-preview-title {
+	margin-bottom: 2px;
+	font-weight: 600;
+	color: #1d2327;
+	overflow-wrap: anywhere;
+}
+
+.honk-settings .honk-details .honk-preview-message {
+	color: #3c434a;
+	white-space: pre-line;
+	overflow-wrap: anywhere;
+}
+
+.honk-settings .honk-preview > .description {
+	margin-top: 6px;
+}
+
+/* Without JavaScript, every event's details stay open. */
+.no-js .honk-settings .honk-details-row[hidden] {
+	display: table-row;
+}
+
+.no-js .honk-settings .honk-details-toggle-wrap {
+	display: none;
+}
+
 .honk-settings .honk-test-result .notice {
 	margin: 0.75em 0 0;
 }
@@ -51,5 +186,13 @@
 	.honk-settings .honk-events .honk-col-level,
 	.honk-settings .honk-events .honk-col-priority {
 		width: 9em;
+	}
+
+	.honk-settings .honk-details {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.honk-settings .honk-choices {
+		columns: 1;
 	}
 }

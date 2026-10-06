@@ -128,27 +128,18 @@ final class Honk_Module_Health {
 			'fatal_error',
 			'fatal-' . md5( $file . ':' . $line . ':' . $text ) . '-' . gmdate( 'Ymd' ),
 			function () use ( $extension, $relative, $line, $text, $recovery ) {
-				if ( '' !== $extension['name'] ) {
-					$title = 'theme' === $extension['type']
-						/* translators: %s: theme name */
-						? sprintf( __( 'Critical error in the %s theme', 'honk' ), $extension['name'] )
-						/* translators: %s: plugin name */
-						: sprintf( __( 'Critical error in the %s plugin', 'honk' ), $extension['name'] );
-				} else {
-					$title = __( 'Critical error', 'honk' );
-				}
-				$lines = array(
-					$text,
-					/* translators: 1: file, 2: line number */
-					sprintf( __( '%1$s, line %2$d', 'honk' ), $relative, $line ),
-				);
-				if ( $recovery ) {
-					$lines[] = __( 'WordPress emailed the site administrator a link to fix it in recovery mode.', 'honk' );
-				}
-				return Honk_Notifier::with_link(
+				$spec = self::fatal_spec(
 					array(
-						'title'     => $title,
-						'message'   => implode( "\n", $lines ),
+						'type'     => $extension['type'],
+						'name'     => $extension['name'],
+						'error'    => $text,
+						'file'     => $relative,
+						'line'     => $line,
+						'recovery' => $recovery,
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields( 'fatal_error', $spec ) + array(
 						'group_key' => 'wp/health/fatal',
 						'metadata'  => array(
 							'file' => $relative,
@@ -277,10 +268,7 @@ final class Honk_Module_Health {
 			function () use ( $critical ) {
 				$count = count( $critical );
 				return Honk_Notifier::with_link(
-					array(
-						/* translators: %d: number of critical issues */
-						'title'      => sprintf( _n( 'Site Health: %d critical issue', 'Site Health: %d critical issues', $count, 'honk' ), $count ),
-						'message'    => implode( "\n", array_values( $critical ) ),
+					Honk_Details::fields( 'site_health_critical', self::site_health_spec( array_values( $critical ) ) ) + array(
 						'group_key'  => 'wp/health/site-health',
 						'event_type' => 'problem',
 						'metadata'   => array( 'critical' => $count ),
@@ -388,14 +376,8 @@ final class Honk_Module_Health {
 			'auto_update_failed',
 			'autoupdate-failed-' . md5( implode( '|', $failed ) ),
 			function () use ( $failed ) {
-				$count = count( $failed );
 				return Honk_Notifier::with_link(
-					array(
-						/* translators: %d: number of failed updates */
-						'title'     => sprintf( _n( '%d automatic update failed', '%d automatic updates failed', $count, 'honk' ), $count ),
-						'message'   => implode( "\n", $failed ),
-						'group_key' => 'wp/health/updates-failed',
-					),
+					Honk_Details::fields( 'auto_update_failed', self::update_failed_spec( $failed ), array( 'group_key' => 'wp/health/updates-failed' ) ),
 					admin_url( 'update-core.php' )
 				);
 			}
@@ -423,10 +405,7 @@ final class Honk_Module_Health {
 			function () use ( $lines ) {
 				$count = count( $lines );
 				return Honk_Notifier::with_link(
-					array(
-						/* translators: %d: number of updates */
-						'title'     => sprintf( _n( '%d update available', '%d updates available', $count, 'honk' ), $count ),
-						'message'   => implode( "\n", $lines ),
+					Honk_Details::fields( 'updates_available', self::updates_available_spec( $lines ) ) + array(
 						'group_key' => 'wp/health/updates-available',
 						'metadata'  => array( 'updates' => $count ),
 					),
@@ -554,26 +533,17 @@ final class Honk_Module_Health {
 			'cron_overdue',
 			'cron-overdue-' . $since,
 			function () use ( $overdue, $now ) {
-				$late  = max( 1, (int) round( ( $now - $overdue['oldest'] ) / MINUTE_IN_SECONDS ) );
-				$lines = array(
-					sprintf(
-						/* translators: 1: number of tasks, 2: duration, e.g. "2 hours" */
-						_n( '%1$d scheduled task is late, the oldest by %2$s.', '%1$d scheduled tasks are late, the oldest by %2$s.', $overdue['count'], 'honk' ),
-						$overdue['count'],
-						human_time_diff( 0, $late * MINUTE_IN_SECONDS )
-					),
-					/* translators: %s: hook name */
-					sprintf( __( 'Oldest task: %s', 'honk' ), $overdue['hook'] ),
-				);
-				if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
-					$lines[] = __( 'DISABLE_WP_CRON is on, so a server cron job has to run wp-cron.php. Check that it’s still running.', 'honk' );
-				} else {
-					$lines[] = __( 'WordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job.', 'honk' );
-				}
-				return Honk_Notifier::with_link(
+				$late = max( 1, (int) round( ( $now - $overdue['oldest'] ) / MINUTE_IN_SECONDS ) );
+				$spec = self::cron_spec(
 					array(
-						'title'      => __( 'Scheduled tasks are running late', 'honk' ),
-						'message'    => implode( "\n", $lines ),
+						'count'    => $overdue['count'],
+						'late'     => human_time_diff( 0, $late * MINUTE_IN_SECONDS ),
+						'hook'     => $overdue['hook'],
+						'disabled' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON,
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields( 'cron_overdue', $spec ) + array(
 						'group_key'  => 'wp/health/cron',
 						'event_type' => 'problem',
 						'metadata'   => array(
@@ -646,15 +616,7 @@ final class Honk_Module_Health {
 				'disk_space_low',
 				'disk-low-' . gmdate( 'Ymd' ),
 				function () use ( $disk ) {
-					return array(
-						'title'      => __( 'Disk almost full', 'honk' ),
-						'message'    => sprintf(
-							/* translators: 1: free space, 2: total space, 3: percent free */
-							__( '%1$s free of %2$s (%3$s%%).', 'honk' ),
-							size_format( $disk['free'], 1 ),
-							size_format( $disk['total'], 1 ),
-							number_format_i18n( 100 * $disk['free'] / $disk['total'], 1 )
-						),
+					return Honk_Details::fields( 'disk_space_low', self::disk_spec( $disk ) ) + array(
 						'group_key'  => 'wp/health/disk',
 						'event_type' => 'problem',
 						'metadata'   => array(
@@ -706,6 +668,135 @@ final class Honk_Module_Health {
 		return array(
 			'free'  => (float) $free,
 			'total' => (float) $total,
+		);
+	}
+
+	/*
+	 * Message outlines (Honk_Details): the same for real events and for the settings preview.
+	 */
+
+	/**
+	 * Critical error (type, name: the plugin or theme; error, file, line, recovery).
+	 *
+	 * @param array $d Error data.
+	 * @return array
+	 */
+	public static function fatal_spec( array $d ) {
+		if ( '' !== $d['name'] ) {
+			$title = 'theme' === $d['type']
+				/* translators: %s: theme name */
+				? sprintf( __( 'Critical error in the %s theme', 'honk' ), $d['name'] )
+				/* translators: %s: plugin name */
+				: sprintf( __( 'Critical error in the %s plugin', 'honk' ), $d['name'] );
+		} else {
+			$title = __( 'Critical error', 'honk' );
+		}
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => array(
+				Honk_Details::text( $d['error'], 'error' ),
+				/* translators: 1: file, 2: line number */
+				Honk_Details::text( sprintf( __( '%1$s, line %2$d', 'honk' ), $d['file'], $d['line'] ), 'file' ),
+				Honk_Details::text( $d['recovery'] ? __( 'WordPress emailed the site administrator a link to fix it in recovery mode.', 'honk' ) : '' ),
+			),
+		);
+	}
+
+	/**
+	 * Site Health critical issues.
+	 *
+	 * @param string[] $issues Labels.
+	 * @return array
+	 */
+	public static function site_health_spec( array $issues ) {
+		$count = count( $issues );
+		return array(
+			/* translators: %d: number of critical issues */
+			'title' => array( Honk_Details::part( sprintf( _n( 'Site Health: %d critical issue', 'Site Health: %d critical issues', $count, 'honk' ), $count ) ) ),
+			'lines' => array_map( array( 'Honk_Details', 'text' ), $issues ),
+		);
+	}
+
+	/**
+	 * Automatic updates that failed.
+	 *
+	 * @param string[] $failed "Name: error" lines.
+	 * @return array
+	 */
+	public static function update_failed_spec( array $failed ) {
+		$count = count( $failed );
+		return array(
+			/* translators: %d: number of failed updates */
+			'title' => array( Honk_Details::part( sprintf( _n( '%d automatic update failed', '%d automatic updates failed', $count, 'honk' ), $count ) ) ),
+			'lines' => array_map( array( 'Honk_Details', 'text' ), $failed ),
+		);
+	}
+
+	/**
+	 * Available updates.
+	 *
+	 * @param string[] $updates Lines ("WooCommerce 11.1.2 → 11.2.0").
+	 * @return array
+	 */
+	public static function updates_available_spec( array $updates ) {
+		$count = count( $updates );
+		return array(
+			/* translators: %d: number of updates */
+			'title' => array( Honk_Details::part( sprintf( _n( '%d update available', '%d updates available', $count, 'honk' ), $count ) ) ),
+			'lines' => array_map( array( 'Honk_Details', 'text' ), $updates ),
+		);
+	}
+
+	/**
+	 * Scheduled tasks running late (count, late: a duration, hook, disabled: DISABLE_WP_CRON).
+	 *
+	 * @param array $d Overdue tasks.
+	 * @return array
+	 */
+	public static function cron_spec( array $d ) {
+		return array(
+			'title' => array( Honk_Details::part( __( 'Scheduled tasks are running late', 'honk' ) ) ),
+			'lines' => array(
+				Honk_Details::text(
+					sprintf(
+						/* translators: 1: number of tasks, 2: duration, e.g. "2 hours" */
+						_n( '%1$d scheduled task is late, the oldest by %2$s.', '%1$d scheduled tasks are late, the oldest by %2$s.', $d['count'], 'honk' ),
+						$d['count'],
+						$d['late']
+					)
+				),
+				/* translators: %s: hook name */
+				Honk_Details::text( sprintf( __( 'Oldest task: %s', 'honk' ), $d['hook'] ), 'hook' ),
+				Honk_Details::text(
+					$d['disabled']
+						? __( 'DISABLE_WP_CRON is on, so a server cron job has to run wp-cron.php. Check that it’s still running.', 'honk' )
+						: __( 'WordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job.', 'honk' ),
+					'advice'
+				),
+			),
+		);
+	}
+
+	/**
+	 * Disk almost full (free, total: bytes).
+	 *
+	 * @param array $disk Disk usage.
+	 * @return array
+	 */
+	public static function disk_spec( array $disk ) {
+		return array(
+			'title' => array( Honk_Details::part( __( 'Disk almost full', 'honk' ) ) ),
+			'lines' => array(
+				Honk_Details::text(
+					sprintf(
+						/* translators: 1: free space, 2: total space, 3: percent free */
+						__( '%1$s free of %2$s (%3$s%%).', 'honk' ),
+						size_format( $disk['free'], 1 ),
+						size_format( $disk['total'], 1 ),
+						number_format_i18n( 100 * $disk['free'] / $disk['total'], 1 )
+					)
+				),
+			),
 		);
 	}
 }

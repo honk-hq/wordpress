@@ -43,27 +43,21 @@ final class Honk_Module_Content {
 			'user_registered',
 			'user-' . $user_id . '-registered',
 			function () use ( $user, $roles ) {
-				$pii   = Honk_Settings::include_pii();
 				$names = array();
 				$all   = wp_roles()->get_names();
 				foreach ( $roles as $role ) {
 					$names[] = isset( $all[ $role ] ) ? translate_user_role( $all[ $role ] ) : $role;
 				}
-				$lines = array();
-				if ( $pii ) {
-					$lines[] = Honk_Notifier::user_label( $user, true );
-				}
-				if ( $names ) {
-					/* translators: %s: role names */
-					$lines[] = sprintf( __( 'Role: %s', 'honk' ), implode( ', ', $names ) );
-				}
+				$data          = Honk_Notifier::user_data( $user );
+				$data['roles'] = implode( ', ', $names );
 				return Honk_Notifier::with_link(
-					array(
-						'title'     => __( 'New user registration', 'honk' ),
-						'message'   => $lines ? implode( "\n", $lines ) : __( 'A new user account was created.', 'honk' ),
-						'group_key' => 'wp/users/registrations',
-						'pii'       => $pii,
-						'metadata'  => array( 'user_id' => $user->ID ),
+					Honk_Details::fields(
+						'user_registered',
+						self::registration_spec( $data ),
+						array(
+							'group_key' => 'wp/users/registrations',
+							'metadata'  => array( 'user_id' => $user->ID ),
+						)
 					),
 					admin_url( 'user-edit.php?user_id=' . $user->ID )
 				);
@@ -97,26 +91,25 @@ final class Honk_Module_Content {
 			'comment_pending',
 			'comment-' . $comment_id . '-pending',
 			function () use ( $comment, $post ) {
-				$pii   = Honk_Settings::include_pii();
-				$lines = array(
-					/* translators: %s: post title */
-					sprintf( __( 'On “%s”', 'honk' ), self::post_title( $post ) ),
-				);
-				if ( $pii ) {
-					$author  = trim( $comment->comment_author . ( $comment->comment_author_email ? ' · ' . $comment->comment_author_email : '' ) );
-					$lines[] = '' !== $author ? $author : __( 'Anonymous', 'honk' );
-					$lines[] = wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' );
-				}
-				return Honk_Notifier::with_link(
+				$spec = self::comment_spec(
 					array(
-						'title'     => __( 'Comment awaiting moderation', 'honk' ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'wp/comments/moderation',
-						'pii'       => $pii,
-						'metadata'  => array(
-							'comment_id' => (int) $comment->comment_ID,
-							'post_id'    => (int) $post->ID,
-						),
+						'post'  => self::post_title( $post ),
+						'name'  => trim( (string) $comment->comment_author ),
+						'email' => (string) $comment->comment_author_email,
+						'text'  => Honk_Details::on( 'comment_pending', 'text' ) ? wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' ) : '',
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields(
+						'comment_pending',
+						$spec,
+						array(
+							'group_key' => 'wp/comments/moderation',
+							'metadata'  => array(
+								'comment_id' => (int) $comment->comment_ID,
+								'post_id'    => (int) $post->ID,
+							),
+						)
 					),
 					admin_url( 'edit-comments.php?comment_status=moderated' )
 				);
@@ -147,15 +140,7 @@ final class Honk_Module_Content {
 				'post-' . $post->ID . '-pending-' . strtotime( $post->post_modified_gmt . ' UTC' ),
 				function () use ( $post, $type ) {
 					return Honk_Notifier::with_link(
-						array(
-							/* translators: %s: post title */
-							'title'     => sprintf( __( 'Pending review: %s', 'honk' ), self::post_title( $post ) ),
-							'message'   => sprintf(
-								/* translators: 1: post type name (e.g. Post), 2: author */
-								__( '%1$s by %2$s is waiting for review.', 'honk' ),
-								$type->labels->singular_name,
-								Honk_Notifier::user_label( (int) $post->post_author, false )
-							),
+						Honk_Details::fields( 'post_pending', self::post_spec( self::post_data( 'post_pending', $post, $type ), true ) ) + array(
 							'group_key' => 'wp/posts/pending',
 							'metadata'  => array(
 								'post_id'   => (int) $post->ID,
@@ -175,15 +160,7 @@ final class Honk_Module_Content {
 				'post-' . $post->ID . '-published',
 				function () use ( $post, $type ) {
 					return Honk_Notifier::with_link(
-						array(
-							/* translators: %s: post title */
-							'title'     => sprintf( __( 'Published: %s', 'honk' ), self::post_title( $post ) ),
-							'message'   => sprintf(
-								/* translators: 1: post type name (e.g. Post), 2: author */
-								__( '%1$s by %2$s.', 'honk' ),
-								$type->labels->singular_name,
-								Honk_Notifier::user_label( (int) $post->post_author, false )
-							),
+						Honk_Details::fields( 'post_published', self::post_spec( self::post_data( 'post_published', $post, $type ), false ) ) + array(
 							'group_key' => 'wp/posts/published',
 							'metadata'  => array(
 								'post_id'   => (int) $post->ID,
@@ -195,6 +172,112 @@ final class Honk_Module_Content {
 				}
 			);
 		}
+	}
+
+	/**
+	 * What a message can say about a post.
+	 *
+	 * @param string       $event_id Event id.
+	 * @param WP_Post      $post     Post.
+	 * @param WP_Post_Type $type     Post type.
+	 * @return array{title: string, type: string, author: string, excerpt: string}
+	 */
+	private static function post_data( $event_id, $post, $type ) {
+		$excerpt = '';
+		if ( Honk_Details::on( $event_id, 'excerpt' ) ) {
+			$text = '' !== trim( (string) $post->post_excerpt ) ? (string) $post->post_excerpt : (string) $post->post_content;
+			if ( function_exists( 'excerpt_remove_blocks' ) ) {
+				$text = excerpt_remove_blocks( $text );
+			}
+			$excerpt = wp_trim_words( Honk_Payload::plain( strip_shortcodes( $text ), true ), 40, '…' );
+		}
+		return array(
+			'title'   => self::post_title( $post ),
+			'type'    => (string) $type->labels->singular_name,
+			'author'  => Honk_Notifier::user_label( (int) $post->post_author, false ),
+			'excerpt' => $excerpt,
+		);
+	}
+
+	/*
+	 * Message outlines (Honk_Details): the same for real events and for the settings preview.
+	 */
+
+	/**
+	 * New user registration (Honk_Notifier::user_data() plus roles).
+	 *
+	 * @param array $d User data.
+	 * @return array
+	 */
+	public static function registration_spec( array $d ) {
+		return array(
+			'title'    => array( Honk_Details::part( __( 'New user registration', 'honk' ) ) ),
+			'lines'    => array(
+				Honk_Notifier::user_line( $d ),
+				/* translators: %s: role names */
+				Honk_Details::text( '' !== $d['roles'] ? sprintf( __( 'Role: %s', 'honk' ), $d['roles'] ) : '', 'role' ),
+			),
+			'fallback' => __( 'A new user account was created.', 'honk' ),
+		);
+	}
+
+	/**
+	 * Comment awaiting moderation (post, name, email, text).
+	 *
+	 * @param array $d Comment data.
+	 * @return array
+	 */
+	public static function comment_spec( array $d ) {
+		return array(
+			'title' => array( Honk_Details::part( __( 'Comment awaiting moderation', 'honk' ) ) ),
+			'lines' => array(
+				/* translators: %s: post title */
+				Honk_Details::text( sprintf( __( 'On “%s”', 'honk' ), $d['post'] ), 'post' ),
+				Honk_Details::line(
+					array(
+						Honk_Details::part( $d['name'], 'name' ),
+						Honk_Details::part( $d['email'], 'email' ),
+					),
+					' · ',
+					array(
+						'any'   => array( 'name', 'email' ),
+						'empty' => __( 'Anonymous', 'honk' ),
+					)
+				),
+				Honk_Details::text( $d['text'], 'text' ),
+			),
+		);
+	}
+
+	/**
+	 * Post pending review, or published (post_data()).
+	 *
+	 * @param array $d       Post data.
+	 * @param bool  $pending Pending review (true) or published.
+	 * @return array
+	 */
+	public static function post_spec( array $d, $pending ) {
+		if ( $pending ) {
+			/* translators: %s: post title */
+			$title = sprintf( __( 'Pending review: %s', 'honk' ), $d['title'] );
+			/* translators: 1: post type name (e.g. Post), 2: author */
+			$by = sprintf( __( '%1$s by %2$s is waiting for review.', 'honk' ), $d['type'], $d['author'] );
+			/* translators: %s: post type name (e.g. Post) */
+			$plain = sprintf( __( '%s is waiting for review.', 'honk' ), $d['type'] );
+		} else {
+			/* translators: %s: post title */
+			$title = sprintf( __( 'Published: %s', 'honk' ), $d['title'] );
+			/* translators: 1: post type name (e.g. Post), 2: author */
+			$by    = sprintf( __( '%1$s by %2$s.', 'honk' ), $d['type'], $d['author'] );
+			$plain = $d['type'];
+		}
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => array(
+				Honk_Details::line( array( Honk_Details::part( $by, 'author' ), Honk_Details::part( $plain, array(), 'author' ) ) ),
+				Honk_Details::text( $d['excerpt'], 'excerpt' ),
+			),
+		);
 	}
 
 	/**

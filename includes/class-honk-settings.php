@@ -90,6 +90,7 @@ final class Honk_Settings {
 			'burst_minutes'   => 5,
 			'heartbeat'       => false,
 			'events'          => array(),
+			'details'         => array(),
 		);
 	}
 
@@ -102,8 +103,10 @@ final class Honk_Settings {
 		if ( null === self::$cache ) {
 			$stored      = get_option( self::OPTION, array() );
 			self::$cache = array_merge( self::defaults(), is_array( $stored ) ? $stored : array() );
-			if ( ! is_array( self::$cache['events'] ) ) {
-				self::$cache['events'] = array();
+			foreach ( array( 'events', 'details' ) as $list ) {
+				if ( ! is_array( self::$cache[ $list ] ) ) {
+					self::$cache[ $list ] = array();
+				}
 			}
 		}
 		return self::$cache;
@@ -377,6 +380,8 @@ final class Honk_Settings {
 			$out['heartbeat']   = ! empty( $input['heartbeat'] );
 			$events             = isset( $input['events'] ) && is_array( $input['events'] ) ? $input['events'] : array();
 			$out['events']      = self::sanitize_events( $events, $old['events'] );
+			$details            = isset( $input['details'] ) && is_array( $input['details'] ) ? $input['details'] : array();
+			$out['details']     = Honk_Details::sanitize( $details, $old['details'] );
 		} else {
 			// An already sanitized array (WordPress sanitizes again when it first adds the option).
 			if ( array_key_exists( 'include_pii', $input ) ) {
@@ -387,6 +392,9 @@ final class Honk_Settings {
 			}
 			if ( isset( $input['events'] ) && is_array( $input['events'] ) ) {
 				$out['events'] = self::sanitize_events( $input['events'], array() );
+			}
+			if ( isset( $input['details'] ) && is_array( $input['details'] ) ) {
+				$out['details'] = Honk_Details::sanitize( $input['details'], array() );
 			}
 		}
 

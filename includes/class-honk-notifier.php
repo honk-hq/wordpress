@@ -127,6 +127,38 @@ final class Honk_Notifier {
 	}
 
 	/**
+	 * What a message can say about a user.
+	 *
+	 * @param WP_User $user User.
+	 * @return array{display: string, login: string, email: string}
+	 */
+	public static function user_data( $user ) {
+		return array(
+			'display' => trim( (string) $user->display_name ),
+			'login'   => (string) $user->user_login,
+			'email'   => (string) $user->user_email,
+		);
+	}
+
+	/**
+	 * A user as an outline line: "Jane Doe · jane · jane@example.com" (the name only when it
+	 * differs from the login), as user_label() writes it with personal data.
+	 *
+	 * @param array  $d     user_data().
+	 * @param string $login Detail that shows the login, or '' when it is always shown.
+	 * @return array
+	 */
+	public static function user_line( array $d, $login = 'username' ) {
+		return Honk_Details::line(
+			array(
+				Honk_Details::part( '' !== $d['display'] && $d['display'] !== $d['login'] ? $d['display'] : '', 'name' ),
+				Honk_Details::part( $d['login'], '' !== $login ? $login : array() ),
+				Honk_Details::part( $d['email'], 'email' ),
+			)
+		);
+	}
+
+	/**
 	 * Admin URL for a message link (only https links are sent as the message URL; others go into
 	 * the metadata).
 	 *

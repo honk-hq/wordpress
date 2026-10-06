@@ -24,3 +24,4 @@ Honk_Plugin::register_autoloader();
 
 require_once __DIR__ . '/class-wp-stubs.php';
 require_once __DIR__ . '/class-honk-test-case.php';
+require_once __DIR__ . '/trait-honk-scenarios.php';

@@ -127,26 +127,23 @@ final class Honk_Module_Security {
 			'admin_login_new_device',
 			'login-' . $user->ID . '-' . $fingerprint,
 			function () use ( $user, $device, $ip, $network, $result ) {
-				$pii   = Honk_Settings::include_pii();
-				$where = $pii && '' !== $ip ? $ip : $network;
-				$lines = array(
-					/* translators: %s: browser and operating system, e.g. "Chrome on macOS" */
-					sprintf( __( 'Device: %s', 'honk' ), $device ),
-				);
-				if ( '' !== $where ) {
-					/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
-					$lines[] = sprintf( __( 'Network: %s', 'honk' ), $where );
-				}
-				$lines[] = $result['new_device'] ? __( 'This account hasn’t used this browser and device before.', 'honk' ) : __( 'This account hasn’t signed in from this network before.', 'honk' );
-				$lines[] = __( 'If this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.', 'honk' );
-				return Honk_Notifier::with_link(
+				$spec = self::new_device_spec(
 					array(
-						/* translators: %s: user login */
-						'title'     => sprintf( __( '%s signed in from a new device', 'honk' ), $user->user_login ),
-						'message'   => implode( "\n", $lines ),
-						'group_key' => 'wp/security/admin-login',
-						'pii'       => $pii,
-						'metadata'  => array( 'user_id' => $user->ID ),
+						'login'      => $user->user_login,
+						'device'     => $device,
+						'ip'         => $ip,
+						'network'    => $network,
+						'new_device' => $result['new_device'],
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields(
+						'admin_login_new_device',
+						$spec,
+						array(
+							'group_key' => 'wp/security/admin-login',
+							'metadata'  => array( 'user_id' => $user->ID ),
+						)
 					),
 					admin_url( 'profile.php' )
 				);
@@ -289,36 +286,26 @@ final class Honk_Module_Security {
 			'login_failures_burst',
 			'login-burst-' . $start,
 			function () use ( $count, $minutes, $ips, $usernames ) {
-				$pii   = Honk_Settings::include_pii();
-				$lines = array(
-					sprintf(
-						/* translators: 1: number of failed sign-ins, 2: duration, e.g. "5 mins" */
-						_n( '%1$d failed sign-in within %2$s.', '%1$d failed sign-ins within %2$s.', $count, 'honk' ),
-						$count,
-						human_time_diff( 0, $minutes * MINUTE_IN_SECONDS )
-					),
-					sprintf(
-						/* translators: %d: number of IP addresses */
-						_n( 'From %d IP address.', 'From %d IP addresses.', $ips, 'honk' ),
-						$ips
-					),
+				$spec = self::burst_spec(
+					array(
+						'count'     => $count,
+						'window'    => human_time_diff( 0, $minutes * MINUTE_IN_SECONDS ),
+						'ips'       => $ips,
+						'usernames' => array_slice( $usernames, 0, 5 ),
+					)
 				);
-				if ( $pii && $usernames ) {
-					/* translators: %s: comma-separated usernames */
-					$lines[] = sprintf( __( 'Usernames tried: %s', 'honk' ), implode( ', ', array_slice( $usernames, 0, 5 ) ) );
-				}
-				$lines[] = __( 'You’ll get an all-clear once they stop.', 'honk' );
-				return array(
-					'title'      => __( 'Many failed sign-ins', 'honk' ),
-					'message'    => implode( "\n", $lines ),
-					'group_key'  => 'wp/security/login-burst',
-					'event_type' => 'problem',
-					'pii'        => $pii && ! empty( $usernames ),
-					'metadata'   => array(
-						'failures' => $count,
-						'minutes'  => $minutes,
-						'ips'      => $ips,
-					),
+				return Honk_Details::fields(
+					'login_failures_burst',
+					$spec,
+					array(
+						'group_key'  => 'wp/security/login-burst',
+						'event_type' => 'problem',
+						'metadata'   => array(
+							'failures' => $count,
+							'minutes'  => $minutes,
+							'ips'      => $ips,
+						),
+					)
 				);
 			}
 		);
@@ -599,26 +586,17 @@ final class Honk_Module_Security {
 			'new_administrator',
 			'admin-' . $user->ID . '-' . gmdate( 'YmdH' ),
 			function () use ( $user, $created, $actor ) {
-				$pii  = Honk_Settings::include_pii();
-				$name = $pii ? Honk_Notifier::user_label( $user, true ) : $user->user_login;
+				$data            = Honk_Notifier::user_data( $user );
+				$data['created'] = $created;
+				$data['actor']   = $actor;
 				return Honk_Notifier::with_link(
-					array(
-						/* translators: %s: user login */
-						'title'     => sprintf( __( 'New administrator: %s', 'honk' ), $user->user_login ),
-						'message'   => implode(
-							"\n",
-							array(
-								$created
-									/* translators: 1: user, 2: who did it */
-									? sprintf( __( '%1$s was created as an administrator by %2$s.', 'honk' ), $name, $actor )
-									/* translators: 1: user, 2: who did it */
-									: sprintf( __( '%1$s was made an administrator by %2$s.', 'honk' ), $name, $actor ),
-								__( 'If you didn’t expect this, check the account now.', 'honk' ),
-							)
-						),
-						'group_key' => 'wp/security/admins',
-						'pii'       => $pii,
-						'metadata'  => array( 'user_id' => $user->ID ),
+					Honk_Details::fields(
+						'new_administrator',
+						self::new_admin_spec( $data ),
+						array(
+							'group_key' => 'wp/security/admins',
+							'metadata'  => array( 'user_id' => $user->ID ),
+						)
 					),
 					admin_url( 'user-edit.php?user_id=' . $user->ID )
 				);
@@ -645,21 +623,19 @@ final class Honk_Module_Security {
 			'role_changed',
 			'role-' . $user->ID . '-' . md5( implode( ',', $from ) . '>' . implode( ',', $to ) ) . '-' . gmdate( 'YmdH' ),
 			function () use ( $user, $from, $to, $actor ) {
-				$pii = Honk_Settings::include_pii();
+				$data          = Honk_Notifier::user_data( $user );
+				$data['label'] = Honk_Notifier::user_label( $user, false );
+				$data['from']  = self::role_names( $from );
+				$data['to']    = self::role_names( $to );
+				$data['actor'] = $actor;
 				return Honk_Notifier::with_link(
-					array(
-						/* translators: %s: user */
-						'title'     => sprintf( __( 'Role changed for %s', 'honk' ), Honk_Notifier::user_label( $user, false ) ),
-						'message'   => sprintf(
-							/* translators: 1: previous value, 2: new value, 3: who did it */
-							__( '%1$s → %2$s, by %3$s.', 'honk' ),
-							self::role_names( $from ),
-							self::role_names( $to ),
-							$actor
-						) . ( $pii ? "\n" . Honk_Notifier::user_label( $user, true ) : '' ),
-						'group_key' => 'wp/security/roles',
-						'pii'       => $pii,
-						'metadata'  => array( 'user_id' => $user->ID ),
+					Honk_Details::fields(
+						'role_changed',
+						self::role_spec( $data ),
+						array(
+							'group_key' => 'wp/security/roles',
+							'metadata'  => array( 'user_id' => $user->ID ),
+						)
 					),
 					admin_url( 'user-edit.php?user_id=' . $user->ID )
 				);
@@ -706,27 +682,22 @@ final class Honk_Module_Security {
 			'site_identity_changed',
 			'identity-' . $option . '-' . md5( (string) $value ),
 			function () use ( $old_value, $value, $option, $actor ) {
-				$pii = Honk_Settings::include_pii();
-				if ( 'admin_email' === $option ) {
-					$title   = __( 'Administration email address changed', 'honk' );
-					$message = $pii
-						/* translators: 1: previous value, 2: new value, 3: who did it */
-						? sprintf( __( '%1$s → %2$s, by %3$s.', 'honk' ), $old_value, $value, $actor )
-						/* translators: %s: who did it */
-						: sprintf( __( 'Changed by %s.', 'honk' ), $actor );
-				} else {
-					$title = 'siteurl' === $option ? __( 'WordPress address (URL) changed', 'honk' ) : __( 'Site address (URL) changed', 'honk' );
-					/* translators: 1: previous value, 2: new value, 3: who did it */
-					$message = sprintf( __( '%1$s → %2$s, by %3$s.', 'honk' ), $old_value, $value, $actor );
-				}
-				$message .= "\n" . __( 'If you didn’t expect this, check Settings → General now.', 'honk' );
-				return Honk_Notifier::with_link(
+				$spec = self::identity_spec(
 					array(
-						'title'     => $title,
-						'message'   => $message,
-						'group_key' => 'wp/security/site-identity',
-						'pii'       => $pii && 'admin_email' === $option,
-						'metadata'  => array( 'option' => $option ),
+						'option' => $option,
+						'old'    => (string) $old_value,
+						'new'    => (string) $value,
+						'actor'  => $actor,
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields(
+						'site_identity_changed',
+						$spec,
+						array(
+							'group_key' => 'wp/security/site-identity',
+							'metadata'  => array( 'option' => $option ),
+						)
 					),
 					admin_url( 'options-general.php' )
 				);
@@ -804,32 +775,17 @@ final class Honk_Module_Security {
 			'plugin_changed',
 			'plugin-' . $action . '-' . md5( $plugin ) . '-' . gmdate( 'YmdHi' ),
 			function () use ( $action, $plugin, $name, $network_wide, $actor ) {
-				switch ( $action ) {
-					case 'activated':
-						/* translators: %s: plugin name */
-						$title = sprintf( __( 'Plugin activated: %s', 'honk' ), $name );
-						break;
-					case 'deactivated':
-						/* translators: %s: plugin name */
-						$title = sprintf( __( 'Plugin deactivated: %s', 'honk' ), $name );
-						break;
-					case 'deleted':
-						/* translators: %s: plugin name */
-						$title = sprintf( __( 'Plugin deleted: %s', 'honk' ), $name );
-						break;
-					default:
-						/* translators: %s: plugin name */
-						$title = sprintf( __( 'Plugin installed: %s', 'honk' ), $name );
-				}
-				/* translators: %s: who did it */
-				$message = sprintf( __( 'By %s.', 'honk' ), $actor );
-				if ( $network_wide ) {
-					$message .= ' ' . __( 'Network-wide.', 'honk' );
-				}
-				return Honk_Notifier::with_link(
+				$spec = self::plugin_spec(
 					array(
-						'title'     => $title,
-						'message'   => $message . "\n" . $plugin,
+						'action'  => $action,
+						'name'    => $name,
+						'file'    => $plugin,
+						'network' => $network_wide,
+						'actor'   => $actor,
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields( 'plugin_changed', $spec ) + array(
 						'group_key' => 'wp/security/plugins',
 						'metadata'  => array(
 							'plugin' => $plugin,
@@ -959,27 +915,16 @@ final class Honk_Module_Security {
 			'updates_installed',
 			'updated-' . $type . '-' . md5( implode( '|', $items ) ),
 			function () use ( $type, $items, $auto, $actor ) {
-				$count = count( $items );
-				switch ( $type ) {
-					case 'core':
-						$title = __( 'WordPress updated', 'honk' );
-						break;
-					case 'theme':
-						/* translators: %d: number of themes */
-						$title = sprintf( _n( '%d theme updated', '%d themes updated', $count, 'honk' ), $count );
-						break;
-					default:
-						/* translators: %d: number of plugins */
-						$title = sprintf( _n( '%d plugin updated', '%d plugins updated', $count, 'honk' ), $count );
-				}
-				/* translators: %s: who did it */
-				$by = $auto ? __( 'Updated automatically.', 'honk' ) : sprintf( __( 'By %s.', 'honk' ), $actor );
-				return Honk_Notifier::with_link(
+				$spec = self::updates_spec(
 					array(
-						'title'     => $title,
-						'message'   => implode( "\n", $items ) . "\n" . $by,
-						'group_key' => 'wp/security/updates',
-					),
+						'type'  => $type,
+						'items' => $items,
+						'auto'  => $auto,
+						'actor' => $actor,
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields( 'updates_installed', $spec, array( 'group_key' => 'wp/security/updates' ) ),
 					admin_url( 'update-core.php' )
 				);
 			}
@@ -1038,29 +983,16 @@ final class Honk_Module_Security {
 			'theme_changed',
 			'theme-' . $action . '-' . md5( $name ) . '-' . gmdate( 'YmdHi' ),
 			function () use ( $action, $name, $old, $actor ) {
-				switch ( $action ) {
-					case 'switched':
-						/* translators: %s: theme name */
-						$title = sprintf( __( 'Theme switched to %s', 'honk' ), $name );
-						break;
-					case 'deleted':
-						/* translators: %s: theme name */
-						$title = sprintf( __( 'Theme deleted: %s', 'honk' ), $name );
-						break;
-					default:
-						/* translators: %s: theme name */
-						$title = sprintf( __( 'Theme installed: %s', 'honk' ), $name );
-				}
-				/* translators: %s: who did it */
-				$message = sprintf( __( 'By %s.', 'honk' ), $actor );
-				if ( '' !== $old ) {
-					/* translators: %s: previous theme name */
-					$message .= "\n" . sprintf( __( 'Previous theme: %s', 'honk' ), $old );
-				}
-				return Honk_Notifier::with_link(
+				$spec = self::theme_spec(
 					array(
-						'title'     => $title,
-						'message'   => $message,
+						'action'   => $action,
+						'name'     => $name,
+						'previous' => $old,
+						'actor'    => $actor,
+					)
+				);
+				return Honk_Notifier::with_link(
+					Honk_Details::fields( 'theme_changed', $spec ) + array(
 						'group_key' => 'wp/security/themes',
 						'metadata'  => array( 'action' => $action ),
 					),
@@ -1132,19 +1064,16 @@ final class Honk_Module_Security {
 				'file_edited',
 				'edit-' . md5( $path ) . '-' . $after,
 				function () use ( $edit, $actor ) {
-					return Honk_Notifier::with_link(
+					$spec = self::file_edit_spec(
 						array(
-							'title'     => 'theme' === $edit['kind']
-								/* translators: %s: theme name */
-								? sprintf( __( 'Theme file edited: %s', 'honk' ), $edit['what'] )
-								/* translators: %s: plugin name */
-								: sprintf( __( 'Plugin file edited: %s', 'honk' ), $edit['what'] ),
-							'message'   => sprintf(
-								/* translators: 1: file, 2: who did it */
-								__( '%1$s was edited in the file editor by %2$s.', 'honk' ),
-								$edit['file'],
-								$actor
-							) . "\n" . __( 'Tip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.', 'honk' ),
+							'kind'  => $edit['kind'],
+							'what'  => $edit['what'],
+							'file'  => $edit['file'],
+							'actor' => $actor,
+						)
+					);
+					return Honk_Notifier::with_link(
+						Honk_Details::fields( 'file_edited', $spec ) + array(
 							'group_key' => 'wp/security/file-edits',
 							'metadata'  => array( 'file' => $edit['file'] ),
 						),
@@ -1154,5 +1083,286 @@ final class Honk_Module_Security {
 			);
 		}
 		self::$editing = array();
+	}
+
+	/*
+	 * Message outlines (Honk_Details): the same for real events and for the settings preview.
+	 */
+
+	/**
+	 * Administrator signed in from a new device (login, device, ip, network, new_device).
+	 *
+	 * @param array $d Sign-in data.
+	 * @return array
+	 */
+	public static function new_device_spec( array $d ) {
+		return array(
+			'title' => array(
+				/* translators: %s: user login */
+				Honk_Details::part( sprintf( __( '%s signed in from a new device', 'honk' ), $d['login'] ), 'username' ),
+				Honk_Details::part( __( 'An administrator signed in from a new device', 'honk' ), array(), 'username' ),
+			),
+			'lines' => array(
+				/* translators: %s: browser and operating system, e.g. "Chrome on macOS" */
+				Honk_Details::text( sprintf( __( 'Device: %s', 'honk' ), $d['device'] ), 'device' ),
+				Honk_Details::line(
+					array(
+						/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
+						Honk_Details::part( '' !== $d['ip'] ? sprintf( __( 'Network: %s', 'honk' ), $d['ip'] ) : '', 'ip' ),
+						/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
+						Honk_Details::part( '' !== $d['network'] && '' === $d['ip'] ? sprintf( __( 'Network: %s', 'honk' ), $d['network'] ) : '', 'network' ),
+						/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
+						Honk_Details::part( '' !== $d['network'] && '' !== $d['ip'] ? sprintf( __( 'Network: %s', 'honk' ), $d['network'] ) : '', 'network', 'ip' ),
+					)
+				),
+				Honk_Details::text( $d['new_device'] ? __( 'This account hasn’t used this browser and device before.', 'honk' ) : __( 'This account hasn’t signed in from this network before.', 'honk' ) ),
+				Honk_Details::text( __( 'If this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.', 'honk' ) ),
+			),
+		);
+	}
+
+	/**
+	 * Many failed sign-ins (count, window, ips, usernames).
+	 *
+	 * @param array $d Burst data.
+	 * @return array
+	 */
+	public static function burst_spec( array $d ) {
+		$lines = array(
+			Honk_Details::text(
+				sprintf(
+					/* translators: 1: number of failed sign-ins, 2: duration, e.g. "5 mins" */
+					_n( '%1$d failed sign-in within %2$s.', '%1$d failed sign-ins within %2$s.', $d['count'], 'honk' ),
+					$d['count'],
+					$d['window']
+				)
+			),
+			Honk_Details::text(
+				sprintf(
+					/* translators: %d: number of IP addresses */
+					_n( 'From %d IP address.', 'From %d IP addresses.', $d['ips'], 'honk' ),
+					$d['ips']
+				),
+				'ip_count'
+			),
+		);
+		if ( ! empty( $d['usernames'] ) ) {
+			/* translators: %s: comma-separated usernames */
+			$lines[] = Honk_Details::text( sprintf( __( 'Usernames tried: %s', 'honk' ), implode( ', ', $d['usernames'] ) ), 'usernames' );
+		}
+		$lines[] = Honk_Details::text( __( 'You’ll get an all-clear once they stop.', 'honk' ) );
+		return array(
+			'title' => array( Honk_Details::part( __( 'Many failed sign-ins', 'honk' ) ) ),
+			'lines' => $lines,
+		);
+	}
+
+	/**
+	 * New administrator (Honk_Notifier::user_data() plus created and actor).
+	 *
+	 * @param array $d User data.
+	 * @return array
+	 */
+	public static function new_admin_spec( array $d ) {
+		$who = Honk_Notifier::user_line( $d, '' );
+		return array(
+			/* translators: %s: user login */
+			'title' => array( Honk_Details::part( sprintf( __( 'New administrator: %s', 'honk' ), $d['login'] ) ) ),
+			'lines' => array(
+				$who + array(
+					'wrap' => $d['created']
+						/* translators: 1: user, 2: who did it */
+						? sprintf( __( '%1$s was created as an administrator by %2$s.', 'honk' ), "\x01", $d['actor'] )
+						/* translators: 1: user, 2: who did it */
+						: sprintf( __( '%1$s was made an administrator by %2$s.', 'honk' ), "\x01", $d['actor'] ),
+				),
+				Honk_Details::text( __( 'If you didn’t expect this, check the account now.', 'honk' ) ),
+			),
+		);
+	}
+
+	/**
+	 * Role changed (Honk_Notifier::user_data() plus label, from, to and actor).
+	 *
+	 * @param array $d Role change data.
+	 * @return array
+	 */
+	public static function role_spec( array $d ) {
+		$who        = Honk_Notifier::user_line( $d, '' );
+		$who['any'] = array( 'name', 'email' );
+		return array(
+			/* translators: %s: user */
+			'title' => array( Honk_Details::part( sprintf( __( 'Role changed for %s', 'honk' ), $d['label'] ) ) ),
+			'lines' => array(
+				/* translators: 1: previous value, 2: new value, 3: who did it */
+				Honk_Details::text( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk' ), $d['from'], $d['to'], $d['actor'] ) ),
+				$who,
+			),
+		);
+	}
+
+	/**
+	 * Admin email or site address changed (option, old, new, actor).
+	 *
+	 * @param array $d Change data.
+	 * @return array
+	 */
+	public static function identity_spec( array $d ) {
+		if ( 'admin_email' === $d['option'] ) {
+			$title = __( 'Administration email address changed', 'honk' );
+			$what  = Honk_Details::line(
+				array(
+					/* translators: 1: previous value, 2: new value, 3: who did it */
+					Honk_Details::part( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk' ), $d['old'], $d['new'], $d['actor'] ), 'emails' ),
+					/* translators: %s: who did it */
+					Honk_Details::part( sprintf( __( 'Changed by %s.', 'honk' ), $d['actor'] ), array(), 'emails' ),
+				)
+			);
+		} else {
+			$title = 'siteurl' === $d['option'] ? __( 'WordPress address (URL) changed', 'honk' ) : __( 'Site address (URL) changed', 'honk' );
+			/* translators: 1: previous value, 2: new value, 3: who did it */
+			$what = Honk_Details::text( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk' ), $d['old'], $d['new'], $d['actor'] ) );
+		}
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => array(
+				$what,
+				Honk_Details::text( __( 'If you didn’t expect this, check Settings → General now.', 'honk' ) ),
+			),
+		);
+	}
+
+	/**
+	 * Plugin installed, activated, deactivated or deleted (action, name, file, network, actor).
+	 *
+	 * @param array $d Plugin data.
+	 * @return array
+	 */
+	public static function plugin_spec( array $d ) {
+		switch ( $d['action'] ) {
+			case 'activated':
+				/* translators: %s: plugin name */
+				$title = sprintf( __( 'Plugin activated: %s', 'honk' ), $d['name'] );
+				break;
+			case 'deactivated':
+				/* translators: %s: plugin name */
+				$title = sprintf( __( 'Plugin deactivated: %s', 'honk' ), $d['name'] );
+				break;
+			case 'deleted':
+				/* translators: %s: plugin name */
+				$title = sprintf( __( 'Plugin deleted: %s', 'honk' ), $d['name'] );
+				break;
+			default:
+				/* translators: %s: plugin name */
+				$title = sprintf( __( 'Plugin installed: %s', 'honk' ), $d['name'] );
+		}
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => array(
+				Honk_Details::line(
+					array(
+						/* translators: %s: who did it */
+						Honk_Details::part( sprintf( __( 'By %s.', 'honk' ), $d['actor'] ), 'actor' ),
+						Honk_Details::part( $d['network'] ? __( 'Network-wide.', 'honk' ) : '' ),
+					),
+					' '
+				),
+				Honk_Details::text( $d['file'], 'file' ),
+			),
+		);
+	}
+
+	/**
+	 * Theme switched, installed or deleted (action, name, previous, actor).
+	 *
+	 * @param array $d Theme data.
+	 * @return array
+	 */
+	public static function theme_spec( array $d ) {
+		switch ( $d['action'] ) {
+			case 'switched':
+				/* translators: %s: theme name */
+				$title = sprintf( __( 'Theme switched to %s', 'honk' ), $d['name'] );
+				break;
+			case 'deleted':
+				/* translators: %s: theme name */
+				$title = sprintf( __( 'Theme deleted: %s', 'honk' ), $d['name'] );
+				break;
+			default:
+				/* translators: %s: theme name */
+				$title = sprintf( __( 'Theme installed: %s', 'honk' ), $d['name'] );
+		}
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => array(
+				/* translators: %s: who did it */
+				Honk_Details::text( sprintf( __( 'By %s.', 'honk' ), $d['actor'] ), 'actor' ),
+				/* translators: %s: previous theme name */
+				Honk_Details::text( '' !== $d['previous'] ? sprintf( __( 'Previous theme: %s', 'honk' ), $d['previous'] ) : '', 'previous' ),
+			),
+		);
+	}
+
+	/**
+	 * A theme or plugin file edited in the dashboard (kind, what, file, actor).
+	 *
+	 * @param array $d Edit data.
+	 * @return array
+	 */
+	public static function file_edit_spec( array $d ) {
+		return array(
+			'title' => array(
+				Honk_Details::part(
+					'theme' === $d['kind']
+						/* translators: %s: theme name */
+						? sprintf( __( 'Theme file edited: %s', 'honk' ), $d['what'] )
+						/* translators: %s: plugin name */
+						: sprintf( __( 'Plugin file edited: %s', 'honk' ), $d['what'] )
+				),
+			),
+			'lines' => array(
+				Honk_Details::line(
+					array(
+						/* translators: 1: file, 2: who did it */
+						Honk_Details::part( sprintf( __( '%1$s was edited in the file editor by %2$s.', 'honk' ), $d['file'], $d['actor'] ), 'actor' ),
+						/* translators: %s: file */
+						Honk_Details::part( sprintf( __( '%s was edited in the file editor.', 'honk' ), $d['file'] ), array(), 'actor' ),
+					)
+				),
+				Honk_Details::text( __( 'Tip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.', 'honk' ), 'tip' ),
+			),
+		);
+	}
+
+	/**
+	 * Updates installed (type, items, auto, actor).
+	 *
+	 * @param array $d Update data.
+	 * @return array
+	 */
+	public static function updates_spec( array $d ) {
+		$count = count( $d['items'] );
+		switch ( $d['type'] ) {
+			case 'core':
+				$title = __( 'WordPress updated', 'honk' );
+				break;
+			case 'theme':
+				/* translators: %d: number of themes */
+				$title = sprintf( _n( '%d theme updated', '%d themes updated', $count, 'honk' ), $count );
+				break;
+			default:
+				/* translators: %d: number of plugins */
+				$title = sprintf( _n( '%d plugin updated', '%d plugins updated', $count, 'honk' ), $count );
+		}
+		$lines = array();
+		foreach ( $d['items'] as $item ) {
+			$lines[] = Honk_Details::text( $item );
+		}
+		/* translators: %s: who did it */
+		$lines[] = $d['auto'] ? Honk_Details::text( __( 'Updated automatically.', 'honk' ) ) : Honk_Details::text( sprintf( __( 'By %s.', 'honk' ), $d['actor'] ), 'actor' );
+		return array(
+			'title' => array( Honk_Details::part( $title ) ),
+			'lines' => $lines,
+		);
 	}
 }

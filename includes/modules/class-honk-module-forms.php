@@ -23,6 +23,18 @@ final class Honk_Module_Forms {
 	const MAX_VALUE_CHARS = 500;
 
 	/**
+	 * Forms listed per plugin on the settings screen (to leave fields out).
+	 */
+	const MAX_LISTED_FORMS = 20;
+
+	/**
+	 * Forms listed in this request, by event id.
+	 *
+	 * @var array<string, array>
+	 */
+	private static $listed = array();
+
+	/**
 	 * Id of this request, for submissions that have no id of their own.
 	 *
 	 * @var string
@@ -70,6 +82,7 @@ final class Honk_Module_Forms {
 		$fields = array();
 		foreach ( (array) $submission->get_posted_data() as $name => $value ) {
 			$fields[] = array(
+				'key'   => (string) $name,
 				'label' => self::humanize( (string) $name ),
 				'value' => $value,
 				'type'  => isset( $types[ $name ] ) ? $types[ $name ] : '',
@@ -91,9 +104,10 @@ final class Honk_Module_Forms {
 	public static function on_wpforms( $fields, $entry, $form_data, $entry_id = 0 ) {
 		unset( $entry );
 		$rows = array();
-		foreach ( (array) $fields as $field ) {
+		foreach ( (array) $fields as $id => $field ) {
 			if ( is_array( $field ) ) {
 				$rows[] = array(
+					'key'   => isset( $field['id'] ) ? (string) $field['id'] : (string) $id,
 					'label' => isset( $field['name'] ) ? $field['name'] : '',
 					'value' => isset( $field['value'] ) ? $field['value'] : '',
 					'type'  => isset( $field['type'] ) ? $field['type'] : '',
@@ -123,6 +137,7 @@ final class Honk_Module_Forms {
 			}
 			$value  = method_exists( $field, 'get_value_export' ) ? $field->get_value_export( $entry, (string) $field->id, true ) : ( isset( $entry[ (string) $field->id ] ) ? $entry[ (string) $field->id ] : '' );
 			$rows[] = array(
+				'key'   => (string) $field->id,
 				'label' => isset( $field->label ) ? (string) $field->label : '',
 				'value' => $value,
 				'type'  => isset( $field->type ) ? (string) $field->type : '',
@@ -148,6 +163,7 @@ final class Honk_Module_Forms {
 		foreach ( (array) $record->get( 'fields' ) as $id => $field ) {
 			if ( is_array( $field ) ) {
 				$rows[] = array(
+					'key'   => (string) $id,
 					'label' => ! empty( $field['title'] ) ? $field['title'] : self::humanize( (string) $id ),
 					'value' => isset( $field['value'] ) ? $field['value'] : '',
 					'type'  => isset( $field['type'] ) ? $field['type'] : '',
@@ -174,6 +190,7 @@ final class Honk_Module_Forms {
 				continue; // _wp_http_referer, _fluentform_*_fluentformnonce…
 			}
 			$rows[] = array(
+				'key'   => (string) $name,
 				'label' => self::humanize( (string) $name ),
 				'value' => $value,
 				'type'  => false !== strpos( (string) $name, 'password' ) ? 'password' : '',
@@ -198,6 +215,7 @@ final class Honk_Module_Forms {
 		foreach ( isset( $form_data['fields'] ) ? (array) $form_data['fields'] : array() as $field ) {
 			if ( is_array( $field ) ) {
 				$rows[] = array(
+					'key'   => isset( $field['key'] ) ? (string) $field['key'] : '',
 					'label' => isset( $field['label'] ) ? $field['label'] : ( isset( $field['key'] ) ? $field['key'] : '' ),
 					'value' => isset( $field['value'] ) ? $field['value'] : '',
 					'type'  => isset( $field['type'] ) ? $field['type'] : '',
@@ -212,13 +230,14 @@ final class Honk_Module_Forms {
 
 	/**
 	 * Queues the message of a submission. The form name is the title; field values are included
-	 * only when the privacy setting allows personal data.
+	 * only when the privacy setting allows personal data, without the fields left out in the
+	 * event's details.
 	 *
 	 * @param string $event_id Event id.
 	 * @param string $plugin   Plugin slug for the group key.
 	 * @param string $form_id  Form id.
 	 * @param string $title    Form name.
-	 * @param array  $rows     Fields: label, value, type.
+	 * @param array  $rows     Fields: key, label, value, type.
 	 * @param string $entry    Submission id, or '' to use this request's id.
 	 * @return void
 	 */
@@ -231,23 +250,247 @@ final class Honk_Module_Forms {
 		Honk_Notifier::emit(
 			$event_id,
 			'form-' . $plugin . '-' . $form_id . '-' . $entry,
-			function () use ( $plugin, $form_id, $title, $rows ) {
-				$pii   = Honk_Settings::include_pii();
+			function () use ( $event_id, $plugin, $form_id, $title, $rows ) {
 				$name  = '' !== trim( $title ) ? Honk_Payload::plain( $title, true ) : __( 'Form', 'honk' );
-				$lines = $pii ? self::field_lines( $rows ) : array();
-				return array(
-					'title'     => $name,
-					/* translators: %s: form name */
-					'message'   => $lines ? implode( "\n", $lines ) : sprintf( __( 'Someone sent the “%s” form.', 'honk' ), $name ),
-					'group_key' => 'wp/forms/' . $plugin . '/' . $form_id,
-					'pii'       => $pii && ! empty( $lines ),
-					'metadata'  => array(
-						'form_plugin' => $plugin,
-						'form_id'     => $form_id,
-					),
+				$lines = Honk_Details::on( $event_id, 'values' ) ? self::field_lines( self::without_skipped( $event_id, $form_id, $rows ) ) : array();
+				return Honk_Details::fields(
+					$event_id,
+					self::form_spec( $name, $lines ),
+					array(
+						'group_key' => 'wp/forms/' . $plugin . '/' . $form_id,
+						'metadata'  => array(
+							'form_plugin' => $plugin,
+							'form_id'     => $form_id,
+						),
+					)
 				);
 			}
 		);
+	}
+
+	/**
+	 * The rows without the fields left out of this form's notifications.
+	 *
+	 * @param string $event_id Event id.
+	 * @param string $form_id  Form id.
+	 * @param array  $rows     Fields: key, label, value, type.
+	 * @return array
+	 */
+	public static function without_skipped( $event_id, $form_id, array $rows ) {
+		$skip = Honk_Details::skipped_fields( $event_id, Honk_Details::form_key( $form_id ) );
+		if ( empty( $skip ) ) {
+			return $rows;
+		}
+		return array_values(
+			array_filter(
+				$rows,
+				function ( $row ) use ( $skip ) {
+					return ! isset( $row['key'] ) || ! in_array( Honk_Details::field_key( $row['key'] ), $skip, true );
+				}
+			)
+		);
+	}
+
+	/**
+	 * A form submission's outline (Honk_Details): the same for real entries and for the settings
+	 * preview.
+	 *
+	 * @param string   $name  Form name.
+	 * @param string[] $lines field_lines().
+	 * @return array
+	 */
+	public static function form_spec( $name, array $lines ) {
+		$spec = array(
+			'title'    => array( Honk_Details::part( $name ) ),
+			'lines'    => array(),
+			/* translators: %s: form name */
+			'fallback' => sprintf( __( 'Someone sent the “%s” form.', 'honk' ), $name ),
+		);
+		foreach ( $lines as $line ) {
+			$spec['lines'][] = Honk_Details::text( $line, 'values' );
+		}
+		return $spec;
+	}
+
+	/**
+	 * The forms of a form plugin and their fields, for leaving fields out on the settings screen.
+	 * Contact Form 7, WPForms and Gravity Forms list them; the other plugins return nothing.
+	 *
+	 * @param string $event_id Event id.
+	 * @return array<string, array{title: string, fields: array<string, array{label: string, type: string}>}>
+	 */
+	public static function forms( $event_id ) {
+		if ( ! isset( self::$listed[ $event_id ] ) ) {
+			self::$listed[ $event_id ] = self::list_forms( $event_id );
+		}
+		return self::$listed[ $event_id ];
+	}
+
+	/**
+	 * Forgets the listed forms (tests).
+	 *
+	 * @return void
+	 */
+	public static function flush_forms() {
+		self::$listed = array();
+	}
+
+	/**
+	 * Asks the form plugin for its forms (forms()).
+	 *
+	 * @param string $event_id Event id.
+	 * @return array
+	 */
+	private static function list_forms( $event_id ) {
+		try {
+			switch ( $event_id ) {
+				case 'form_cf7':
+					return self::cf7_forms();
+				case 'form_wpforms':
+					return self::wpforms_forms();
+				case 'form_gravityforms':
+					return self::gravityforms_forms();
+			}
+		} catch ( Throwable $e ) {
+			return array(); // A form plugin's API changed: the screen still works, without the list.
+		}
+		return array();
+	}
+
+	/**
+	 * Whether a field type is listed (fields that never carry an answer are not).
+	 *
+	 * @param string $type Field type.
+	 * @return bool
+	 */
+	private static function listed_type( $type ) {
+		return ! in_array( strtolower( (string) $type ), array_merge( self::SKIP_TYPES, array( 'page' ) ), true );
+	}
+
+	/**
+	 * Contact Form 7 forms (WPCF7_ContactForm::find(), form tags).
+	 *
+	 * @return array
+	 */
+	private static function cf7_forms() {
+		if ( ! class_exists( 'WPCF7_ContactForm' ) || ! method_exists( 'WPCF7_ContactForm', 'find' ) ) {
+			return array();
+		}
+		$out   = array();
+		$forms = WPCF7_ContactForm::find(
+			array(
+				'posts_per_page' => self::MAX_LISTED_FORMS,
+				'orderby'        => 'ID',
+				'order'          => 'ASC',
+			)
+		);
+		foreach ( (array) $forms as $form ) {
+			if ( ! is_object( $form ) || ! method_exists( $form, 'scan_form_tags' ) ) {
+				continue;
+			}
+			$fields = array();
+			foreach ( (array) $form->scan_form_tags() as $tag ) {
+				if ( ! is_object( $tag ) || empty( $tag->name ) || ! self::listed_type( $tag->basetype ) ) {
+					continue;
+				}
+				$fields[ (string) $tag->name ] = array(
+					'label' => self::humanize( (string) $tag->name ),
+					'type'  => (string) $tag->basetype,
+				);
+			}
+			$out[ Honk_Details::form_key( $form->id() ) ] = array(
+				'title'  => Honk_Payload::plain( $form->title(), true ),
+				'fields' => $fields,
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * WPForms forms (the form handler's get(), fields in the form's JSON).
+	 *
+	 * @return array
+	 */
+	private static function wpforms_forms() {
+		if ( ! function_exists( 'wpforms' ) ) {
+			return array();
+		}
+		$wpforms = wpforms();
+		$handler = null;
+		if ( is_object( $wpforms ) && method_exists( $wpforms, 'obj' ) ) {
+			$handler = $wpforms->obj( 'form' );
+		} elseif ( is_object( $wpforms ) && method_exists( $wpforms, 'get' ) ) {
+			$handler = $wpforms->get( 'form' );
+		}
+		if ( ! is_object( $handler ) || ! method_exists( $handler, 'get' ) ) {
+			return array();
+		}
+		$out   = array();
+		$forms = $handler->get(
+			'',
+			array(
+				'nopaging'       => false,
+				'posts_per_page' => self::MAX_LISTED_FORMS,
+				'orderby'        => 'ID',
+				'order'          => 'ASC',
+			)
+		);
+		foreach ( (array) $forms as $post ) {
+			if ( ! $post instanceof WP_Post ) {
+				continue;
+			}
+			$data   = function_exists( 'wpforms_decode' ) ? wpforms_decode( $post->post_content ) : json_decode( $post->post_content, true );
+			$fields = array();
+			foreach ( isset( $data['fields'] ) && is_array( $data['fields'] ) ? $data['fields'] : array() as $id => $field ) {
+				if ( ! is_array( $field ) || ! self::listed_type( isset( $field['type'] ) ? $field['type'] : '' ) ) {
+					continue;
+				}
+				$key            = isset( $field['id'] ) ? (string) $field['id'] : (string) $id;
+				$label          = isset( $field['label'] ) ? Honk_Payload::plain( $field['label'], true ) : '';
+				$fields[ $key ] = array(
+					'label' => '' !== $label ? $label : $key,
+					'type'  => isset( $field['type'] ) ? (string) $field['type'] : '',
+				);
+			}
+			$out[ Honk_Details::form_key( $post->ID ) ] = array(
+				'title'  => Honk_Payload::plain( $post->post_title, true ),
+				'fields' => $fields,
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * Gravity Forms forms (GFAPI::get_forms()).
+	 *
+	 * @return array
+	 */
+	private static function gravityforms_forms() {
+		if ( ! class_exists( 'GFAPI' ) || ! method_exists( 'GFAPI', 'get_forms' ) ) {
+			return array();
+		}
+		$out = array();
+		foreach ( array_slice( (array) GFAPI::get_forms( true, false, 'id', 'ASC' ), 0, self::MAX_LISTED_FORMS ) as $form ) {
+			if ( ! is_array( $form ) || ! isset( $form['id'] ) ) {
+				continue;
+			}
+			$fields = array();
+			foreach ( isset( $form['fields'] ) ? (array) $form['fields'] : array() as $field ) {
+				if ( ! is_object( $field ) || ! isset( $field->id ) || ! self::listed_type( isset( $field->type ) ? $field->type : '' ) ) {
+					continue;
+				}
+				$label                         = isset( $field->label ) ? Honk_Payload::plain( $field->label, true ) : '';
+				$fields[ (string) $field->id ] = array(
+					'label' => '' !== $label ? $label : (string) $field->id,
+					'type'  => isset( $field->type ) ? (string) $field->type : '',
+				);
+			}
+			$out[ Honk_Details::form_key( $form['id'] ) ] = array(
+				'title'  => isset( $form['title'] ) ? Honk_Payload::plain( $form['title'], true ) : '',
+				'fields' => $fields,
+			);
+		}
+		return $out;
 	}
 
 	/**

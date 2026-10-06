@@ -69,6 +69,10 @@ final class Honk_Admin {
 		}
 		wp_enqueue_style( 'honk-admin', plugins_url( 'assets/admin.css', HONK_FILE ), array(), HONK_VERSION );
 		wp_enqueue_script( 'honk-admin', plugins_url( 'assets/admin.js', HONK_FILE ), array(), HONK_VERSION, true );
+		if ( 'log' !== self::current_tab() ) {
+			// The previews' outlines (sample data, in the notification language) for assets/admin.js.
+			wp_add_inline_script( 'honk-admin', 'window.honkPreviews = ' . wp_json_encode( Honk_Preview::specs(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP ) . ';', 'before' );
+		}
 		wp_localize_script(
 			'honk-admin',
 			'honkAdmin',
@@ -140,7 +144,7 @@ final class Honk_Admin {
 			return;
 		}
 		$text = '<p>' . esc_html__( 'This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-me.app) or to another Honk server the site owner chose.', 'honk' ) . '</p>'
-			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include the name and email address of a customer, user or commenter, the text of comments and reviews, and what was entered in forms.', 'honk' ) . '</p>'
+			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device.', 'honk' ) . '</p>'
 			. '<p>' . sprintf(
 				/* translators: %s: link to the Honk privacy policy */
 				esc_html__( 'Honk privacy policy: %s', 'honk' ),
@@ -252,8 +256,9 @@ final class Honk_Admin {
 					<td>
 						<fieldset>
 							<legend class="screen-reader-text"><?php esc_html_e( 'Personal data', 'honk' ); ?></legend>
-							<label><input type="checkbox" name="<?php echo esc_attr( $opt ); ?>[include_pii]" value="1" <?php checked( ! empty( $s['include_pii'] ) ); ?>> <?php esc_html_e( 'Include customer names and emails', 'honk' ); ?></label>
+							<label><input type="checkbox" id="honk-include-pii" name="<?php echo esc_attr( $opt ); ?>[include_pii]" value="1" <?php checked( ! empty( $s['include_pii'] ) ); ?>> <?php esc_html_e( 'Include customer names and emails', 'honk' ); ?></label>
 							<p class="description"><?php esc_html_e( 'Off: no names or email addresses. An order reads “Order #1234 · €84.00 · 2 items” and a form entry only says which form was used. On: names, email addresses, comments and form fields are included.', 'honk' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Under Events, each event’s Details show which personal data it can include, and let you leave out what you don’t need.', 'honk' ); ?></p>
 						</fieldset>
 					</td>
 				</tr>
@@ -289,6 +294,7 @@ final class Honk_Admin {
 
 			<h2><?php esc_html_e( 'Events', 'honk' ); ?></h2>
 			<p><?php esc_html_e( 'Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk groups repeats, so you only get a push when something needs you.', 'honk' ); ?></p>
+			<p><?php esc_html_e( 'Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk.', 'honk' ); ?></p>
 			<?php
 			foreach ( Honk_Events::sections() as $section => $title ) {
 				self::render_section( $section, $title, $s );
@@ -348,7 +354,7 @@ final class Honk_Admin {
 			$ids = array_values( array_filter( $ids, array( 'Honk_Events', 'is_available' ) ) );
 		}
 		?>
-		<table class="widefat striped honk-events">
+		<table class="widefat honk-events">
 			<thead>
 				<tr>
 					<th scope="col" class="honk-col-event"><?php esc_html_e( 'Event', 'honk' ); ?></th>
@@ -359,8 +365,10 @@ final class Honk_Admin {
 			</thead>
 			<tbody>
 				<?php
-				foreach ( $ids as $id ) {
-					self::render_event_row( $id, $settings );
+				foreach ( $ids as $i => $id ) {
+					// Striped by event (WordPress's .alternate), so an event and its details share a background.
+					self::render_event_row( $id, $settings, 0 === $i % 2 );
+					self::render_details_row( $id, $settings, 0 === $i % 2 );
 				}
 				?>
 			</tbody>
@@ -369,24 +377,28 @@ final class Honk_Admin {
 	}
 
 	/**
-	 * One event row: on/off, Honk-scale level, priority.
+	 * One event row: on/off, Honk-scale level, priority, and the button that opens its details.
 	 *
-	 * @param string $id       Event id.
-	 * @param array  $settings Settings.
+	 * @param string $id        Event id.
+	 * @param array  $settings  Settings.
+	 * @param bool   $alternate Striped row.
 	 * @return void
 	 */
-	private static function render_event_row( $id, array $settings ) {
+	private static function render_event_row( $id, array $settings, $alternate ) {
 		$event = Honk_Settings::event( $id );
 		$label = Honk_Events::label( $id );
 		$name  = Honk_Settings::OPTION . '[events][' . $id . ']';
 		$dom   = 'honk-event-' . str_replace( '_', '-', $id );
 		?>
-		<tr>
+		<tr class="honk-event-row<?php echo $alternate ? ' alternate' : ''; ?>">
 			<td class="honk-col-event">
 				<label for="<?php echo esc_attr( $dom ); ?>"><strong><?php echo esc_html( $label[0] ); ?></strong></label>
 				<?php if ( '' !== $label[1] ) : ?>
 					<p class="description"><?php echo esc_html( $label[1] ); ?></p>
 				<?php endif; ?>
+				<p class="honk-details-toggle-wrap">
+					<button type="button" class="button-link honk-details-toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $dom . '-details' ); ?>"><?php esc_html_e( 'Details', 'honk' ); ?><span class="screen-reader-text">: <?php echo esc_html( $label[0] ); ?></span><span class="honk-details-indicator" aria-hidden="true"></span></button>
+				</p>
 				<?php if ( 'login_failures_burst' === $id ) : ?>
 					<p class="description honk-burst">
 						<?php
@@ -404,7 +416,7 @@ final class Honk_Admin {
 				<input type="checkbox" id="<?php echo esc_attr( $dom ); ?>" name="<?php echo esc_attr( $name ); ?>[enabled]" value="1" <?php checked( $event['enabled'] ); ?>>
 			</td>
 			<td class="honk-col-level">
-				<select name="<?php echo esc_attr( $name ); ?>[severity]" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: event name */ __( 'Level for %s', 'honk' ), $label[0] ) ); ?>">
+				<select name="<?php echo esc_attr( $name ); ?>[severity]" data-honk-level="<?php echo esc_attr( $id ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: event name */ __( 'Level for %s', 'honk' ), $label[0] ) ); ?>">
 					<?php foreach ( Honk_Settings::SEVERITIES as $severity ) : ?>
 						<option value="<?php echo esc_attr( $severity ); ?>" <?php selected( $event['severity'], $severity ); ?> title="<?php echo esc_attr( $severity ); ?>"><?php echo esc_html( Honk_Settings::severity_label( $severity ) ); ?></option>
 					<?php endforeach; ?>
@@ -418,6 +430,220 @@ final class Honk_Admin {
 				</select>
 			</td>
 		</tr>
+		<?php
+	}
+
+	/**
+	 * An event's details: what its notification can say, as choices, next to the preview.
+	 *
+	 * Personal details can only be chosen while "Include customer names and emails" is on. Until
+	 * then they're disabled, and their saved choice travels in a hidden field of the same name
+	 * (assets/admin.js keeps the two in step when the switch changes).
+	 *
+	 * @param string $id        Event id.
+	 * @param array  $settings  Settings.
+	 * @param bool   $alternate Striped row.
+	 * @return void
+	 */
+	private static function render_details_row( $id, array $settings, $alternate ) {
+		$dom      = 'honk-event-' . str_replace( '_', '-', $id );
+		$label    = Honk_Events::label( $id );
+		$facts    = Honk_Details::facts( $id );
+		$pii      = ! empty( $settings['include_pii'] );
+		$name     = Honk_Settings::OPTION . '[details][' . $id . ']';
+		$always   = Honk_Details::always( $id );
+		$general  = array();
+		$personal = array();
+		foreach ( $facts as $fact => $meta ) {
+			if ( $meta[0] ) {
+				$personal[] = $fact;
+			} else {
+				$general[] = $fact;
+			}
+		}
+		?>
+		<tr id="<?php echo esc_attr( $dom . '-details' ); ?>" class="honk-details-row<?php echo $alternate ? ' alternate' : ''; ?>" data-event="<?php echo esc_attr( $id ); ?>" hidden>
+			<td colspan="4">
+				<div class="honk-details">
+					<fieldset class="honk-facts">
+						<legend class="honk-details-heading">
+							<?php
+							/* translators: %s: event name, e.g. "New order" */
+							echo esc_html( sprintf( __( 'What “%s” includes', 'honk' ), $label[0] ) );
+							?>
+						</legend>
+						<?php if ( $always ) : ?>
+							<p class="description">
+								<?php
+								/* translators: %s: a list, e.g. "the order number and a link to the order" */
+								echo esc_html( sprintf( __( 'Always included: %s.', 'honk' ), wp_sprintf( '%l', $always ) ) );
+								?>
+							</p>
+						<?php endif; ?>
+						<?php if ( empty( $facts ) ) : ?>
+							<p class="description"><?php esc_html_e( 'There’s nothing else to choose for this one.', 'honk' ); ?></p>
+						<?php endif; ?>
+						<?php if ( $general ) : ?>
+							<ul class="honk-choices">
+								<?php
+								foreach ( $general as $fact ) {
+									self::render_choice( $name . '[' . $fact . ']', Honk_Details::label( $id, $fact ), Honk_Details::chosen( $id, $fact ), false, array( 'data-fact' => $fact ) );
+								}
+								?>
+							</ul>
+						<?php endif; ?>
+						<?php if ( $personal ) : ?>
+							<fieldset class="honk-facts-personal">
+								<legend><?php esc_html_e( 'Personal data', 'honk' ); ?></legend>
+								<ul class="honk-choices">
+									<?php
+									foreach ( $personal as $fact ) {
+										self::render_choice(
+											$name . '[' . $fact . ']',
+											Honk_Details::label( $id, $fact ),
+											Honk_Details::chosen( $id, $fact ),
+											! $pii,
+											array(
+												'data-fact' => $fact,
+												'data-pii' => '1',
+												'data-note' => $dom . '-pii-note',
+												'aria-describedby' => $pii ? '' : $dom . '-pii-note',
+											)
+										);
+									}
+									?>
+								</ul>
+								<?php self::render_form_fields( $id, $name, $dom, $pii ); ?>
+								<p class="description honk-pii-note" id="<?php echo esc_attr( $dom . '-pii-note' ); ?>"<?php echo $pii ? ' hidden' : ''; ?>><?php esc_html_e( 'Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above.', 'honk' ); ?></p>
+							</fieldset>
+						<?php endif; ?>
+					</fieldset>
+					<?php self::render_preview( $id, $dom ); ?>
+				</div>
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
+	 * One choice: a checkbox, and before it a hidden field with the same name that carries the
+	 * saved choice while the checkbox is disabled (a disabled checkbox isn't submitted).
+	 *
+	 * @param string $name    Field name.
+	 * @param string $label   Label.
+	 * @param bool   $chosen  Saved choice.
+	 * @param bool   $blocked Disabled: personal data is off, or the form's answers are left out.
+	 * @param array  $attrs   Attributes of the checkbox (data-fact, data-pii, data-requires…).
+	 * @return void
+	 */
+	private static function render_choice( $name, $label, $chosen, $blocked, array $attrs ) {
+		?>
+		<li>
+			<input type="hidden" class="honk-choice-saved" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $blocked && $chosen ? '1' : '0' ); ?>">
+			<label><input type="checkbox" name="<?php echo esc_attr( $name ); ?>" value="1"
+			<?php
+			foreach ( array_filter( $attrs, 'strlen' ) as $attr => $value ) {
+				echo ' ' . esc_attr( $attr ) . '="' . esc_attr( $value ) . '"';
+			}
+			checked( $chosen && ! $blocked );
+			disabled( $blocked );
+			?>
+			> <?php echo esc_html( $label ); ?></label>
+		</li>
+		<?php
+	}
+
+	/**
+	 * Form plugins that list their forms' fields: one checkbox per field, per form. The others say
+	 * that it's every field or none.
+	 *
+	 * @param string $id   Event id.
+	 * @param string $name Field name prefix.
+	 * @param string $dom  DOM id prefix.
+	 * @param bool   $pii  Personal data is on.
+	 * @return void
+	 */
+	private static function render_form_fields( $id, $name, $dom, $pii ) {
+		if ( 'forms' !== Honk_Events::section( $id ) ) {
+			return;
+		}
+		$label = Honk_Events::label( $id );
+		if ( ! in_array( $id, Honk_Details::FORM_FIELD_EVENTS, true ) ) {
+			/* translators: %s: form plugin name, e.g. Fluent Forms */
+			echo '<p class="description">' . esc_html( sprintf( __( '%s doesn’t share a form’s list of fields with other plugins, so Honk includes every field or none.', 'honk' ), $label[0] ) ) . '</p>';
+			return;
+		}
+		$all   = Honk_Module_Forms::forms( $id );
+		$forms = array_filter(
+			$all,
+			function ( $form ) {
+				return ! empty( $form['fields'] );
+			}
+		);
+		if ( empty( $forms ) ) {
+			return;
+		}
+		$values = Honk_Details::chosen( $id, 'values' );
+		?>
+		<fieldset class="honk-form-fields">
+			<legend><?php esc_html_e( 'Fields to include', 'honk' ); ?></legend>
+			<?php foreach ( $forms as $form_id => $form ) : ?>
+				<?php $skip = Honk_Details::skipped_fields( $id, (string) $form_id ); ?>
+				<p class="honk-form-name"><?php echo esc_html( '' !== $form['title'] ? $form['title'] : __( '(no title)', 'honk' ) ); ?></p>
+				<ul class="honk-choices">
+					<?php
+					foreach ( $form['fields'] as $key => $field ) {
+						self::render_choice(
+							$name . '[fields][' . Honk_Details::form_key( $form_id ) . '][' . Honk_Details::field_key( $key ) . ']',
+							$field['label'],
+							! in_array( Honk_Details::field_key( $key ), $skip, true ),
+							! $pii || ! $values,
+							array(
+								'data-fact'        => Honk_Preview::field_fact( (string) $form_id, (string) $key ),
+								'data-pii'         => '1',
+								'data-requires'    => 'values',
+								'data-note'        => $dom . '-pii-note',
+								'aria-describedby' => $pii ? '' : $dom . '-pii-note',
+							)
+						);
+					}
+					?>
+				</ul>
+			<?php endforeach; ?>
+			<?php if ( count( $all ) >= Honk_Module_Forms::MAX_LISTED_FORMS ) : ?>
+				<p class="description">
+					<?php
+					/* translators: %d: number of forms */
+					echo esc_html( sprintf( __( 'Only the first %d forms are listed here. The others include every field.', 'honk' ), Honk_Module_Forms::MAX_LISTED_FORMS ) );
+					?>
+				</p>
+			<?php endif; ?>
+		</fieldset>
+		<?php
+	}
+
+	/**
+	 * The preview: the event's notification as it will read in Honk, built from sample data with
+	 * the saved choices. assets/admin.js redraws it as the choices change.
+	 *
+	 * @param string $id  Event id.
+	 * @param string $dom DOM id prefix.
+	 * @return void
+	 */
+	private static function render_preview( $id, $dom ) {
+		$specs    = Honk_Preview::specs();
+		$composed = Honk_Details::compose( $id, isset( $specs[ $id ] ) ? $specs[ $id ] : array(), Honk_Preview::states( $id ) );
+		$event    = Honk_Settings::event( $id );
+		?>
+		<div class="honk-preview">
+			<h4 class="honk-details-heading" id="<?php echo esc_attr( $dom . '-preview-heading' ); ?>"><?php esc_html_e( 'Preview', 'honk' ); ?></h4>
+			<div class="honk-preview-card" role="group" aria-labelledby="<?php echo esc_attr( $dom . '-preview-heading' ); ?>" aria-live="polite">
+				<p class="honk-preview-meta"><span class="honk-preview-level"><?php echo esc_html( Honk_Settings::severity_label( $event['severity'] ) ); ?></span> · <?php echo esc_html( Honk_Settings::source() ); ?></p>
+				<p class="honk-preview-title"><?php echo esc_html( $composed['title'] ); ?></p>
+				<p class="honk-preview-message"><?php echo esc_html( '' !== $composed['message'] ? $composed['message'] : $composed['title'] ); ?></p>
+			</div>
+			<p class="description"><?php esc_html_e( 'With sample data, in the notification language.', 'honk' ); ?></p>
+		</div>
 		<?php
 	}
 

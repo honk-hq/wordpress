@@ -152,7 +152,7 @@ msgstr "Désactivé : aucun nom ni adresse e-mail. Une commande apparaît sous 
 
 #: includes/class-honk-admin.php:261
 msgid "Under Events, each event’s Details show which personal data it can include, and let you leave out what you don’t need."
-msgstr "Dans Événements, les Détails de chaque événement indiquent les données personnelles qu’il peut contenir et vous permettent d’écarter ce dont vous n’avez pas besoin."
+msgstr "Dans « Événements », la section « Détails » de chaque événement indique les données personnelles qu’il peut contenir et vous permet d’écarter ce dont vous n’avez pas besoin."
 
 #: includes/class-honk-admin.php:266
 msgid "Environment"
@@ -190,7 +190,7 @@ msgstr "Choisissez ce que vous voulez suivre et le volume de chaque alerte, du �
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk."
-msgstr "Ouvrez Détails sous un événement pour choisir ce que dit sa notification. L’aperçu, à côté des choix, montre comment elle s’affichera dans Honk."
+msgstr "Ouvrez « Détails » sous un événement pour choisir le contenu de sa notification. L’aperçu, à côté, montre comment elle s’affichera dans Honk."
 
 #: includes/class-honk-admin.php:334
 msgid "WooCommerce isn’t active. Its events show up here once it is."
@@ -270,7 +270,7 @@ msgstr "Il n’y a rien d’autre à choisir ici."
 
 #: includes/class-honk-admin.php:509
 msgid "Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above."
-msgstr "Les données personnelles sont désactivées sur ce site : ces informations ne sont donc pas incluses. Pour les choisir, activez « Inclure les noms et e-mails des clients » plus haut."
+msgstr "L’envoi de données personnelles est désactivé sur ce site : ces informations sont donc exclues. Pour pouvoir les cocher, activez « Inclure les noms et e-mails des clients » plus haut."
 
 #. translators: %s: form plugin name, e.g. Fluent Forms
 #: includes/class-honk-admin.php:565
@@ -291,7 +291,7 @@ msgstr "(pas de titre)"
 #: includes/class-honk-admin.php:609
 #, php-format
 msgid "Only the first %d forms are listed here. The others include every field."
-msgstr "Seuls les %d premiers formulaires sont listés ici. Les autres incluent tous les champs."
+msgstr "Seuls les %d premiers formulaires figurent ici. Pour les autres, tous les champs sont inclus."
 
 #: includes/class-honk-admin.php:631
 msgid "Preview"
@@ -502,7 +502,7 @@ msgstr "Note"
 
 #: includes/class-honk-details.php:606
 msgid "Post title"
-msgstr "Titre de l’article"
+msgstr "Titre"
 
 #: includes/class-honk-details.php:608
 msgid "Author"
@@ -514,7 +514,7 @@ msgstr "Extrait"
 
 #: includes/class-honk-details.php:612
 msgid "What people entered"
-msgstr "Les réponses saisies"
+msgstr "Réponses saisies"
 
 #: includes/class-honk-details.php:614
 msgid "Username"
@@ -639,11 +639,11 @@ msgstr "le nom du formulaire"
 
 #: includes/class-honk-details.php:680
 msgid "whether the browser or the network is new"
-msgstr "si le navigateur ou le réseau est nouveau"
+msgstr "ce qui est nouveau (navigateur ou réseau)"
 
 #: includes/class-honk-details.php:680
 msgid "what to do if it wasn’t you"
-msgstr "que faire si ce n’était pas vous"
+msgstr "la marche à suivre si ce n’était pas vous"
 
 #: includes/class-honk-details.php:682
 msgid "the number of failed sign-ins"
@@ -651,7 +651,7 @@ msgstr "le nombre d’échecs de connexion"
 
 #: includes/class-honk-details.php:682
 msgid "an all-clear when they stop"
-msgstr "un message quand elles cessent"
+msgstr "un message quand ils cessent"
 
 #: includes/class-honk-details.php:684
 #: includes/class-honk-details.php:686
@@ -701,7 +701,7 @@ msgstr "l’extension ou le thème en cause"
 
 #: includes/class-honk-details.php:698
 msgid "whether WordPress emailed a recovery link"
-msgstr "si WordPress a envoyé un lien de récupération par e-mail"
+msgstr "l’envoi éventuel d’un lien de récupération par WordPress"
 
 #: includes/class-honk-details.php:700
 msgid "the critical issues"
@@ -753,7 +753,7 @@ msgstr "le type de publication"
 
 #: includes/class-honk-details.php:715
 msgid "a link to the post"
-msgstr "un lien vers l’article"
+msgstr "un lien vers la publication"
 
 #: includes/class-honk-details.php:720
 msgid "the old and new status"
@@ -782,7 +782,7 @@ msgstr "un lien vers le profil du client"
 
 #: includes/class-honk-details.php:729
 msgid "whether it’s awaiting moderation"
-msgstr "s’il est en attente de modération"
+msgstr "si l’avis est en attente de modération"
 
 #: includes/class-honk-details.php:729
 msgid "a link to the reviews"
@@ -951,11 +951,11 @@ msgstr "Commentaire en attente de modération"
 
 #: includes/class-honk-events.php:202
 msgid "Post pending review"
-msgstr "Article en attente de relecture"
+msgstr "Publication en attente de relecture"
 
 #: includes/class-honk-events.php:204
 msgid "Post published"
-msgstr "Article publié"
+msgstr "Publication mise en ligne"
 
 #: includes/class-honk-events.php:218
 msgid "New order"
@@ -1068,7 +1068,7 @@ msgstr "Endommagé pendant le transport"
 #. translators: sample product review in the notification preview
 #: includes/class-honk-preview.php:286
 msgid "Lovely fabric, and it washes well."
-msgstr "Très joli tissu, et il se lave bien."
+msgstr "Très joli tissu, et il passe bien en machine."
 
 #: includes/class-honk-preview.php:330
 #: includes/modules/class-honk-module-forms.php:254
@@ -1235,7 +1235,7 @@ msgstr "%1$s par %2$s, en attente de relecture."
 #: includes/modules/class-honk-module-content.php:266
 #, php-format
 msgid "%s is waiting for review."
-msgstr "%s, en attente de relecture."
+msgstr "%s en attente de relecture."
 
 #. translators: %s: post title
 #: includes/modules/class-honk-module-content.php:269
@@ -1640,8 +1640,8 @@ msgstr[1] "%d articles"
 #, php-format
 msgid "and %d more"
 msgid_plural "and %d more"
-msgstr[0] "et %d de plus"
-msgstr[1] "et %d de plus"
+msgstr[0] "et %d autre"
+msgstr[1] "et %d autres"
 
 #. translators: %s: order number
 #: includes/modules/class-honk-module-woocommerce.php:781
@@ -1653,7 +1653,7 @@ msgstr "Nouvelle commande n°%s"
 #: includes/modules/class-honk-module-woocommerce.php:792
 #, php-format
 msgid "Shipping: %s"
-msgstr "Livraison : %s"
+msgstr "Expédition : %s"
 
 #. translators: %s: the note the customer left at checkout
 #: includes/modules/class-honk-module-woocommerce.php:796

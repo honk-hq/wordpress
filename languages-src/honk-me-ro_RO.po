@@ -70,7 +70,7 @@ msgstr "Acest site folosește Honk ca să-i trimită proprietarului notificări 
 
 #: includes/class-honk-admin.php:147
 msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
-msgstr "Implicit, notificările nu conțin date personale: o comandă apare doar cu numărul, totalul și numărul de produse. Dacă proprietarul site-ului activează opțiunea „Include numele și adresele de email ale clienților”, notificările pot conține și, în funcție de ce a ales proprietarul pentru fiecare eveniment, numele, adresa de email și numărul de telefon ale unui client, ale unui utilizator sau ale autorului unui comentariu, orașul și țara din adresa de facturare a unui client, textul comentariilor, al recenziilor și al notelor de comandă, ce s-a completat în formulare, precum și adresa IP a unui administrator care se autentifică de pe un dispozitiv nou."
+msgstr "Implicit, notificările nu conțin date personale: o comandă apare doar cu numărul, totalul și numărul de produse. Dacă proprietarul site-ului activează opțiunea „Include numele și adresele de email ale clienților”, notificările pot conține și alte date, în funcție de ce a ales pentru fiecare eveniment: numele, adresa de email și numărul de telefon ale unui client, utilizator sau autor de comentariu, orașul și țara de facturare ale unui client, textul comentariilor, al recenziilor și al notelor de comandă, ce s-a completat în formulare, precum și adresa IP a unui administrator care se autentifică de pe un dispozitiv nou."
 
 #. translators: %s: link to the Honk privacy policy
 #: includes/class-honk-admin.php:150
@@ -178,7 +178,7 @@ msgstr "Limba site-ului"
 
 #: includes/class-honk-admin.php:297
 msgid "Notifications use the WordPress translations of Honk Me. Every language installed on this site is listed here; where a language has no translation yet, notifications are in English."
-msgstr "Notificările folosesc traducerile WordPress ale pluginului Honk Me. Aici apar toate limbile instalate pe site; dacă o limbă nu are încă traducere, notificările sunt în engleză."
+msgstr "Notificările folosesc traducerile modulului Honk Me din WordPress. Aici apar toate limbile instalate pe site; dacă o limbă nu are încă traducere, notificările sunt în engleză."
 
 #: includes/class-honk-admin.php:302
 msgid "Events"
@@ -190,7 +190,7 @@ msgstr "Alege despre ce vrei să afli și cât de tare să claxoneze fiecare, de
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk."
-msgstr "Deschide Detalii sub un eveniment ca să alegi ce spune notificarea. Previzualizarea de lângă opțiuni îți arată cum va apărea în Honk."
+msgstr "Apasă „Detalii” sub un eveniment ca să alegi ce conține notificarea. Previzualizarea de lângă opțiuni îți arată cum va apărea în Honk."
 
 #: includes/class-honk-admin.php:334
 msgid "WooCommerce isn’t active. Its events show up here once it is."
@@ -262,7 +262,7 @@ msgstr "Ce include „%s”"
 #: includes/class-honk-admin.php:471
 #, php-format
 msgid "Always included: %s."
-msgstr "Incluse mereu: %s."
+msgstr "Apar mereu: %s."
 
 #: includes/class-honk-admin.php:476
 msgid "There’s nothing else to choose for this one."
@@ -270,7 +270,7 @@ msgstr "Aici nu mai ai nimic de ales."
 
 #: includes/class-honk-admin.php:509
 msgid "Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above."
-msgstr "Datele personale sunt dezactivate pe acest site, așa că acestea nu sunt incluse. Ca să le poți alege, activează mai sus „Include numele și adresele de email ale clienților”."
+msgstr "Pe acest site nu se trimit date personale, așa că acestea nu sunt incluse. Ca să le poți alege, bifează mai sus „Include numele și adresele de email ale clienților”."
 
 #. translators: %s: form plugin name, e.g. Fluent Forms
 #: includes/class-honk-admin.php:565
@@ -291,7 +291,7 @@ msgstr "(fără titlu)"
 #: includes/class-honk-admin.php:609
 #, php-format
 msgid "Only the first %d forms are listed here. The others include every field."
-msgstr "Aici apar doar primele %d formulare. Celelalte includ toate câmpurile."
+msgstr "Aici apar doar primele %d de formulare. Celelalte includ toate câmpurile."
 
 #: includes/class-honk-admin.php:631
 msgid "Preview"
@@ -451,7 +451,7 @@ msgstr "Starea comenzii"
 
 #: includes/class-honk-details.php:580
 msgid "Payment method"
-msgstr "Metodă de plată"
+msgstr "Metoda de plată"
 
 #: includes/class-honk-details.php:582
 msgid "Products (the first three)"
@@ -459,11 +459,11 @@ msgstr "Produsele (primele trei)"
 
 #: includes/class-honk-details.php:584
 msgid "Shipping method"
-msgstr "Metodă de livrare"
+msgstr "Metoda de livrare"
 
 #: includes/class-honk-details.php:586
 msgid "Phone number"
-msgstr "Număr de telefon"
+msgstr "Numărul de telefon"
 
 #: includes/class-honk-details.php:588
 msgid "Billing city and country"
@@ -1069,7 +1069,7 @@ msgstr "Deteriorat la transport"
 #. translators: sample product review in the notification preview
 #: includes/class-honk-preview.php:286
 msgid "Lovely fabric, and it washes well."
-msgstr "Material frumos și se spală bine."
+msgstr "Material frumos, se spală bine."
 
 #: includes/class-honk-preview.php:330
 #: includes/modules/class-honk-module-forms.php:254
@@ -1236,7 +1236,7 @@ msgstr "%1$s de %2$s, în așteptarea revizuirii."
 #: includes/modules/class-honk-module-content.php:266
 #, php-format
 msgid "%s is waiting for review."
-msgstr "%s, în așteptarea revizuirii."
+msgstr "%s în așteptarea revizuirii."
 
 #. translators: %s: post title
 #: includes/modules/class-honk-module-content.php:269

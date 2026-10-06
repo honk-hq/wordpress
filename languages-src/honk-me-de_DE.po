@@ -18,7 +18,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: honk-me.php
 msgid "Honk Me – Notifications for Sites, Shops and Forms"
-msgstr "Honk Me – Mitteilungen für Websites, Shops und Formulare"
+msgstr "Honk Me – Benachrichtigungen für Websites, Shops und Formulare"
 
 #. Plugin URI of the plugin
 #: honk-me.php
@@ -70,7 +70,7 @@ msgstr "Diese Website nutzt Honk, um den Websitebetreiber über Vorgänge auf de
 
 #: includes/class-honk-admin.php:147
 msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
-msgstr "Standardmäßig enthalten diese Mitteilungen keine personenbezogenen Daten: Eine Bestellung wird nur mit Nummer, Gesamtsumme und Anzahl der Artikel beschrieben. Aktiviert der Websitebetreiber die Option „Kundennamen und E-Mail-Adressen mitsenden“, können die Mitteilungen je nach seiner Auswahl für jedes Ereignis auch Name, E-Mail-Adresse und Telefonnummer von Kunden, Benutzern oder Kommentatoren enthalten, außerdem Ort und Land der Rechnungsadresse eines Kunden, den Text von Kommentaren, Rezensionen und Bestellhinweisen, die Eingaben in Formularen sowie die IP-Adresse eines Administrators, der sich von einem neuen Gerät anmeldet."
+msgstr "Standardmäßig enthalten diese Mitteilungen keine personenbezogenen Daten: Eine Bestellung wird nur mit Nummer, Bestellsumme und Anzahl der Artikel beschrieben. Aktiviert der Websitebetreiber die Option „Kundennamen und E-Mail-Adressen mitsenden“, können die Mitteilungen außerdem Folgendes enthalten, je nachdem, was er für das jeweilige Ereignis auswählt: Name, E-Mail-Adresse und Telefonnummer von Kunden, Benutzern oder Kommentatoren; Ort und Land der Rechnungsadresse eines Kunden; den Text von Kommentaren, Rezensionen und Bestellhinweisen; Formulareingaben; die IP-Adresse eines Administrators, der sich von einem neuen Gerät aus anmeldet."
 
 #. translators: %s: link to the Honk privacy policy
 #: includes/class-honk-admin.php:150
@@ -152,7 +152,7 @@ msgstr "Aus: keine Namen oder E-Mail-Adressen. Eine Bestellung erscheint als „
 
 #: includes/class-honk-admin.php:261
 msgid "Under Events, each event’s Details show which personal data it can include, and let you leave out what you don’t need."
-msgstr "Unter Ereignisse zeigen die Details jedes Ereignisses, welche personenbezogenen Daten es enthalten kann. Was du nicht brauchst, kannst du dort weglassen."
+msgstr "Unter „Ereignisse“ zeigen dir die Details jedes Ereignisses, welche personenbezogenen Daten es enthalten kann. Was du nicht brauchst, lässt du dort einfach weg."
 
 #: includes/class-honk-admin.php:266
 msgid "Environment"
@@ -270,7 +270,7 @@ msgstr "Hier gibt es sonst nichts auszuwählen."
 
 #: includes/class-honk-admin.php:509
 msgid "Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above."
-msgstr "Personenbezogene Daten sind auf dieser Website ausgeschaltet, deshalb werden diese Angaben nicht mitgesendet. Um sie auszuwählen, aktiviere oben „Kundennamen und E-Mail-Adressen mitsenden“."
+msgstr "Das Mitsenden personenbezogener Daten ist ausgeschaltet, deshalb fallen diese Angaben weg. Um sie auszuwählen, aktiviere oben „Kundennamen und E-Mail-Adressen mitsenden“."
 
 #. translators: %s: form plugin name, e.g. Fluent Forms
 #: includes/class-honk-admin.php:565
@@ -514,7 +514,7 @@ msgstr "Textauszug"
 
 #: includes/class-honk-details.php:612
 msgid "What people entered"
-msgstr "Die Eingaben im Formular"
+msgstr "Formulareingaben"
 
 #: includes/class-honk-details.php:614
 msgid "Username"
@@ -542,7 +542,7 @@ msgstr "Anzahl der IP-Adressen"
 
 #: includes/class-honk-details.php:626
 msgid "Usernames tried"
-msgstr "Versuchte Benutzernamen"
+msgstr "Verwendete Benutzernamen"
 
 #: includes/class-honk-details.php:628
 msgid "Old and new email address"
@@ -550,7 +550,7 @@ msgstr "Alte und neue E-Mail-Adresse"
 
 #: includes/class-honk-details.php:630
 msgid "Who made the change"
-msgstr "Wer die Änderung vorgenommen hat"
+msgstr "Geändert von"
 
 #: includes/class-honk-details.php:632
 msgid "Previous theme"
@@ -697,7 +697,7 @@ msgstr "was aktualisiert wurde, mit den neuen Versionen"
 
 #: includes/class-honk-details.php:698
 msgid "the plugin or theme that caused it"
-msgstr "das Plugin oder Theme, das ihn verursacht hat"
+msgstr "das verursachende Plugin oder Theme"
 
 #: includes/class-honk-details.php:698
 msgid "whether WordPress emailed a recovery link"
@@ -1068,7 +1068,7 @@ msgstr "Beim Transport beschädigt"
 #. translators: sample product review in the notification preview
 #: includes/class-honk-preview.php:286
 msgid "Lovely fabric, and it washes well."
-msgstr "Schöner Stoff, und er lässt sich gut waschen."
+msgstr "Schöner Stoff, lässt sich gut waschen."
 
 #: includes/class-honk-preview.php:330
 #: includes/modules/class-honk-module-forms.php:254

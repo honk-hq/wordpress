@@ -70,7 +70,7 @@ msgstr "Este sitio usa Honk para avisar a su propietario de lo que ocurre en él
 
 #: includes/class-honk-admin.php:147
 msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
-msgstr "De forma predeterminada, estas notificaciones no contienen datos personales: de cada pedido solo se indican el número, el total y la cantidad de artículos. Si el propietario del sitio activa «Incluir nombres y correos electrónicos de los clientes», las notificaciones también pueden incluir, según lo que haya elegido para cada evento, el nombre, la dirección de correo electrónico y el número de teléfono de un cliente, de un usuario o de quien deja un comentario, la ciudad y el país de facturación de un cliente, el texto de los comentarios, las valoraciones y las notas de los pedidos, lo que se haya escrito en los formularios y la dirección IP de un administrador que accede desde un dispositivo nuevo."
+msgstr "De forma predeterminada, estas notificaciones no contienen datos personales: de cada pedido solo se indican el número, el total y la cantidad de artículos. Si el propietario del sitio activa «Incluir nombres y correos electrónicos de los clientes», las notificaciones también pueden incluir, según lo que haya elegido para cada evento, el nombre, la dirección de correo electrónico y el número de teléfono de un cliente, de un usuario o de quien comenta, la ciudad y el país de facturación de un cliente, el texto de los comentarios, las valoraciones y las notas de los pedidos, lo que se haya escrito en los formularios y la dirección IP de un administrador que accede desde un dispositivo nuevo."
 
 #. translators: %s: link to the Honk privacy policy
 #: includes/class-honk-admin.php:150
@@ -178,7 +178,7 @@ msgstr "Idioma del sitio"
 
 #: includes/class-honk-admin.php:297
 msgid "Notifications use the WordPress translations of Honk Me. Every language installed on this site is listed here; where a language has no translation yet, notifications are in English."
-msgstr "Las notificaciones usan las traducciones de WordPress de Honk Me. Aquí aparecen todos los idiomas instalados en el sitio; si un idioma aún no tiene traducción, las notificaciones llegan en inglés."
+msgstr "Las notificaciones usan las traducciones de Honk Me disponibles en WordPress. Aquí aparecen todos los idiomas instalados en el sitio; si un idioma aún no tiene traducción, las notificaciones llegan en inglés."
 
 #: includes/class-honk-admin.php:302
 msgid "Events"
@@ -190,7 +190,7 @@ msgstr "Elige de qué quieres enterarte y con qué fuerza, desde «Bocinazo suav
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk."
-msgstr "Abre Detalles debajo de un evento para elegir qué dice su notificación. La vista previa, junto a las opciones, muestra cómo se verá en Honk."
+msgstr "Haz clic en Detalles, debajo de un evento, para elegir qué dice su notificación. La vista previa, junto a las opciones, muestra cómo se verá en Honk."
 
 #: includes/class-honk-admin.php:334
 msgid "WooCommerce isn’t active. Its events show up here once it is."
@@ -270,7 +270,7 @@ msgstr "Aquí no hay nada más que elegir."
 
 #: includes/class-honk-admin.php:509
 msgid "Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above."
-msgstr "Los datos personales están desactivados en este sitio, así que no se incluyen. Para elegirlos, activa «Incluir nombres y correos electrónicos de los clientes» más arriba."
+msgstr "Este sitio no envía datos personales, así que estas opciones no se incluyen. Para elegirlas, activa «Incluir nombres y correos electrónicos de los clientes» más arriba."
 
 #. translators: %s: form plugin name, e.g. Fluent Forms
 #: includes/class-honk-admin.php:565
@@ -514,7 +514,7 @@ msgstr "Extracto"
 
 #: includes/class-honk-details.php:612
 msgid "What people entered"
-msgstr "Lo que se ha escrito en el formulario"
+msgstr "Respuestas del formulario"
 
 #: includes/class-honk-details.php:614
 msgid "Username"
@@ -651,7 +651,7 @@ msgstr "el número de intentos de acceso fallidos"
 
 #: includes/class-honk-details.php:682
 msgid "an all-clear when they stop"
-msgstr "un aviso cuando paren"
+msgstr "otro aviso cuando paren"
 
 #: includes/class-honk-details.php:684
 #: includes/class-honk-details.php:686
@@ -668,7 +668,7 @@ msgstr "qué ha cambiado"
 
 #: includes/class-honk-details.php:688
 msgid "the old and new site address"
-msgstr "la dirección anterior y la nueva del sitio"
+msgstr "la dirección del sitio, la anterior y la nueva"
 
 #: includes/class-honk-details.php:690
 msgid "the plugin’s name"
@@ -709,7 +709,7 @@ msgstr "los problemas críticos"
 
 #: includes/class-honk-details.php:700
 msgid "an all-clear once they’re fixed"
-msgstr "un aviso cuando se resuelvan"
+msgstr "otro aviso cuando se resuelvan"
 
 #: includes/class-honk-details.php:702
 msgid "what failed to update, and why"
@@ -725,7 +725,7 @@ msgstr "cuántas tareas van con retraso"
 
 #: includes/class-honk-details.php:706
 msgid "an all-clear when they’re on time again"
-msgstr "un aviso cuando vuelvan a ir a tiempo"
+msgstr "otro aviso cuando se pongan al día"
 
 #: includes/class-honk-details.php:708
 msgid "the free and total disk space"
@@ -733,7 +733,7 @@ msgstr "el espacio libre y el total del disco"
 
 #: includes/class-honk-details.php:708
 msgid "an all-clear when there’s room again"
-msgstr "un aviso cuando vuelva a haber espacio"
+msgstr "otro aviso cuando vuelva a haber espacio"
 
 #: includes/class-honk-details.php:710
 msgid "a link to the user’s profile"
@@ -753,7 +753,7 @@ msgstr "el tipo de contenido"
 
 #: includes/class-honk-details.php:715
 msgid "a link to the post"
-msgstr "un enlace a la entrada"
+msgstr "un enlace al contenido"
 
 #: includes/class-honk-details.php:720
 msgid "the old and new status"
@@ -774,7 +774,7 @@ msgstr "un enlace al producto"
 
 #: includes/class-honk-details.php:725
 msgid "an all-clear when it’s back in stock"
-msgstr "un aviso cuando vuelva a haber existencias"
+msgstr "otro aviso cuando vuelva a haber existencias"
 
 #: includes/class-honk-details.php:727
 msgid "a link to the customer’s profile"

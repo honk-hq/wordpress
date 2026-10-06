@@ -231,7 +231,8 @@ final class Honk_Module_Forms {
 	/**
 	 * Queues the message of a submission. The form name is the title; field values are included
 	 * only when the privacy setting allows personal data, without the fields left out in the
-	 * event's details.
+	 * event's details. The buttons, when chosen, reply to the email address and call the phone
+	 * number that were entered (and included).
 	 *
 	 * @param string $event_id Event id.
 	 * @param string $plugin   Plugin slug for the group key.
@@ -251,11 +252,11 @@ final class Honk_Module_Forms {
 			$event_id,
 			'form-' . $plugin . '-' . $form_id . '-' . $entry,
 			function () use ( $event_id, $plugin, $form_id, $title, $rows ) {
-				$name  = '' !== trim( $title ) ? Honk_Payload::plain( $title, true ) : __( 'Form', 'honk-me' );
-				$lines = Honk_Details::on( $event_id, 'values' ) ? self::field_lines( self::without_skipped( $event_id, $form_id, $rows ) ) : array();
+				$name = '' !== trim( $title ) ? Honk_Payload::plain( $title, true ) : __( 'Form', 'honk-me' );
+				$rows = Honk_Details::on( $event_id, 'values' ) ? self::without_skipped( $event_id, $form_id, $rows ) : array();
 				return Honk_Details::fields(
 					$event_id,
-					self::form_spec( $name, $lines ),
+					self::form_spec( $name, self::field_lines( $rows ), self::contact_actions( $event_id, $name, self::contact( $rows ) ) ),
 					array(
 						'group_key' => 'wp/forms/' . $plugin . '/' . $form_id,
 						'metadata'  => array(
@@ -295,21 +296,72 @@ final class Honk_Module_Forms {
 	 * A form submission's outline (Honk_Details): the same for real entries and for the settings
 	 * preview.
 	 *
-	 * @param string   $name  Form name.
-	 * @param string[] $lines field_lines().
+	 * @param string   $name    Form name.
+	 * @param string[] $lines   field_lines().
+	 * @param array    $actions Buttons (contact_actions()).
 	 * @return array
 	 */
-	public static function form_spec( $name, array $lines ) {
+	public static function form_spec( $name, array $lines, array $actions = array() ) {
 		$spec = array(
 			'title'    => array( Honk_Details::part( $name ) ),
 			'lines'    => array(),
 			/* translators: %s: form name */
 			'fallback' => sprintf( __( 'Someone sent the “%s” form.', 'honk-me' ), $name ),
+			'actions'  => $actions,
 		);
 		foreach ( $lines as $line ) {
 			$spec['lines'][] = Honk_Details::text( $line, 'values' );
 		}
 		return $spec;
+	}
+
+	/**
+	 * The first email address and the first phone number entered, each with its field: found by
+	 * the field's type, or by its name or label ("email", "phone").
+	 *
+	 * @param array $rows Fields: key, label, value, type.
+	 * @return array{email: array|null, phone: array|null} The fields.
+	 */
+	public static function contact( array $rows ) {
+		$out = array(
+			'email' => null,
+			'phone' => null,
+		);
+		foreach ( $rows as $row ) {
+			$type  = strtolower( isset( $row['type'] ) ? self::scalar( $row['type'] ) : '' );
+			$value = isset( $row['value'] ) ? self::scalar( $row['value'] ) : '';
+			if ( '' === trim( $value ) || in_array( $type, self::SKIP_TYPES, true ) ) {
+				continue;
+			}
+			$hint = strtolower( ( isset( $row['key'] ) ? self::scalar( $row['key'] ) : '' ) . ' ' . ( isset( $row['label'] ) ? self::scalar( $row['label'] ) : '' ) );
+			if ( null === $out['email'] && ( 'email' === $type || false !== strpos( $hint, 'mail' ) ) && '' !== Honk_Payload::mailto_url( $value ) ) {
+				$out['email'] = $row;
+			} elseif ( null === $out['phone'] && ( in_array( $type, array( 'tel', 'phone' ), true ) || false !== strpos( $hint, 'phone' ) ) && '' !== Honk_Payload::tel_url( $value ) ) {
+				$out['phone'] = $row;
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * A submission's buttons: reply by email and call back (Honk_Details::ACTIONS).
+	 *
+	 * @param string $event_id Event id.
+	 * @param string $name     Form name, for the reply's subject.
+	 * @param array  $contact  contact().
+	 * @param array  $when     Button => other details that must be on (the preview's fields).
+	 * @return array
+	 */
+	public static function contact_actions( $event_id, $name, array $contact, array $when = array() ) {
+		return Honk_Details::buttons(
+			$event_id,
+			array(
+				/* translators: %s: what the email replies to: a product, a post or a form */
+				'action_reply' => null !== $contact['email'] ? Honk_Payload::mailto_url( self::scalar( $contact['email']['value'] ), sprintf( __( 'Re: %s', 'honk-me' ), $name ) ) : '',
+				'action_call'  => null !== $contact['phone'] ? Honk_Payload::tel_url( self::scalar( $contact['phone']['value'] ) ) : '',
+			),
+			$when
+		);
 	}
 
 	/**

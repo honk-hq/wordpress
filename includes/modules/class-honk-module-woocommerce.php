@@ -452,12 +452,13 @@ final class Honk_Module_Woocommerce {
 		Honk_Notifier::emit(
 			'woo_new_review',
 			'review-' . absint( $comment_id ),
-			function () use ( $comment, $rating ) {
+			function () use ( $comment_id, $comment, $rating ) {
 				$spec = self::review_spec(
 					array(
 						'product' => Honk_Payload::plain( get_the_title( (int) $comment->comment_post_ID ), true ),
 						'rating'  => $rating,
 						'pending' => '0' === (string) $comment->comment_approved,
+						'approve' => Honk_Notifier::approve_link( $comment_id ),
 						'name'    => trim( (string) $comment->comment_author ),
 						'email'   => (string) $comment->comment_author_email,
 						'text'    => Honk_Details::on( 'woo_new_review', 'text' ) ? wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' ) : '',
@@ -770,6 +771,25 @@ final class Honk_Module_Woocommerce {
 	}
 
 	/**
+	 * Buttons that email the customer about the order and call them, for the events that have them
+	 * (Honk_Details::ACTIONS).
+	 *
+	 * @param string $event_id Event id.
+	 * @param array  $d        Order data.
+	 * @return array
+	 */
+	private static function customer_actions( $event_id, array $d ) {
+		return Honk_Details::buttons(
+			$event_id,
+			array(
+				/* translators: %s: order number */
+				'action_email' => Honk_Payload::mailto_url( $d['email'], sprintf( __( 'Order #%s', 'honk-me' ), $d['number'] ) ),
+				'action_call'  => Honk_Payload::tel_url( $d['phone'] ),
+			)
+		);
+	}
+
+	/**
 	 * New order.
 	 *
 	 * @param array $d Order data.
@@ -778,8 +798,8 @@ final class Honk_Module_Woocommerce {
 	public static function new_order_spec( array $d ) {
 		return array(
 			/* translators: %s: order number */
-			'title' => array( Honk_Details::part( sprintf( __( 'New order #%s', 'honk-me' ), $d['number'] ) ) ),
-			'lines' => array(
+			'title'   => array( Honk_Details::part( sprintf( __( 'New order #%s', 'honk-me' ), $d['number'] ) ) ),
+			'lines'   => array(
 				self::summary_line( $d ),
 				Honk_Details::line(
 					array(
@@ -795,6 +815,7 @@ final class Honk_Module_Woocommerce {
 				/* translators: %s: the note the customer left at checkout */
 				Honk_Details::text( '' !== $d['note'] ? sprintf( __( 'Note: %s', 'honk-me' ), $d['note'] ) : '', 'note' ),
 			),
+			'actions' => self::customer_actions( 'woo_new_order', $d ),
 		);
 	}
 
@@ -807,8 +828,8 @@ final class Honk_Module_Woocommerce {
 	public static function status_spec( array $d ) {
 		return array(
 			/* translators: 1: order number, 2: new status */
-			'title' => array( Honk_Details::part( sprintf( __( 'Order #%1$s: %2$s', 'honk-me' ), $d['number'], $d['to'] ) ) ),
-			'lines' => array(
+			'title'   => array( Honk_Details::part( sprintf( __( 'Order #%1$s: %2$s', 'honk-me' ), $d['number'], $d['to'] ) ) ),
+			'lines'   => array(
 				Honk_Details::text( $d['from'] . ' → ' . $d['to'] ),
 				self::summary_line( $d ),
 				Honk_Details::text( self::products_text( $d['products'] ), 'products' ),
@@ -816,6 +837,7 @@ final class Honk_Module_Woocommerce {
 				Honk_Details::text( '' !== $d['payment'] ? sprintf( __( 'Payment method: %s', 'honk-me' ), $d['payment'] ) : '', 'payment' ),
 				self::customer_parts( $d ),
 			),
+			'actions' => self::customer_actions( 'woo_order_status', $d ),
 		);
 	}
 
@@ -828,14 +850,15 @@ final class Honk_Module_Woocommerce {
 	public static function payment_failed_spec( array $d ) {
 		return array(
 			/* translators: %s: order number */
-			'title' => array( Honk_Details::part( sprintf( __( 'Payment failed for order #%s', 'honk-me' ), $d['number'] ) ) ),
-			'lines' => array(
+			'title'   => array( Honk_Details::part( sprintf( __( 'Payment failed for order #%s', 'honk-me' ), $d['number'] ) ) ),
+			'lines'   => array(
 				self::summary_line( $d ),
 				/* translators: %s: payment method */
 				Honk_Details::text( '' !== $d['payment'] ? sprintf( __( 'Payment method: %s', 'honk-me' ), $d['payment'] ) : '', 'payment' ),
 				Honk_Details::text( self::products_text( $d['products'] ), 'products' ),
 				self::customer_parts( $d ),
 			),
+			'actions' => self::customer_actions( 'woo_payment_failed', $d ),
 		);
 	}
 
@@ -848,8 +871,8 @@ final class Honk_Module_Woocommerce {
 	public static function refund_spec( array $d ) {
 		return array(
 			/* translators: 1: amount, 2: order number */
-			'title' => array( Honk_Details::part( sprintf( __( 'Refund of %1$s for order #%2$s', 'honk-me' ), $d['amount'], $d['number'] ) ) ),
-			'lines' => array(
+			'title'   => array( Honk_Details::part( sprintf( __( 'Refund of %1$s for order #%2$s', 'honk-me' ), $d['amount'], $d['number'] ) ) ),
+			'lines'   => array(
 				Honk_Details::text(
 					$d['full']
 						/* translators: 1: amount, 2: order number */
@@ -862,6 +885,7 @@ final class Honk_Module_Woocommerce {
 				Honk_Details::text( '' !== $d['reason'] ? sprintf( __( 'Reason: %s', 'honk-me' ), $d['reason'] ) : '', 'reason' ),
 				self::customer_parts( $d, false ),
 			),
+			'actions' => self::customer_actions( 'woo_refund', $d ),
 		);
 	}
 
@@ -914,11 +938,12 @@ final class Honk_Module_Woocommerce {
 			'title'    => array( Honk_Details::part( __( 'New customer', 'honk-me' ) ) ),
 			'lines'    => array( Honk_Notifier::user_line( $d ) ),
 			'fallback' => __( 'A customer account was created.', 'honk-me' ),
+			'actions'  => Honk_Details::buttons( 'woo_new_customer', array( 'action_email' => Honk_Payload::mailto_url( $d['email'] ) ) ),
 		);
 	}
 
 	/**
-	 * New product review (product, rating, pending, name, email, text).
+	 * New product review (product, rating, pending, approve: link, name, email, text).
 	 *
 	 * @param array $d Review data.
 	 * @return array
@@ -941,6 +966,14 @@ final class Honk_Module_Woocommerce {
 				Honk_Details::text( $d['text'], 'text' ),
 			),
 			'fallback' => __( 'A new product review.', 'honk-me' ),
+			'actions'  => Honk_Details::buttons(
+				'woo_new_review',
+				array(
+					'action_approve' => $d['pending'] ? $d['approve'] : '',
+					/* translators: %s: what the email replies to: a product, a post or a form */
+					'action_reply'   => Honk_Payload::mailto_url( $d['email'], sprintf( __( 'Re: %s', 'honk-me' ), $d['product'] ) ),
+				)
+			),
 		);
 	}
 
@@ -953,8 +986,8 @@ final class Honk_Module_Woocommerce {
 	public static function subscription_spec( array $d ) {
 		return array(
 			/* translators: %s: subscription number */
-			'title' => array( Honk_Details::part( sprintf( __( 'Subscription #%s: renewal failed', 'honk-me' ), $d['number'] ) ) ),
-			'lines' => array(
+			'title'   => array( Honk_Details::part( sprintf( __( 'Subscription #%s: renewal failed', 'honk-me' ), $d['number'] ) ) ),
+			'lines'   => array(
 				/* translators: %s: amount */
 				Honk_Details::text( sprintf( __( 'The %s renewal couldn’t be charged.', 'honk-me' ), $d['amount'] ) ),
 				/* translators: %s: order number */
@@ -966,6 +999,8 @@ final class Honk_Module_Woocommerce {
 					)
 				),
 			),
+			/* translators: %s: subscription number */
+			'actions' => Honk_Details::buttons( 'woo_subscription_failed', array( 'action_email' => Honk_Payload::mailto_url( $d['email'], sprintf( __( 'Subscription #%s', 'honk-me' ), $d['number'] ) ) ) ),
 		);
 	}
 

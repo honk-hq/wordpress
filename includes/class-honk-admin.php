@@ -426,11 +426,13 @@ final class Honk_Admin {
 	}
 
 	/**
-	 * An event's details: what its notification can say, as choices, next to the preview.
+	 * An event's details: what its notification can say and the buttons it can carry, as choices,
+	 * next to the preview.
 	 *
-	 * Personal details can only be chosen while "Include customer names and emails" is on. Until
-	 * then they're disabled, and their saved choice travels in a hidden field of the same name
-	 * (assets/admin.js keeps the two in step when the switch changes).
+	 * Personal details can only be chosen while "Include customer names and emails" is on, and a
+	 * button only while the detail it needs is on. Until then they're disabled, and their saved
+	 * choice travels in a hidden field of the same name (assets/admin.js keeps the two in step when
+	 * the switch or the detail changes).
 	 *
 	 * @param string $id        Event id.
 	 * @param array  $settings  Settings.
@@ -509,6 +511,7 @@ final class Honk_Admin {
 								<p class="description honk-pii-note" id="<?php echo esc_attr( $dom . '-pii-note' ); ?>"<?php echo $pii ? ' hidden' : ''; ?>><?php esc_html_e( 'Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above.', 'honk-me' ); ?></p>
 							</fieldset>
 						<?php endif; ?>
+						<?php self::render_actions( $id, $name, $dom, $pii ); ?>
 					</fieldset>
 					<?php self::render_preview( $id, $dom ); ?>
 				</div>
@@ -524,7 +527,8 @@ final class Honk_Admin {
 	 * @param string $name    Field name.
 	 * @param string $label   Label.
 	 * @param bool   $chosen  Saved choice.
-	 * @param bool   $blocked Disabled: personal data is off, or the form's answers are left out.
+	 * @param bool   $blocked Disabled: personal data is off, or the form's answers or the detail a
+	 *                        button needs are left out.
 	 * @param array  $attrs   Attributes of the checkbox (data-fact, data-pii, data-requires…).
 	 * @return void
 	 */
@@ -542,6 +546,48 @@ final class Honk_Admin {
 			?>
 			> <?php echo esc_html( $label ); ?></label>
 		</li>
+		<?php
+	}
+
+	/**
+	 * The buttons an event can carry (Honk_Details::ACTIONS), each with the detail it needs.
+	 *
+	 * @param string $id   Event id.
+	 * @param string $name Field name prefix.
+	 * @param string $dom  DOM id prefix.
+	 * @param bool   $pii  Personal data is on.
+	 * @return void
+	 */
+	private static function render_actions( $id, $name, $dom, $pii ) {
+		$actions = Honk_Details::actions( $id );
+		if ( empty( $actions ) ) {
+			return;
+		}
+		?>
+		<fieldset class="honk-actions">
+			<legend><?php esc_html_e( 'Buttons', 'honk-me' ); ?></legend>
+			<p class="description"><?php esc_html_e( 'Shown with the notification in Honk. A button that emails or calls someone is only added while the notification includes their email address or phone number.', 'honk-me' ); ?></p>
+			<ul class="honk-choices">
+				<?php
+				foreach ( $actions as $action => $need ) {
+					$personal = '' !== $need && Honk_Details::is_personal( $id, $need );
+					self::render_choice(
+						$name . '[' . $action . ']',
+						Honk_Details::label( $id, $action ),
+						Honk_Details::chosen( $id, $action ),
+						'' !== $need && ! Honk_Details::on( $id, $need ),
+						array(
+							'data-fact'        => $action,
+							'data-pii'         => $personal ? '1' : '',
+							'data-requires'    => $need,
+							'data-note'        => $personal ? $dom . '-pii-note' : '',
+							'aria-describedby' => $personal && ! $pii ? $dom . '-pii-note' : '',
+						)
+					);
+				}
+				?>
+			</ul>
+		</fieldset>
 		<?php
 	}
 
@@ -615,8 +661,8 @@ final class Honk_Admin {
 	}
 
 	/**
-	 * The preview: the event's notification as it will read in Honk, built from sample data with
-	 * the saved choices. assets/admin.js redraws it as the choices change.
+	 * The preview: the event's notification as it will read in Honk, with its buttons, built from
+	 * sample data with the saved choices. assets/admin.js redraws it as the choices change.
 	 *
 	 * @param string $id  Event id.
 	 * @param string $dom DOM id prefix.
@@ -633,6 +679,13 @@ final class Honk_Admin {
 				<p class="honk-preview-meta"><span class="honk-preview-level"><?php echo esc_html( Honk_Settings::severity_label( $event['severity'] ) ); ?></span> · <?php echo esc_html( Honk_Settings::source() ); ?></p>
 				<p class="honk-preview-title"><?php echo esc_html( $composed['title'] ); ?></p>
 				<p class="honk-preview-message"><?php echo esc_html( '' !== $composed['message'] ? $composed['message'] : $composed['title'] ); ?></p>
+				<?php if ( Honk_Details::actions( $id ) ) : ?>
+					<p class="honk-preview-actions"<?php echo $composed['actions'] ? '' : ' hidden'; ?>>
+						<?php foreach ( $composed['actions'] as $action ) : ?>
+							<span class="honk-preview-action"><?php echo esc_html( $action['title'] ); ?></span>
+						<?php endforeach; ?>
+					</p>
+				<?php endif; ?>
 			</div>
 			<p class="description"><?php esc_html_e( 'With sample data, in the notification language.', 'honk-me' ); ?></p>
 		</div>

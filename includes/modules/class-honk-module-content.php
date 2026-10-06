@@ -93,10 +93,11 @@ final class Honk_Module_Content {
 			function () use ( $comment, $post ) {
 				$spec = self::comment_spec(
 					array(
-						'post'  => self::post_title( $post ),
-						'name'  => trim( (string) $comment->comment_author ),
-						'email' => (string) $comment->comment_author_email,
-						'text'  => Honk_Details::on( 'comment_pending', 'text' ) ? wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' ) : '',
+						'post'    => self::post_title( $post ),
+						'approve' => Honk_Notifier::approve_link( (int) $comment->comment_ID ),
+						'name'    => trim( (string) $comment->comment_author ),
+						'email'   => (string) $comment->comment_author_email,
+						'text'    => Honk_Details::on( 'comment_pending', 'text' ) ? wp_trim_words( Honk_Payload::plain( $comment->comment_content, true ), 40, '…' ) : '',
 					)
 				);
 				return Honk_Notifier::with_link(
@@ -218,19 +219,20 @@ final class Honk_Module_Content {
 				Honk_Details::text( '' !== $d['roles'] ? sprintf( __( 'Role: %s', 'honk-me' ), $d['roles'] ) : '', 'role' ),
 			),
 			'fallback' => __( 'A new user account was created.', 'honk-me' ),
+			'actions'  => Honk_Details::buttons( 'user_registered', array( 'action_email' => Honk_Payload::mailto_url( $d['email'] ) ) ),
 		);
 	}
 
 	/**
-	 * Comment awaiting moderation (post, name, email, text).
+	 * Comment awaiting moderation (post, approve: link, name, email, text).
 	 *
 	 * @param array $d Comment data.
 	 * @return array
 	 */
 	public static function comment_spec( array $d ) {
 		return array(
-			'title' => array( Honk_Details::part( __( 'Comment awaiting moderation', 'honk-me' ) ) ),
-			'lines' => array(
+			'title'   => array( Honk_Details::part( __( 'Comment awaiting moderation', 'honk-me' ) ) ),
+			'lines'   => array(
 				/* translators: %s: post title */
 				Honk_Details::text( sprintf( __( 'On “%s”', 'honk-me' ), $d['post'] ), 'post' ),
 				Honk_Details::line(
@@ -245,6 +247,14 @@ final class Honk_Module_Content {
 					)
 				),
 				Honk_Details::text( $d['text'], 'text' ),
+			),
+			'actions' => Honk_Details::buttons(
+				'comment_pending',
+				array(
+					'action_approve' => $d['approve'],
+					/* translators: %s: what the email replies to: a product, a post or a form */
+					'action_reply'   => Honk_Payload::mailto_url( $d['email'], sprintf( __( 'Re: %s', 'honk-me' ), $d['post'] ) ),
+				)
 			),
 		);
 	}

@@ -61,12 +61,12 @@
 	 */
 
 	/**
-	 * Turns a message outline into its title and text, keeping the parts whose details are on.
-	 * The same rules as Honk_Details::compose() in PHP.
+	 * Turns a message outline into its title, text and buttons, keeping the parts whose details
+	 * are on. The same rules as Honk_Details::compose() in PHP.
 	 *
-	 * @param {Object} spec Outline: title (parts), lines, fallback.
+	 * @param {Object} spec Outline: title (parts), lines, fallback, actions.
 	 * @param {Object} on   Detail → whether it is on.
-	 * @return {{title: string, message: string}}
+	 * @return {{title: string, message: string, actions: Array<{title: string, url: string}>}}
 	 */
 	function compose( spec, on ) {
 		function keep( part ) {
@@ -114,12 +114,19 @@
 		if ( '' === message && undefined !== spec.fallback ) {
 			message = spec.fallback;
 		}
-		return { title: title, message: message };
+
+		var actions = [];
+		( spec.actions || [] ).forEach( function ( action ) {
+			if ( actions.length < 3 && '' !== action.u && keep( action ) ) {
+				actions.push( { title: action.t, url: action.u } );
+			}
+		} );
+		return { title: title, message: message, actions: actions };
 	}
 
 	/**
-	 * Disables a choice (personal data is off, or the form's answers are left out) or enables it
-	 * again. While it's disabled, the hidden field before it keeps the saved choice, because a
+	 * Disables a choice (personal data is off, or the detail it needs is left out: the form's
+	 * answers for a field, an email address or phone number for a button) or enables it again. While it's disabled, the hidden field before it keeps the saved choice, because a
 	 * disabled checkbox isn't submitted.
 	 *
 	 * @param {HTMLInputElement} box     Checkbox.
@@ -168,6 +175,17 @@
 			row.querySelector( '.honk-preview-title' ).textContent = composed.title;
 			// Honk shows the title as the text of a message that has none.
 			row.querySelector( '.honk-preview-message' ).textContent = '' !== composed.message ? composed.message : composed.title;
+			var actions = row.querySelector( '.honk-preview-actions' );
+			if ( actions ) {
+				actions.textContent = '';
+				composed.actions.forEach( function ( action ) {
+					var button = document.createElement( 'span' );
+					button.className = 'honk-preview-action';
+					button.textContent = action.title;
+					actions.appendChild( button );
+				} );
+				actions.hidden = ! composed.actions.length;
+			}
 		}
 
 		function renderLevel( row ) {
@@ -180,14 +198,23 @@
 
 		function refreshBlocked( row ) {
 			var allowed = ! personal || personal.checked;
-			var values = row.querySelector( 'input[type="checkbox"][data-fact="values"]' );
-			boxes( row, '[data-pii]' ).forEach( function ( box ) {
-				var blocked = ! allowed;
-				if ( 'values' === box.getAttribute( 'data-requires' ) ) {
-					blocked = blocked || ! values || ! values.checked || values.disabled;
+			// In the order of the screen, so a detail is settled before the choices that need it.
+			boxes( row ).forEach( function ( box ) {
+				var pii = box.hasAttribute( 'data-pii' );
+				var needs = box.getAttribute( 'data-requires' );
+				if ( ! pii && ! needs ) {
+					return;
+				}
+				var blocked = pii && ! allowed;
+				if ( needs ) {
+					var required = row.querySelector( 'input[type="checkbox"][data-fact="' + needs + '"]' );
+					blocked = blocked || ! required || ! required.checked || required.disabled;
 				}
 				setBlocked( box, blocked );
 				// The note explains a disabled choice only while personal data is off.
+				if ( ! pii ) {
+					return;
+				}
 				if ( allowed ) {
 					box.removeAttribute( 'aria-describedby' );
 				} else if ( box.getAttribute( 'data-note' ) ) {
@@ -201,10 +228,8 @@
 		}
 
 		rows.forEach( function ( row ) {
-			row.addEventListener( 'change', function ( event ) {
-				if ( event.target && 'values' === event.target.getAttribute( 'data-fact' ) ) {
-					refreshBlocked( row );
-				}
+			row.addEventListener( 'change', function () {
+				refreshBlocked( row );
 				render( row );
 			} );
 			renderLevel( row );

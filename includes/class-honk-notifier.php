@@ -170,6 +170,17 @@ final class Honk_Notifier {
 	}
 
 	/**
+	 * The link that approves a comment or review: WordPress's own from its moderation email, which
+	 * asks to confirm in the dashboard. '' unless the dashboard is on https (buttons need https).
+	 *
+	 * @param int $comment_id Comment id.
+	 * @return string
+	 */
+	public static function approve_link( $comment_id ) {
+		return Honk_Payload::https_url( admin_url( 'comment.php?action=approve&c=' . absint( $comment_id ) ) );
+	}
+
+	/**
 	 * Adds a link: as the message URL when it is https, else as metadata "link".
 	 *
 	 * @param array  $fields Message fields.

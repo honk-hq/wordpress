@@ -11,8 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"POT-Creation-Date: 2026-10-06T09:12:54+00:00\n"
-"PO-Revision-Date: 2026-10-06 12:00+0000\n"
+"POT-Creation-Date: 2026-10-06T22:15:17+00:00\n"
+"PO-Revision-Date: 2026-10-06 22:15+0000\n"
 "X-Domain: honk-me\n"
 
 #. Plugin Name of the plugin
@@ -37,8 +37,8 @@ msgstr "Honk Me"
 
 #: includes/class-honk-admin.php:57
 #: includes/class-honk-admin.php:178
-#: includes/class-honk-admin.php:870
-#: includes/class-honk-admin.php:882
+#: includes/class-honk-admin.php:923
+#: includes/class-honk-admin.php:935
 msgid "Honk"
 msgstr "Honk"
 
@@ -60,7 +60,7 @@ msgid "Honk is almost set up. Add your API key to start getting notifications."
 msgstr "Honk est presque prêt. Ajoutez votre clé API pour commencer à recevoir des notifications."
 
 #: includes/class-honk-admin.php:113
-#: includes/class-honk-admin.php:884
+#: includes/class-honk-admin.php:937
 msgid "Open Honk settings"
 msgstr "Ouvrir les réglages de Honk"
 
@@ -138,7 +138,7 @@ msgstr "Confidentialité et langue"
 
 #: includes/class-honk-admin.php:255
 #: includes/class-honk-admin.php:258
-#: includes/class-honk-admin.php:489
+#: includes/class-honk-admin.php:491
 msgid "Personal data"
 msgstr "Données personnelles"
 
@@ -205,7 +205,7 @@ msgid "Found automatically. Each notification is titled with the form’s name. 
 msgstr "Détectées automatiquement. Chaque notification porte le nom du formulaire. Les réponses saisies ne sont incluses que si vous autorisez les données personnelles plus haut."
 
 #: includes/class-honk-admin.php:352
-#: includes/class-honk-admin.php:688
+#: includes/class-honk-admin.php:741
 msgid "Event"
 msgstr "Événement"
 
@@ -222,7 +222,7 @@ msgid "Priority"
 msgstr "Priorité"
 
 #: includes/class-honk-admin.php:392
-#: includes/class-honk-admin.php:691
+#: includes/class-honk-admin.php:744
 msgid "Details"
 msgstr "Détails"
 
@@ -253,128 +253,136 @@ msgid "Priority for %s"
 msgstr "Priorité (%s)"
 
 #. translators: %s: event name, e.g. "New order"
-#: includes/class-honk-admin.php:464
+#: includes/class-honk-admin.php:466
 #, php-format
 msgid "What “%s” includes"
 msgstr "Ce que contient « %s »"
 
 #. translators: %s: a list, e.g. "the order number and a link to the order"
-#: includes/class-honk-admin.php:471
+#: includes/class-honk-admin.php:473
 #, php-format
 msgid "Always included: %s."
 msgstr "Toujours inclus : %s."
 
-#: includes/class-honk-admin.php:476
+#: includes/class-honk-admin.php:478
 msgid "There’s nothing else to choose for this one."
 msgstr "Il n’y a rien d’autre à choisir ici."
 
-#: includes/class-honk-admin.php:509
+#: includes/class-honk-admin.php:511
 msgid "Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above."
 msgstr "L’envoi de données personnelles est désactivé sur ce site : ces informations sont donc exclues. Pour pouvoir les cocher, activez « Inclure les noms et e-mails des clients » plus haut."
 
+#: includes/class-honk-admin.php:568
+msgid "Buttons"
+msgstr "Boutons"
+
+#: includes/class-honk-admin.php:569
+msgid "Shown with the notification in Honk. A button that emails or calls someone is only added while the notification includes their email address or phone number."
+msgstr "Affichés avec la notification dans Honk. Un bouton pour écrire à quelqu’un ou l’appeler n’est ajouté que si la notification contient son adresse e-mail ou son numéro de téléphone."
+
 #. translators: %s: form plugin name, e.g. Fluent Forms
-#: includes/class-honk-admin.php:565
+#: includes/class-honk-admin.php:611
 #, php-format
 msgid "%s doesn’t share a form’s list of fields with other plugins, so Honk includes every field or none."
 msgstr "%s ne communique pas la liste des champs de ses formulaires aux autres extensions : Honk inclut donc tous les champs, ou aucun."
 
-#: includes/class-honk-admin.php:581
+#: includes/class-honk-admin.php:627
 msgid "Fields to include"
 msgstr "Champs à inclure"
 
-#: includes/class-honk-admin.php:584
-#: includes/modules/class-honk-module-content.php:291
+#: includes/class-honk-admin.php:630
+#: includes/modules/class-honk-module-content.php:301
 msgid "(no title)"
 msgstr "(pas de titre)"
 
 #. translators: %d: number of forms
-#: includes/class-honk-admin.php:609
+#: includes/class-honk-admin.php:655
 #, php-format
 msgid "Only the first %d forms are listed here. The others include every field."
 msgstr "Seuls les %d premiers formulaires figurent ici. Pour les autres, tous les champs sont inclus."
 
-#: includes/class-honk-admin.php:631
+#: includes/class-honk-admin.php:677
 msgid "Preview"
 msgstr "Aperçu"
 
-#: includes/class-honk-admin.php:637
+#: includes/class-honk-admin.php:690
 msgid "With sample data, in the notification language."
 msgstr "Avec des données d’exemple, dans la langue des notifications."
 
-#: includes/class-honk-admin.php:651
+#: includes/class-honk-admin.php:704
 msgid "Heartbeat"
 msgstr "Signal de vie"
 
-#: includes/class-honk-admin.php:654
+#: includes/class-honk-admin.php:707
 msgid "Check in every 5 minutes"
 msgstr "Signal toutes les 5 minutes"
 
-#: includes/class-honk-admin.php:657
+#: includes/class-honk-admin.php:710
 msgid "Tell me when this site stops checking in"
 msgstr "M’avertir quand ce site ne donne plus signe de vie"
 
-#: includes/class-honk-admin.php:662
+#: includes/class-honk-admin.php:715
 msgid "Coming soon."
 msgstr "Bientôt disponible."
 
-#: includes/class-honk-admin.php:662
+#: includes/class-honk-admin.php:715
 msgid "Honk will let you know when this site goes quiet, even if it’s too broken to say so itself. The option appears here once your Honk server supports it."
 msgstr "Honk vous préviendra quand ce site ne donnera plus signe de vie, même s’il est trop en panne pour le signaler lui-même. L’option apparaîtra ici dès que votre serveur Honk la prendra en charge."
 
-#: includes/class-honk-admin.php:680
+#: includes/class-honk-admin.php:733
 msgid "Delivery log cleared."
 msgstr "Journal d’envoi vidé."
 
-#: includes/class-honk-admin.php:683
+#: includes/class-honk-admin.php:736
 msgid "The last 50 notifications this site sent to Honk, newest first. They’re sent in the background and retried if Honk is busy or can’t be reached."
 msgstr "Les 50 dernières notifications envoyées à Honk par ce site, de la plus récente à la plus ancienne. Elles partent en arrière-plan et sont renvoyées si Honk est occupé ou injoignable."
 
-#: includes/class-honk-admin.php:687
+#: includes/class-honk-admin.php:740
 msgid "Time"
 msgstr "Date"
 
-#: includes/class-honk-admin.php:689
+#: includes/class-honk-admin.php:742
 msgid "Title"
 msgstr "Titre"
 
-#: includes/class-honk-admin.php:690
+#: includes/class-honk-admin.php:743
 msgid "Status"
 msgstr "État"
 
-#: includes/class-honk-admin.php:696
+#: includes/class-honk-admin.php:749
 msgid "Nothing sent yet."
 msgstr "Rien n’a encore été envoyé."
 
-#: includes/class-honk-admin.php:701
+#: includes/class-honk-admin.php:754
 msgid "(hidden: may contain personal data)"
 msgstr "(masqué : peut contenir des données personnelles)"
 
-#: includes/class-honk-admin.php:717
+#: includes/class-honk-admin.php:770
 msgid "Clear log"
 msgstr "Vider le journal"
 
-#: includes/class-honk-admin.php:732
+#: includes/class-honk-admin.php:785
 msgid "Queued"
 msgstr "En file d’attente"
 
-#: includes/class-honk-admin.php:734
+#: includes/class-honk-admin.php:787
 msgid "Sent"
 msgstr "Envoyé"
 
-#: includes/class-honk-admin.php:736
+#: includes/class-honk-admin.php:789
 msgid "Already sent"
 msgstr "Déjà envoyé"
 
-#: includes/class-honk-admin.php:738
+#: includes/class-honk-admin.php:791
 msgid "Will retry"
 msgstr "Nouvel essai prévu"
 
-#: includes/class-honk-admin.php:740
+#: includes/class-honk-admin.php:793
 msgid "Failed"
 msgstr "Échec"
 
 #. translators: %d: number of attempts
-#: includes/class-honk-admin.php:767
+#: includes/class-honk-admin.php:820
 #, php-format
 msgid "%d attempt"
 msgid_plural "%d attempts"
@@ -382,433 +390,458 @@ msgstr[0] "%d tentative"
 msgstr[1] "%d tentatives"
 
 #. translators: %s: time of the next attempt
-#: includes/class-honk-admin.php:771
+#: includes/class-honk-admin.php:824
 #, php-format
 msgid "next try at %s"
 msgstr "prochain essai à %s"
 
-#: includes/class-honk-admin.php:783
-#: includes/class-honk-admin.php:799
+#: includes/class-honk-admin.php:836
+#: includes/class-honk-admin.php:852
 msgid "Sorry, you are not allowed to do that."
 msgstr "Désolé, vous n’avez pas l’autorisation de faire cela."
 
-#: includes/class-honk-admin.php:807
+#: includes/class-honk-admin.php:860
 msgid "The server URL must start with https:// (http:// works only for local addresses)."
 msgstr "L’URL du serveur doit commencer par https:// (http:// ne fonctionne que pour les adresses locales)."
 
-#: includes/class-honk-admin.php:810
+#: includes/class-honk-admin.php:863
 msgid "Enter your API key first."
 msgstr "Saisissez d’abord votre clé API."
 
 #. translators: %s: site name
-#: includes/class-honk-admin.php:817
+#: includes/class-honk-admin.php:870
 #, php-format
 msgid "Test from %s"
 msgstr "Test depuis %s"
 
-#: includes/class-honk-admin.php:818
+#: includes/class-honk-admin.php:871
 msgid "If you can read this, your site is connected to Honk. Sent from Settings → Honk."
 msgstr "Si vous lisez ceci, votre site est bien relié à Honk. Envoyé depuis Réglages → Honk."
 
 #. translators: 1: message id, 2: duration in milliseconds
-#: includes/class-honk-admin.php:844
+#: includes/class-honk-admin.php:897
 #, php-format
 msgid "It works. The test notification should be in your Honk inbox now (ID %1$s, %2$d ms)."
 msgstr "Tout fonctionne. La notification de test devrait déjà se trouver dans votre boîte de réception Honk (ID %1$s, %2$d ms)."
 
 #. translators: 1: server URL, 2: error message
-#: includes/class-honk-admin.php:853
+#: includes/class-honk-admin.php:906
 #, php-format
 msgid "Couldn’t reach %1$s: %2$s"
 msgstr "Impossible de joindre %1$s : %2$s"
 
-#: includes/class-honk-admin.php:855
+#: includes/class-honk-admin.php:908
 msgid "Honk didn’t accept this key. Check that you copied all of it and that it hasn’t been revoked in Honk."
 msgstr "Honk n’a pas accepté cette clé. Vérifiez que vous l’avez copiée en entier et qu’elle n’a pas été révoquée dans Honk."
 
 #. translators: 1: HTTP status, 2: error code, 3: error message
-#: includes/class-honk-admin.php:858
+#: includes/class-honk-admin.php:911
 #, php-format
 msgid "Honk returned an error (%1$d %2$s): %3$s"
 msgstr "Honk a renvoyé une erreur (%1$d %2$s) : %3$s"
 
-#: includes/class-honk-admin.php:883
+#: includes/class-honk-admin.php:936
 msgid "Order, payment, stock, customer and review notifications are set up under Settings → Honk, with the rest of the site’s notifications."
 msgstr "Les notifications de commandes, de paiements, de stock, de clients et d’avis se règlent dans Réglages → Honk, avec les autres notifications du site."
 
-#: includes/class-honk-details.php:574
+#: includes/class-honk-details.php:709
 msgid "Order total"
 msgstr "Total de la commande"
 
-#: includes/class-honk-details.php:576
+#: includes/class-honk-details.php:711
 msgid "Number of items"
 msgstr "Nombre d’articles"
 
-#: includes/class-honk-details.php:578
+#: includes/class-honk-details.php:713
 msgid "Order status"
 msgstr "État de la commande"
 
-#: includes/class-honk-details.php:580
+#: includes/class-honk-details.php:715
 msgid "Payment method"
 msgstr "Moyen de paiement"
 
-#: includes/class-honk-details.php:582
+#: includes/class-honk-details.php:717
 msgid "Products (the first three)"
 msgstr "Produits (les trois premiers)"
 
-#: includes/class-honk-details.php:584
+#: includes/class-honk-details.php:719
 msgid "Shipping method"
 msgstr "Mode d’expédition"
 
-#: includes/class-honk-details.php:586
+#: includes/class-honk-details.php:721
+#: includes/class-honk-preview.php:375
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: includes/class-honk-details.php:588
+#: includes/class-honk-details.php:723
 msgid "Billing city and country"
 msgstr "Ville et pays de facturation"
 
-#: includes/class-honk-details.php:590
+#: includes/class-honk-details.php:725
 msgid "Customer’s note"
 msgstr "Note du client"
 
-#: includes/class-honk-details.php:592
+#: includes/class-honk-details.php:727
 msgid "Refund reason"
 msgstr "Motif du remboursement"
 
-#: includes/class-honk-details.php:594
+#: includes/class-honk-details.php:729
 msgid "Renewal order number"
 msgstr "Numéro de la commande de renouvellement"
 
-#: includes/class-honk-details.php:596
+#: includes/class-honk-details.php:731
 msgid "SKU"
 msgstr "UGS"
 
-#: includes/class-honk-details.php:598
+#: includes/class-honk-details.php:733
 msgid "Units in stock"
 msgstr "Quantité en stock"
 
-#: includes/class-honk-details.php:600
+#: includes/class-honk-details.php:735
 msgid "Items sold"
 msgstr "Articles vendus"
 
-#: includes/class-honk-details.php:602
+#: includes/class-honk-details.php:737
 msgid "Refunded amount"
 msgstr "Montant remboursé"
 
-#: includes/class-honk-details.php:604
+#: includes/class-honk-details.php:739
 msgid "Rating"
 msgstr "Note"
 
-#: includes/class-honk-details.php:606
+#: includes/class-honk-details.php:741
 msgid "Post title"
 msgstr "Titre"
 
-#: includes/class-honk-details.php:608
+#: includes/class-honk-details.php:743
 msgid "Author"
 msgstr "Auteur"
 
-#: includes/class-honk-details.php:610
+#: includes/class-honk-details.php:745
 msgid "Excerpt"
 msgstr "Extrait"
 
-#: includes/class-honk-details.php:612
+#: includes/class-honk-details.php:747
 msgid "What people entered"
 msgstr "Réponses saisies"
 
-#: includes/class-honk-details.php:614
+#: includes/class-honk-details.php:749
 msgid "Username"
 msgstr "Identifiant"
 
-#: includes/class-honk-details.php:616
+#: includes/class-honk-details.php:751
 msgid "Role"
 msgstr "Rôle"
 
-#: includes/class-honk-details.php:618
+#: includes/class-honk-details.php:753
 msgid "Browser and operating system"
 msgstr "Navigateur et système d’exploitation"
 
-#: includes/class-honk-details.php:620
+#: includes/class-honk-details.php:755
 msgid "Network (for example 203.0.113.0/24)"
 msgstr "Réseau (p. ex. 203.0.113.0/24)"
 
-#: includes/class-honk-details.php:622
+#: includes/class-honk-details.php:757
 msgid "Full IP address"
 msgstr "Adresse IP complète"
 
-#: includes/class-honk-details.php:624
+#: includes/class-honk-details.php:759
 msgid "Number of IP addresses"
 msgstr "Nombre d’adresses IP"
 
-#: includes/class-honk-details.php:626
+#: includes/class-honk-details.php:761
 msgid "Usernames tried"
 msgstr "Identifiants essayés"
 
-#: includes/class-honk-details.php:628
+#: includes/class-honk-details.php:763
 msgid "Old and new email address"
 msgstr "Ancienne et nouvelle adresse e-mail"
 
-#: includes/class-honk-details.php:630
+#: includes/class-honk-details.php:765
 msgid "Who made the change"
 msgstr "Auteur de la modification"
 
-#: includes/class-honk-details.php:632
+#: includes/class-honk-details.php:767
 msgid "Previous theme"
 msgstr "Thème précédent"
 
-#: includes/class-honk-details.php:634
+#: includes/class-honk-details.php:769
 msgid "How to turn off the file editors"
 msgstr "Comment désactiver les éditeurs de fichiers"
 
-#: includes/class-honk-details.php:636
+#: includes/class-honk-details.php:771
 msgid "Error message"
 msgstr "Message d’erreur"
 
-#: includes/class-honk-details.php:638
+#: includes/class-honk-details.php:773
 msgid "Name of the oldest task"
 msgstr "Nom de la tâche la plus en retard"
 
-#: includes/class-honk-details.php:640
+#: includes/class-honk-details.php:775
 msgid "What to check"
 msgstr "Ce qu’il faut vérifier"
 
-#: includes/class-honk-details.php:642
+#: includes/class-honk-details.php:777
 msgid "Plugin file"
 msgstr "Fichier de l’extension"
 
-#: includes/class-honk-details.php:642
+#: includes/class-honk-details.php:777
 msgid "File and line"
 msgstr "Fichier et ligne"
 
-#: includes/class-honk-details.php:645
+#: includes/class-honk-details.php:780
 msgid "Reviewer’s name"
 msgstr "Nom de l’auteur de l’avis"
 
-#: includes/class-honk-details.php:648
+#: includes/class-honk-details.php:783
 msgid "Commenter’s name"
 msgstr "Nom de l’auteur du commentaire"
 
-#: includes/class-honk-details.php:650
+#: includes/class-honk-details.php:785
 msgid "Customer name"
 msgstr "Nom du client"
 
-#: includes/class-honk-details.php:650
-#: includes/class-honk-preview.php:354
+#: includes/class-honk-details.php:785
+#: includes/class-honk-preview.php:366
 msgid "Name"
 msgstr "Nom"
 
-#: includes/class-honk-details.php:653
+#: includes/class-honk-details.php:788
 msgid "Reviewer’s email"
 msgstr "E-mail de l’auteur de l’avis"
 
-#: includes/class-honk-details.php:656
+#: includes/class-honk-details.php:791
 msgid "Commenter’s email"
 msgstr "E-mail de l’auteur du commentaire"
 
-#: includes/class-honk-details.php:658
+#: includes/class-honk-details.php:793
 msgid "Customer email"
 msgstr "E-mail du client"
 
-#: includes/class-honk-details.php:658
+#: includes/class-honk-details.php:793
 msgid "Email address"
 msgstr "Adresse e-mail"
 
-#: includes/class-honk-details.php:660
+#: includes/class-honk-details.php:795
 msgid "Review text"
 msgstr "Texte de l’avis"
 
-#: includes/class-honk-details.php:660
+#: includes/class-honk-details.php:795
 msgid "Comment text"
 msgstr "Texte du commentaire"
 
-#: includes/class-honk-details.php:672
+#: includes/class-honk-details.php:797
+msgid "Email user"
+msgstr "Écrire à l’utilisateur"
+
+#: includes/class-honk-details.php:797
+msgid "Email customer"
+msgstr "Écrire au client"
+
+#: includes/class-honk-details.php:799
+msgid "Call back"
+msgstr "Rappeler"
+
+#: includes/class-honk-details.php:799
+msgid "Call customer"
+msgstr "Appeler le client"
+
+#: includes/class-honk-details.php:801
+msgid "Reply by email"
+msgstr "Répondre par e-mail"
+
+#: includes/class-honk-details.php:803
+msgid "Approve"
+msgstr "Approuver"
+
+#: includes/class-honk-details.php:815
 msgid "a link to the order"
 msgstr "un lien vers la commande"
 
-#: includes/class-honk-details.php:673
+#: includes/class-honk-details.php:816
 msgid "the order number"
 msgstr "le numéro de commande"
 
-#: includes/class-honk-details.php:674
+#: includes/class-honk-details.php:817
 msgid "who made the change"
 msgstr "l’auteur de la modification"
 
-#: includes/class-honk-details.php:676
+#: includes/class-honk-details.php:819
 msgid "the form’s name"
 msgstr "le nom du formulaire"
 
-#: includes/class-honk-details.php:680
+#: includes/class-honk-details.php:823
 msgid "whether the browser or the network is new"
 msgstr "ce qui est nouveau (navigateur ou réseau)"
 
-#: includes/class-honk-details.php:680
+#: includes/class-honk-details.php:823
 msgid "what to do if it wasn’t you"
 msgstr "la marche à suivre si ce n’était pas vous"
 
-#: includes/class-honk-details.php:682
+#: includes/class-honk-details.php:825
 msgid "the number of failed sign-ins"
 msgstr "le nombre d’échecs de connexion"
 
-#: includes/class-honk-details.php:682
+#: includes/class-honk-details.php:825
 msgid "an all-clear when they stop"
 msgstr "un message quand ils cessent"
 
-#: includes/class-honk-details.php:684
-#: includes/class-honk-details.php:686
+#: includes/class-honk-details.php:827
+#: includes/class-honk-details.php:829
 msgid "the username"
 msgstr "l’identifiant"
 
-#: includes/class-honk-details.php:686
+#: includes/class-honk-details.php:829
 msgid "the old and new role"
 msgstr "l’ancien et le nouveau rôle"
 
-#: includes/class-honk-details.php:688
+#: includes/class-honk-details.php:831
 msgid "what changed"
 msgstr "ce qui a changé"
 
-#: includes/class-honk-details.php:688
+#: includes/class-honk-details.php:831
 msgid "the old and new site address"
 msgstr "l’ancienne et la nouvelle adresse du site"
 
-#: includes/class-honk-details.php:690
+#: includes/class-honk-details.php:833
 msgid "the plugin’s name"
 msgstr "le nom de l’extension"
 
-#: includes/class-honk-details.php:690
-#: includes/class-honk-details.php:692
+#: includes/class-honk-details.php:833
+#: includes/class-honk-details.php:835
 msgid "what happened"
 msgstr "ce qui s’est passé"
 
-#: includes/class-honk-details.php:692
+#: includes/class-honk-details.php:835
 msgid "the theme’s name"
 msgstr "le nom du thème"
 
-#: includes/class-honk-details.php:694
+#: includes/class-honk-details.php:837
 msgid "the file"
 msgstr "le fichier"
 
-#: includes/class-honk-details.php:694
+#: includes/class-honk-details.php:837
 msgid "the plugin or theme it belongs to"
 msgstr "l’extension ou le thème auquel il appartient"
 
-#: includes/class-honk-details.php:696
+#: includes/class-honk-details.php:839
 msgid "what was updated, with the new versions"
 msgstr "ce qui a été mis à jour, avec les nouvelles versions"
 
-#: includes/class-honk-details.php:698
+#: includes/class-honk-details.php:841
 msgid "the plugin or theme that caused it"
 msgstr "l’extension ou le thème en cause"
 
-#: includes/class-honk-details.php:698
+#: includes/class-honk-details.php:841
 msgid "whether WordPress emailed a recovery link"
 msgstr "l’envoi éventuel d’un lien de récupération par WordPress"
 
-#: includes/class-honk-details.php:700
+#: includes/class-honk-details.php:843
 msgid "the critical issues"
 msgstr "les problèmes critiques"
 
-#: includes/class-honk-details.php:700
+#: includes/class-honk-details.php:843
 msgid "an all-clear once they’re fixed"
 msgstr "un message une fois qu’ils sont résolus"
 
-#: includes/class-honk-details.php:702
+#: includes/class-honk-details.php:845
 msgid "what failed to update, and why"
 msgstr "ce qui n’a pas pu être mis à jour, et pourquoi"
 
-#: includes/class-honk-details.php:704
+#: includes/class-honk-details.php:847
 msgid "the available updates, with their versions"
 msgstr "les mises à jour disponibles, avec leurs versions"
 
-#: includes/class-honk-details.php:706
+#: includes/class-honk-details.php:849
 msgid "how many tasks are late"
 msgstr "le nombre de tâches en retard"
 
-#: includes/class-honk-details.php:706
+#: includes/class-honk-details.php:849
 msgid "an all-clear when they’re on time again"
 msgstr "un message quand elles sont de nouveau à l’heure"
 
-#: includes/class-honk-details.php:708
+#: includes/class-honk-details.php:851
 msgid "the free and total disk space"
 msgstr "l’espace disque libre et total"
 
-#: includes/class-honk-details.php:708
+#: includes/class-honk-details.php:851
 msgid "an all-clear when there’s room again"
 msgstr "un message quand il y a de nouveau de la place"
 
-#: includes/class-honk-details.php:710
+#: includes/class-honk-details.php:853
 msgid "a link to the user’s profile"
 msgstr "un lien vers le profil du compte"
 
-#: includes/class-honk-details.php:712
+#: includes/class-honk-details.php:855
 msgid "a link to the comments awaiting moderation"
 msgstr "un lien vers les commentaires en attente de modération"
 
-#: includes/class-honk-details.php:715
+#: includes/class-honk-details.php:858
 msgid "the title"
 msgstr "le titre"
 
-#: includes/class-honk-details.php:715
+#: includes/class-honk-details.php:858
 msgid "the post type"
 msgstr "le type de publication"
 
-#: includes/class-honk-details.php:715
+#: includes/class-honk-details.php:858
 msgid "a link to the post"
 msgstr "un lien vers la publication"
 
-#: includes/class-honk-details.php:720
+#: includes/class-honk-details.php:863
 msgid "the old and new status"
 msgstr "l’ancien et le nouvel état"
 
-#: includes/class-honk-details.php:722
+#: includes/class-honk-details.php:865
 msgid "the refunded amount"
 msgstr "le montant remboursé"
 
-#: includes/class-honk-details.php:725
-#: includes/class-honk-details.php:729
+#: includes/class-honk-details.php:868
+#: includes/class-honk-details.php:872
 msgid "the product’s name"
 msgstr "le nom du produit"
 
-#: includes/class-honk-details.php:725
+#: includes/class-honk-details.php:868
 msgid "a link to the product"
 msgstr "un lien vers le produit"
 
-#: includes/class-honk-details.php:725
+#: includes/class-honk-details.php:868
 msgid "an all-clear when it’s back in stock"
 msgstr "un message quand il est de nouveau en stock"
 
-#: includes/class-honk-details.php:727
+#: includes/class-honk-details.php:870
 msgid "a link to the customer’s profile"
 msgstr "un lien vers le profil du client"
 
-#: includes/class-honk-details.php:729
+#: includes/class-honk-details.php:872
 msgid "whether it’s awaiting moderation"
 msgstr "si l’avis est en attente de modération"
 
-#: includes/class-honk-details.php:729
+#: includes/class-honk-details.php:872
 msgid "a link to the reviews"
 msgstr "un lien vers les avis"
 
-#: includes/class-honk-details.php:731
+#: includes/class-honk-details.php:874
 msgid "the subscription number"
 msgstr "le numéro de l’abonnement"
 
-#: includes/class-honk-details.php:731
+#: includes/class-honk-details.php:874
 msgid "the amount"
 msgstr "le montant"
 
-#: includes/class-honk-details.php:731
+#: includes/class-honk-details.php:874
 msgid "a link to the subscription"
 msgstr "un lien vers l’abonnement"
 
-#: includes/class-honk-details.php:733
+#: includes/class-honk-details.php:876
 msgid "the date"
 msgstr "la date"
 
-#: includes/class-honk-details.php:733
+#: includes/class-honk-details.php:876
 msgid "the number of orders"
 msgstr "le nombre de commandes"
 
-#: includes/class-honk-details.php:733
+#: includes/class-honk-details.php:876
 msgid "the revenue"
 msgstr "le chiffre d’affaires"
 
@@ -940,12 +973,12 @@ msgid "Less than 5% or 1 GB of disk space left. Only works if your host lets Wor
 msgstr "Moins de 5 % ou de 1 Go d’espace disque libre. Ne fonctionne que si votre hébergeur permet à WordPress de le vérifier."
 
 #: includes/class-honk-events.php:198
-#: includes/modules/class-honk-module-content.php:214
+#: includes/modules/class-honk-module-content.php:215
 msgid "New user registration"
 msgstr "Inscription d’un nouveau compte"
 
 #: includes/class-honk-events.php:200
-#: includes/modules/class-honk-module-content.php:232
+#: includes/modules/class-honk-module-content.php:234
 msgid "Comment awaiting moderation"
 msgstr "Commentaire en attente de modération"
 
@@ -1051,107 +1084,107 @@ msgid "Download failed."
 msgstr "Le téléchargement a échoué."
 
 #. translators: sample comment in the notification preview
-#: includes/class-honk-preview.php:224
+#: includes/class-honk-preview.php:225
 msgid "Do you also ship abroad?"
 msgstr "Livrez-vous aussi à l’étranger ?"
 
 #. translators: sample post excerpt in the notification preview
-#: includes/class-honk-preview.php:236
+#: includes/class-honk-preview.php:237
 msgid "All linen is on sale until Sunday."
 msgstr "Tous les articles en lin sont soldés jusqu’à dimanche."
 
 #. translators: sample refund reason in the notification preview
-#: includes/class-honk-preview.php:260
+#: includes/class-honk-preview.php:261
 msgid "Damaged in transit"
 msgstr "Endommagé pendant le transport"
 
 #. translators: sample product review in the notification preview
-#: includes/class-honk-preview.php:286
+#: includes/class-honk-preview.php:288
 msgid "Lovely fabric, and it washes well."
 msgstr "Très joli tissu, et il passe bien en machine."
 
-#: includes/class-honk-preview.php:330
-#: includes/modules/class-honk-module-forms.php:254
+#: includes/class-honk-preview.php:333
+#: includes/modules/class-honk-module-forms.php:255
 msgid "Form"
 msgstr "Formulaire"
 
 #. translators: sample form name in the notification preview
-#: includes/class-honk-preview.php:348
+#: includes/class-honk-preview.php:363
 msgid "Contact"
 msgstr "Contact"
 
 #. translators: a form field's label in the notification preview
-#: includes/class-honk-preview.php:359
+#: includes/class-honk-preview.php:371
 msgid "Email"
 msgstr "E-mail"
 
 #. translators: a form field's label in the notification preview
-#: includes/class-honk-preview.php:364
+#: includes/class-honk-preview.php:380
 msgid "Message"
 msgstr "Message"
 
 #. translators: sample customer name in the notification preview
-#: includes/class-honk-preview.php:412
+#: includes/class-honk-preview.php:427
 msgid "Jane Doe"
 msgstr "Camille Martin"
 
 #. translators: sample username in the notification preview: the sample first name in lowercase
-#: includes/class-honk-preview.php:414
+#: includes/class-honk-preview.php:429
 msgid "jane"
 msgstr "camille"
 
 #. translators: sample email address in the notification preview, matching the sample name
-#: includes/class-honk-preview.php:416
+#: includes/class-honk-preview.php:431
 msgid "jane@example.com"
 msgstr "camille@example.com"
 
 #. translators: sample phone number in the notification preview
-#: includes/class-honk-preview.php:418
+#: includes/class-honk-preview.php:433
 msgid "+1 503 555 0142"
 msgstr "+33 6 12 34 56 78"
 
 #. translators: sample billing city and country in the notification preview
-#: includes/class-honk-preview.php:420
+#: includes/class-honk-preview.php:435
 msgid "Portland, United States"
 msgstr "Lyon, France"
 
 #. translators: sample payment method in the notification preview
-#: includes/class-honk-preview.php:457
+#: includes/class-honk-preview.php:472
 msgid "Credit card"
 msgstr "Carte bancaire"
 
 #. translators: sample shipping method in the notification preview (WooCommerce's own name for it)
-#: includes/class-honk-preview.php:460
+#: includes/class-honk-preview.php:475
 msgid "Flat rate"
 msgstr "Forfait"
 
 #. translators: sample note a customer left at checkout, in the notification preview
-#: includes/class-honk-preview.php:466
+#: includes/class-honk-preview.php:481
 msgid "Please leave it with the neighbors."
 msgstr "Merci de le laisser chez les voisins."
 
 #. translators: sample product name in the notification preview
-#: includes/class-honk-preview.php:480
+#: includes/class-honk-preview.php:495
 msgid "Linen Apron"
 msgstr "Tablier en lin"
 
 #. translators: sample product name in the notification preview
-#: includes/class-honk-preview.php:480
+#: includes/class-honk-preview.php:495
 msgid "Ceramic Mug"
 msgstr "Mug en céramique"
 
 #. translators: sample post title in the notification preview
-#: includes/class-honk-preview.php:490
+#: includes/class-honk-preview.php:505
 msgid "Autumn sale"
 msgstr "Soldes d’automne"
 
 #. translators: sample message sent through a contact form, in the notification preview
-#: includes/class-honk-preview.php:500
+#: includes/class-honk-preview.php:515
 msgid "Hi, do you deliver on Saturdays?"
 msgstr "Bonjour, livrez-vous le samedi ?"
 
 #. translators: sample plugin name in the notification preview
-#: includes/class-honk-preview.php:510
+#: includes/class-honk-preview.php:525
 msgid "Example Plugin"
 msgstr "Extension d’exemple"
 
@@ -1200,62 +1233,70 @@ msgid "Urgent"
 msgstr "Urgente"
 
 #. translators: %s: role names
-#: includes/modules/class-honk-module-content.php:218
+#: includes/modules/class-honk-module-content.php:219
 #, php-format
 msgid "Role: %s"
 msgstr "Rôle : %s"
 
-#: includes/modules/class-honk-module-content.php:220
+#: includes/modules/class-honk-module-content.php:221
 msgid "A new user account was created."
 msgstr "Un nouveau compte a été créé."
 
 #. translators: %s: post title
-#: includes/modules/class-honk-module-content.php:235
+#: includes/modules/class-honk-module-content.php:237
 #, php-format
 msgid "On “%s”"
 msgstr "Sur « %s »"
 
-#: includes/modules/class-honk-module-content.php:244
+#: includes/modules/class-honk-module-content.php:246
 msgid "Anonymous"
 msgstr "Anonyme"
 
+#. translators: %s: what the email replies to: a product, a post or a form
+#: includes/modules/class-honk-module-content.php:256
+#: includes/modules/class-honk-module-forms.php:360
+#: includes/modules/class-honk-module-woocommerce.php:974
+#, php-format
+msgid "Re: %s"
+msgstr "Re : %s"
+
 #. translators: %s: post title
-#: includes/modules/class-honk-module-content.php:262
+#: includes/modules/class-honk-module-content.php:272
 #, php-format
 msgid "Pending review: %s"
 msgstr "En attente de relecture : %s"
 
 #. translators: 1: post type name (e.g. Post), 2: author
-#: includes/modules/class-honk-module-content.php:264
+#: includes/modules/class-honk-module-content.php:274
 #, php-format
 msgid "%1$s by %2$s is waiting for review."
 msgstr "%1$s par %2$s, en attente de relecture."
 
 #. translators: %s: post type name (e.g. Post)
-#: includes/modules/class-honk-module-content.php:266
+#: includes/modules/class-honk-module-content.php:276
 #, php-format
 msgid "%s is waiting for review."
 msgstr "%s en attente de relecture."
 
 #. translators: %s: post title
-#: includes/modules/class-honk-module-content.php:269
+#: includes/modules/class-honk-module-content.php:279
 #, php-format
 msgid "Published: %s"
 msgstr "Publié : %s"
 
 #. translators: 1: post type name (e.g. Post), 2: author
-#: includes/modules/class-honk-module-content.php:271
+#: includes/modules/class-honk-module-content.php:281
 #, php-format
 msgid "%1$s by %2$s."
 msgstr "%1$s par %2$s."
 
 #. translators: %s: form name
-#: includes/modules/class-honk-module-forms.php:307
+#: includes/modules/class-honk-module-forms.php:309
 #, php-format
 msgid "Someone sent the “%s” form."
 msgstr "Le formulaire « %s » vient d’être envoyé."
 
-#: includes/modules/class-honk-module-forms.php:518
+#: includes/modules/class-honk-module-forms.php:570
 msgid "(file attached)"
 msgstr "(fichier joint)"
 
@@ -1621,14 +1662,15 @@ msgid "Updated automatically."
 msgstr "Mise à jour automatique."
 
 #. translators: %s: order number
-#: includes/modules/class-honk-module-woocommerce.php:730
+#: includes/modules/class-honk-module-woocommerce.php:731
+#: includes/modules/class-honk-module-woocommerce.php:786
 #, php-format
 msgid "Order #%s"
 msgstr "Commande n°%s"
 
 #. translators: %d: number of items
-#: includes/modules/class-honk-module-woocommerce.php:733
-#: includes/modules/class-honk-module-woocommerce.php:995
+#: includes/modules/class-honk-module-woocommerce.php:734
+#: includes/modules/class-honk-module-woocommerce.php:1030
 #, php-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -1636,7 +1678,7 @@ msgstr[0] "%d article"
 msgstr[1] "%d articles"
 
 #. translators: %d: number of other products in the order
-#: includes/modules/class-honk-module-woocommerce.php:751
+#: includes/modules/class-honk-module-woocommerce.php:752
 #, php-format
 msgid "and %d more"
 msgid_plural "and %d more"
@@ -1644,86 +1686,86 @@ msgstr[0] "et %d autre"
 msgstr[1] "et %d autres"
 
 #. translators: %s: order number
-#: includes/modules/class-honk-module-woocommerce.php:781
+#: includes/modules/class-honk-module-woocommerce.php:801
 #, php-format
 msgid "New order #%s"
 msgstr "Nouvelle commande n°%s"
 
 #. translators: %s: shipping method
-#: includes/modules/class-honk-module-woocommerce.php:792
+#: includes/modules/class-honk-module-woocommerce.php:812
 #, php-format
 msgid "Shipping: %s"
 msgstr "Expédition : %s"
 
 #. translators: %s: the note the customer left at checkout
-#: includes/modules/class-honk-module-woocommerce.php:796
+#: includes/modules/class-honk-module-woocommerce.php:816
 #, php-format
 msgid "Note: %s"
 msgstr "Note : %s"
 
 #. translators: 1: order number, 2: new status
-#: includes/modules/class-honk-module-woocommerce.php:810
+#: includes/modules/class-honk-module-woocommerce.php:831
 #, php-format
 msgid "Order #%1$s: %2$s"
 msgstr "Commande n°%1$s : %2$s"
 
 #. translators: %s: payment method
-#: includes/modules/class-honk-module-woocommerce.php:816
-#: includes/modules/class-honk-module-woocommerce.php:835
+#: includes/modules/class-honk-module-woocommerce.php:837
+#: includes/modules/class-honk-module-woocommerce.php:857
 #, php-format
 msgid "Payment method: %s"
 msgstr "Moyen de paiement : %s"
 
 #. translators: %s: order number
-#: includes/modules/class-honk-module-woocommerce.php:831
+#: includes/modules/class-honk-module-woocommerce.php:853
 #, php-format
 msgid "Payment failed for order #%s"
 msgstr "Échec du paiement de la commande n°%s"
 
 #. translators: 1: amount, 2: order number
-#: includes/modules/class-honk-module-woocommerce.php:851
+#: includes/modules/class-honk-module-woocommerce.php:874
 #, php-format
 msgid "Refund of %1$s for order #%2$s"
 msgstr "Remboursement de %1$s pour la commande n°%2$s"
 
 #. translators: 1: amount, 2: order number
-#: includes/modules/class-honk-module-woocommerce.php:856
+#: includes/modules/class-honk-module-woocommerce.php:879
 #, php-format
 msgid "Full refund of %1$s on order #%2$s."
 msgstr "Remboursement intégral de %1$s pour la commande n°%2$s."
 
 #. translators: 1: amount, 2: order number
-#: includes/modules/class-honk-module-woocommerce.php:858
+#: includes/modules/class-honk-module-woocommerce.php:881
 #, php-format
 msgid "Partial refund of %1$s on order #%2$s."
 msgstr "Remboursement partiel de %1$s pour la commande n°%2$s."
 
 #. translators: %s: refund reason
-#: includes/modules/class-honk-module-woocommerce.php:862
+#: includes/modules/class-honk-module-woocommerce.php:885
 #, php-format
 msgid "Reason: %s"
 msgstr "Motif : %s"
 
 #. translators: %s: product name
-#: includes/modules/class-honk-module-woocommerce.php:879
+#: includes/modules/class-honk-module-woocommerce.php:903
 #, php-format
 msgid "Out of stock: %s"
 msgstr "Rupture de stock : %s"
 
 #. translators: %s: product name
-#: includes/modules/class-honk-module-woocommerce.php:883
+#: includes/modules/class-honk-module-woocommerce.php:907
 #, php-format
 msgid "Low stock: %s"
 msgstr "Stock faible : %s"
 
 #. translators: %s: product name
-#: includes/modules/class-honk-module-woocommerce.php:887
+#: includes/modules/class-honk-module-woocommerce.php:911
 #, php-format
 msgid "Back in stock: %s"
 msgstr "De nouveau en stock : %s"
 
 #. translators: %d: units in stock
-#: includes/modules/class-honk-module-woocommerce.php:895
+#: includes/modules/class-honk-module-woocommerce.php:919
 #, php-format
 msgid "%d unit in stock."
 msgid_plural "%d units in stock."
@@ -1731,7 +1773,7 @@ msgstr[0] "%d unité en stock."
 msgstr[1] "%d unités en stock."
 
 #. translators: %d: units in stock
-#: includes/modules/class-honk-module-woocommerce.php:897
+#: includes/modules/class-honk-module-woocommerce.php:921
 #, php-format
 msgid "%d unit left."
 msgid_plural "%d units left."
@@ -1739,75 +1781,81 @@ msgstr[0] "Stock restant : %d."
 msgstr[1] "Stock restant : %d."
 
 #. translators: %s: SKU
-#: includes/modules/class-honk-module-woocommerce.php:901
+#: includes/modules/class-honk-module-woocommerce.php:925
 #, php-format
 msgid "SKU: %s"
 msgstr "UGS : %s"
 
-#: includes/modules/class-honk-module-woocommerce.php:914
+#: includes/modules/class-honk-module-woocommerce.php:938
 msgid "New customer"
 msgstr "Nouveau client"
 
-#: includes/modules/class-honk-module-woocommerce.php:916
+#: includes/modules/class-honk-module-woocommerce.php:940
 msgid "A customer account was created."
 msgstr "Un compte client a été créé."
 
 #. translators: %s: product name
-#: includes/modules/class-honk-module-woocommerce.php:930
+#: includes/modules/class-honk-module-woocommerce.php:955
 #, php-format
 msgid "New review: %s"
 msgstr "Nouvel avis : %s"
 
 #. translators: %d: rating from 1 to 5
-#: includes/modules/class-honk-module-woocommerce.php:933
+#: includes/modules/class-honk-module-woocommerce.php:958
 #, php-format
 msgid "%d of 5"
 msgstr "%d sur 5"
 
-#: includes/modules/class-honk-module-woocommerce.php:934
+#: includes/modules/class-honk-module-woocommerce.php:959
 msgid "Awaiting moderation."
 msgstr "En attente de modération."
 
-#: includes/modules/class-honk-module-woocommerce.php:943
+#: includes/modules/class-honk-module-woocommerce.php:968
 msgid "A new product review."
 msgstr "Nouvel avis sur un produit."
 
 #. translators: %s: subscription number
-#: includes/modules/class-honk-module-woocommerce.php:956
+#: includes/modules/class-honk-module-woocommerce.php:989
 #, php-format
 msgid "Subscription #%s: renewal failed"
 msgstr "Abonnement n°%s : échec du renouvellement"
 
 #. translators: %s: amount
-#: includes/modules/class-honk-module-woocommerce.php:959
+#: includes/modules/class-honk-module-woocommerce.php:992
 #, php-format
 msgid "The %s renewal couldn’t be charged."
 msgstr "Le paiement du renouvellement (%s) n’a pas abouti."
 
 #. translators: %s: order number
-#: includes/modules/class-honk-module-woocommerce.php:961
+#: includes/modules/class-honk-module-woocommerce.php:994
 #, php-format
 msgid "Renewal order #%s"
 msgstr "Commande de renouvellement n°%s"
 
+#. translators: %s: subscription number
+#: includes/modules/class-honk-module-woocommerce.php:1003
+#, php-format
+msgid "Subscription #%s"
+msgstr "Abonnement n°%s"
+
 #. translators: %s: date
-#: includes/modules/class-honk-module-woocommerce.php:982
+#: includes/modules/class-honk-module-woocommerce.php:1017
 #, php-format
 msgid "Sales on %s"
 msgstr "Ventes du %s"
 
-#: includes/modules/class-honk-module-woocommerce.php:983
+#: includes/modules/class-honk-module-woocommerce.php:1018
 msgid "No orders."
 msgstr "Aucune commande."
 
 #. translators: 1: date, 2: revenue
-#: includes/modules/class-honk-module-woocommerce.php:988
+#: includes/modules/class-honk-module-woocommerce.php:1023
 #, php-format
 msgid "Sales on %1$s: %2$s"
 msgstr "Ventes du %1$s : %2$s"
 
 #. translators: %d: number of orders
-#: includes/modules/class-honk-module-woocommerce.php:993
+#: includes/modules/class-honk-module-woocommerce.php:1028
 #, php-format
 msgid "%d order"
 msgid_plural "%d orders"
@@ -1815,13 +1863,13 @@ msgstr[0] "%d commande"
 msgstr[1] "%d commandes"
 
 #. translators: %s: revenue
-#: includes/modules/class-honk-module-woocommerce.php:999
+#: includes/modules/class-honk-module-woocommerce.php:1034
 #, php-format
 msgid "Revenue: %s"
 msgstr "Chiffre d’affaires : %s"
 
 #. translators: %s: refunded amount
-#: includes/modules/class-honk-module-woocommerce.php:1001
+#: includes/modules/class-honk-module-woocommerce.php:1036
 #, php-format
 msgid "Refunded: %s"
 msgstr "Remboursements : %s"

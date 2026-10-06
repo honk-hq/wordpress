@@ -20,6 +20,8 @@ You decide what you hear about. Every event has its own on/off switch, a priorit
 
 You also decide what each notification says, without code. Open Details under an event to see what it can include, from the order total, the payment method and the products to the customer's name, phone and billing city, and tick what you want. A preview next to the choices shows how the notification will read in Honk.
 
+Notifications can also carry buttons, so you can act on them right away: Email customer and Call customer on orders, Approve and Reply by email on comments and reviews awaiting moderation, Reply by email and Call back on form entries. Pick them in the same Details.
+
 = WooCommerce =
 
 * New orders, once they're paid or on hold (classic and block checkout, plus orders created in the admin or through the REST API)
@@ -81,7 +83,7 @@ This plugin connects to the Honk API to deliver your notifications. Honk Me is a
 
 What is sent, and when:
 
-* **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed).
+* **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed). If you choose buttons in an event's Details, it also contains them: a title and a link, such as a link to approve a comment in your dashboard, or an email address or phone number to write to or call, which is sent only when the notification already includes it.
 * **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24). A customer's phone number, billing city and country and order note are sent only if you also tick them in an event's Details, and Details let you leave out any of the others.
 * **When you click "Send test notification"**, one test message is sent.
 * **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. This request contains no data about your site.
@@ -141,7 +143,7 @@ For administrators, the plugin remembers the browser, operating system and IP ne
 
 = Can I choose what a notification says? =
 
-Yes. In Settings → Honk, open Details under an event. It lists what that notification always includes, such as the order number and a link to the order, and what you can add or leave out, with a preview of how it will read in Honk. Your choices apply to every notification of that event from then on.
+Yes. In Settings → Honk, open Details under an event. It lists what that notification always includes, such as the order number and a link to the order, what you can add or leave out, and the buttons it can carry (such as Email customer or Approve), with a preview of how it will read in Honk. Your choices apply to every notification of that event from then on. Buttons are off until you pick them.
 
 = Can I change a message before it's sent? =
 

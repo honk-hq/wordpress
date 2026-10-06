@@ -17,7 +17,7 @@ class DetailsTest extends Honk_Test_Case {
 	/**
 	 * Personal data in the scenarios' fixtures.
 	 */
-	const PERSONAL = array( 'Ana Pop', 'ana@example.com', '+40 721', 'Cluj-Napoca', 'neighbours', 'ana.pop', 'Mara Ionescu', 'mara@example.com', 'sam@example.com', 'Dan', 'dan@example.com', 'Lovely fabric', 'Austria', 'Anonymous question', '203.0.113.77', 'root', 'Ops Team', 'ops@example.com', 'Eve Martin', 'eve@example.com', 'Li Wang', 'li@example.com', 'owner@example.com', 'old@example.com', 'hunter2', 'Line one' );
+	const PERSONAL = array( 'Ana Pop', 'ana@example.com', '+40 721', 'Cluj-Napoca', 'neighbours', 'ana.pop', 'Mara Ionescu', 'mara@example.com', 'sam@example.com', 'Dan', 'dan@example.com', 'Lovely fabric', 'Austria', 'Anonymous question', '203.0.113.77', 'root', 'Ops Team', 'ops@example.com', 'Eve Martin', 'eve@example.com', 'Li Wang', 'li@example.com', 'owner@example.com', 'old@example.com', 'hunter2', 'Line one', '40721000000' );
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -27,13 +27,16 @@ class DetailsTest extends Honk_Test_Case {
 	}
 
 	/**
-	 * Every detail of every event chosen (or not).
+	 * Every detail and button of every event chosen (or not).
 	 */
 	private function all_details( $on ) {
 		$details = array();
 		foreach ( Honk_Details::FACTS as $event => $facts ) {
 			foreach ( $facts as $fact => $meta ) {
 				$details[ $event ][ $fact ] = $on;
+			}
+			foreach ( Honk_Details::actions( $event ) as $action => $need ) {
+				$details[ $event ][ $action ] = $on;
 			}
 		}
 		return $details;
@@ -219,6 +222,9 @@ class DetailsTest extends Honk_Test_Case {
 			foreach ( $facts as $fact => $meta ) {
 				$posted[ $event ][ $fact ] = $meta[1] ? '1' : '0';
 			}
+			foreach ( Honk_Details::actions( $event ) as $action => $need ) {
+				$posted[ $event ][ $action ] = '0';
+			}
 		}
 		$golden = json_decode( file_get_contents( __DIR__ . '/../fixtures/messages-0.1.0.json' ), true );
 		foreach ( array( 'off' => false, 'on' => true ) as $k => $pii ) {
@@ -244,7 +250,7 @@ class DetailsTest extends Honk_Test_Case {
 			array(
 				'_form'   => '1',
 				'details' => array(
-					'woo_new_order'     => array( 'total' => '0', 'phone' => '1', 'bogus' => '1', 'email' => array( 'x' ) ),
+					'woo_new_order'     => array( 'total' => '0', 'phone' => '1', 'bogus' => '1', 'email' => array( 'x' ), 'action_call' => '1' ),
 					'not_an_event'      => array( 'total' => '1' ),
 					'form_cf7'          => array(
 						'values' => '1',
@@ -258,9 +264,9 @@ class DetailsTest extends Honk_Test_Case {
 			)
 		);
 		$d = $out['details'];
-		$this->assertSame( array( 'total' => false, 'count' => true, 'status' => true, 'payment' => true, 'products' => false, 'shipping' => false, 'name' => true, 'email' => true, 'phone' => true, 'city' => false, 'note' => false ), $d['woo_new_order'], 'unknown keys dropped, missing ones default, arrays ignored' );
+		$this->assertSame( array( 'total' => false, 'count' => true, 'status' => true, 'payment' => true, 'products' => false, 'shipping' => false, 'name' => true, 'email' => true, 'phone' => true, 'city' => false, 'note' => false, 'action_email' => false, 'action_call' => true ), $d['woo_new_order'], 'unknown keys dropped, missing ones default (buttons off), arrays ignored' );
 		$this->assertArrayNotHasKey( 'not_an_event', $d );
-		$this->assertSame( array( 'total' => true, 'count' => true, 'reason' => false, 'name' => false, 'email' => false ), $d['woo_refund'], 'not on the form: kept' );
+		$this->assertSame( array( 'total' => true, 'count' => true, 'reason' => false, 'name' => false, 'email' => false, 'action_email' => false ), $d['woo_refund'], 'not on the form: kept' );
 		$this->assertSame( array( '10' => array( 'your-subject' ), '11script' => array( 'ab' ) ), $d['form_cf7']['skip'] );
 		$this->assertSame( array( '3' => array( '2' ) ), $d['form_wpforms']['skip'], 'not on the form: kept' );
 		$this->assertArrayNotHasKey( 'skip', $d['form_gravityforms'] );
@@ -303,7 +309,7 @@ class DetailsTest extends Honk_Test_Case {
 			'fallback' => 'nothing',
 		);
 		$on       = Honk_Details::compose( 'woo_new_order', $spec, array( 'x' => true, 'p' => true ) );
-		$this->assertSame( array( 'title' => 'A', 'message' => "one · two\nnobody\n[who] did it", 'pii' => false ), $on, 'p is not a detail of woo_new_order, so not personal' );
+		$this->assertSame( array( 'title' => 'A', 'message' => "one · two\nnobody\n[who] did it", 'pii' => false, 'actions' => array() ), $on, 'p is not a detail of woo_new_order, so not personal' );
 		$off = Honk_Details::compose( 'woo_new_order', $spec, array() );
 		$this->assertSame( 'B', $off['title'] );
 		$this->assertSame( 'two', $off['message'] );
@@ -350,7 +356,7 @@ class DetailsTest extends Honk_Test_Case {
 			$none = Honk_Details::compose( $event, $spec, array() );
 			$this->assertNotSame( '', $none['title'], $event . ': a title' );
 			$all = array();
-			foreach ( Honk_Details::facts( $event ) as $fact => $meta ) {
+			foreach ( array_merge( array_keys( Honk_Details::facts( $event ) ), array_keys( Honk_Details::actions( $event ) ) ) as $fact ) {
 				$all[ $fact ] = true;
 			}
 			$every = Honk_Details::compose( $event, $spec, $all );
@@ -365,7 +371,7 @@ class DetailsTest extends Honk_Test_Case {
 	public function test_the_preview_reads_like_the_message() {
 		$specs = Honk_Preview::specs();
 		$order = Honk_Details::compose( 'woo_new_order', $specs['woo_new_order'], Honk_Details::states( 'woo_new_order' ) );
-		$this->assertSame( array( 'title' => 'New order #1234', 'message' => "Order #1234 · €84.00 · 3 items\nProcessing · Credit card", 'pii' => false ), $order );
+		$this->assertSame( array( 'title' => 'New order #1234', 'message' => "Order #1234 · €84.00 · 3 items\nProcessing · Credit card", 'pii' => false, 'actions' => array() ), $order );
 		$this->options['honk_settings']['include_pii'] = true;
 		Honk_Settings::flush();
 		$order = Honk_Details::compose( 'woo_new_order', $specs['woo_new_order'], Honk_Details::states( 'woo_new_order' ) );

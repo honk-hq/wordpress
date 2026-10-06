@@ -1,7 +1,7 @@
 <?php
 /**
- * What each notification says: the details an event can include, the site's choices, and the
- * one function that turns a message outline into its title and text.
+ * What each notification says: the details an event can include, its buttons, the site's
+ * choices, and the one function that turns a message outline into its title, text and buttons.
  *
  * @package Honk
  */
@@ -174,6 +174,67 @@ final class Honk_Details {
 	);
 
 	/**
+	 * Event id => button => the detail it needs ('' for none). The buttons a notification can carry
+	 * (contracts/API.md §13), at most three, in the order they're shown: reply to the customer,
+	 * call them, approve a comment.
+	 *
+	 * A button that emails or calls someone carries their address or number, so it's added only
+	 * while that detail is on, and so only while personal data is allowed: a button never sends
+	 * anything the message's text wouldn't. Buttons are off until someone chooses them, so with the
+	 * defaults every message is still what 0.1.0 sent.
+	 */
+	const ACTIONS = array(
+		'user_registered'         => array( 'action_email' => 'email' ),
+		'comment_pending'         => array(
+			'action_approve' => '',
+			'action_reply'   => 'email',
+		),
+		'form_cf7'                => array(
+			'action_reply' => 'values',
+			'action_call'  => 'values',
+		),
+		'form_wpforms'            => array(
+			'action_reply' => 'values',
+			'action_call'  => 'values',
+		),
+		'form_gravityforms'       => array(
+			'action_reply' => 'values',
+			'action_call'  => 'values',
+		),
+		'form_elementor'          => array(
+			'action_reply' => 'values',
+			'action_call'  => 'values',
+		),
+		'form_fluentforms'        => array(
+			'action_reply' => 'values',
+			'action_call'  => 'values',
+		),
+		'form_ninjaforms'         => array(
+			'action_reply' => 'values',
+			'action_call'  => 'values',
+		),
+		'woo_new_order'           => array(
+			'action_email' => 'email',
+			'action_call'  => 'phone',
+		),
+		'woo_order_status'        => array(
+			'action_email' => 'email',
+			'action_call'  => 'phone',
+		),
+		'woo_payment_failed'      => array(
+			'action_email' => 'email',
+			'action_call'  => 'phone',
+		),
+		'woo_refund'              => array( 'action_email' => 'email' ),
+		'woo_new_customer'        => array( 'action_email' => 'email' ),
+		'woo_new_review'          => array(
+			'action_approve' => '',
+			'action_reply'   => 'email',
+		),
+		'woo_subscription_failed' => array( 'action_email' => 'email' ),
+	);
+
+	/**
 	 * Form events whose plugin lists each form's fields (so fields can be left out one by one).
 	 */
 	const FORM_FIELD_EVENTS = array( 'form_cf7', 'form_wpforms', 'form_gravityforms' );
@@ -196,6 +257,16 @@ final class Honk_Details {
 	}
 
 	/**
+	 * The buttons an event can carry: button => the detail it needs ('' for none).
+	 *
+	 * @param string $event_id Event id.
+	 * @return array<string, string>
+	 */
+	public static function actions( $event_id ) {
+		return isset( self::ACTIONS[ $event_id ] ) ? self::ACTIONS[ $event_id ] : array();
+	}
+
+	/**
 	 * Whether a detail is personal data (and so needs "Include customer names and emails").
 	 *
 	 * @param string $event_id Event id.
@@ -208,49 +279,53 @@ final class Honk_Details {
 	}
 
 	/**
-	 * The site's choice for a detail (its default until someone changes it), whatever the privacy
-	 * switch says.
+	 * The site's choice for a detail or a button (its default until someone changes it; buttons are
+	 * off by default), whatever the privacy switch says.
 	 *
 	 * @param string $event_id Event id.
-	 * @param string $fact     Detail.
+	 * @param string $fact     Detail or button.
 	 * @return bool
 	 */
 	public static function chosen( $event_id, $fact ) {
 		$facts = self::facts( $event_id );
-		if ( ! isset( $facts[ $fact ] ) ) {
+		if ( ! isset( $facts[ $fact ] ) && ! array_key_exists( $fact, self::actions( $event_id ) ) ) {
 			return false;
 		}
 		$all = Honk_Settings::get( 'details' );
 		if ( is_array( $all ) && isset( $all[ $event_id ] ) && is_array( $all[ $event_id ] ) && array_key_exists( $fact, $all[ $event_id ] ) ) {
 			return (bool) $all[ $event_id ][ $fact ];
 		}
-		return $facts[ $fact ][1];
+		return isset( $facts[ $fact ] ) && $facts[ $fact ][1];
 	}
 
 	/**
 	 * Whether a detail goes into the message: chosen, and allowed by the privacy switch when it is
-	 * personal data.
+	 * personal data. A button also needs the detail it carries.
 	 *
 	 * @param string $event_id Event id.
-	 * @param string $fact     Detail.
+	 * @param string $fact     Detail or button.
 	 * @return bool
 	 */
 	public static function on( $event_id, $fact ) {
 		if ( ! self::chosen( $event_id, $fact ) ) {
 			return false;
 		}
+		$actions = self::actions( $event_id );
+		if ( isset( $actions[ $fact ] ) ) {
+			return '' === $actions[ $fact ] || self::on( $event_id, $actions[ $fact ] );
+		}
 		return ! self::is_personal( $event_id, $fact ) || Honk_Settings::include_pii();
 	}
 
 	/**
-	 * Every detail of an event: whether it goes into the message.
+	 * Every detail and button of an event: whether it goes into the message.
 	 *
 	 * @param string $event_id Event id.
 	 * @return array<string, bool>
 	 */
 	public static function states( $event_id ) {
 		$out = array();
-		foreach ( array_keys( self::facts( $event_id ) ) as $fact ) {
+		foreach ( array_merge( array_keys( self::facts( $event_id ) ), array_keys( self::actions( $event_id ) ) ) as $fact ) {
 			$out[ $fact ] = self::on( $event_id, $fact );
 		}
 		return $out;
@@ -315,6 +390,40 @@ final class Honk_Details {
 	}
 
 	/**
+	 * A button of the message, titled as on the settings screen (label()): shown while its choice
+	 * and the detail it needs (ACTIONS) are on.
+	 *
+	 * @param string          $event_id Event id.
+	 * @param string          $action   Button (ACTIONS).
+	 * @param string          $url      Link ('' buttons are left out: the data is missing or invalid).
+	 * @param string|string[] $when     Other details that must be on.
+	 * @return array
+	 */
+	public static function action( $event_id, $action, $url, $when = array() ) {
+		$actions   = self::actions( $event_id );
+		$need      = isset( $actions[ $action ] ) && '' !== $actions[ $action ] ? array( $actions[ $action ] ) : array();
+		$part      = self::part( self::label( $event_id, $action ), array_merge( array( $action ), $need, (array) $when ) );
+		$part['u'] = (string) $url;
+		return $part;
+	}
+
+	/**
+	 * An event's buttons, in the order of ACTIONS (action()).
+	 *
+	 * @param string $event_id Event id.
+	 * @param array  $urls     Button => link.
+	 * @param array  $when     Button => other details that must be on.
+	 * @return array
+	 */
+	public static function buttons( $event_id, array $urls, array $when = array() ) {
+		$out = array();
+		foreach ( array_keys( self::actions( $event_id ) ) as $action ) {
+			$out[] = self::action( $event_id, $action, isset( $urls[ $action ] ) ? $urls[ $action ] : '', isset( $when[ $action ] ) ? $when[ $action ] : array() );
+		}
+		return $out;
+	}
+
+	/**
 	 * A line with a single part.
 	 *
 	 * @param string          $text Text.
@@ -326,13 +435,15 @@ final class Honk_Details {
 	}
 
 	/**
-	 * Turns an outline into the message's title and text, keeping only what the details allow.
-	 * assets/admin.js has the same rules (compose()) for the preview.
+	 * Turns an outline into the message's title, text and buttons, keeping only what the details
+	 * allow. assets/admin.js has the same rules (compose()) for the preview.
 	 *
 	 * @param string $event_id Event id.
-	 * @param array  $spec     title: parts; lines: lines; fallback: text when no line remains.
+	 * @param array  $spec     title: parts; lines: lines; fallback: text when no line remains;
+	 *                         actions: buttons (action()).
 	 * @param array  $on       Detail => whether it is on (null: the site's settings).
-	 * @return array{title: string, message: string, pii: bool} pii: a personal detail is part of the text.
+	 * @return array{title: string, message: string, pii: bool, actions: array} pii: a personal
+	 *         detail is part of the text or a button.
 	 */
 	public static function compose( $event_id, array $spec, $on = null ) {
 		$on    = is_array( $on ) ? $on : self::states( $event_id );
@@ -395,15 +506,26 @@ final class Honk_Details {
 		if ( '' === $message && isset( $spec['fallback'] ) ) {
 			$message = (string) $spec['fallback'];
 		}
+
+		$actions = array();
+		foreach ( isset( $spec['actions'] ) ? $spec['actions'] : array() as $action ) {
+			if ( count( $actions ) < Honk_Payload::MAX_ACTIONS && '' !== $action['u'] && $keep( $action ) ) {
+				$actions[] = array(
+					'title' => $action['t'],
+					'url'   => $action['u'],
+				);
+			}
+		}
 		return array(
 			'title'   => $title,
 			'message' => $message,
 			'pii'     => $pii,
+			'actions' => $actions,
 		);
 	}
 
 	/**
-	 * Message fields from an outline: title, message and pii, for Honk_Notifier::emit().
+	 * Message fields from an outline: title, message, actions and pii, for Honk_Notifier::emit().
 	 *
 	 * @param string $event_id Event id.
 	 * @param array  $spec     Outline.
@@ -419,6 +541,9 @@ final class Honk_Details {
 			),
 			$fields
 		);
+		if ( $composed['actions'] ) {
+			$out['actions'] = $composed['actions'];
+		}
 		if ( $composed['pii'] ) {
 			$out['pii'] = true;
 		}
@@ -432,9 +557,9 @@ final class Honk_Details {
 	/**
 	 * Sanitizes the posted details. Events that are not on the form keep what was stored.
 	 *
-	 * @param array $posted Posted: event id => detail => '0'|'1', plus fields => form id => field key
-	 *                      => '0'|'1' for form plugins that list their fields (or skip => form id
-	 *                      => keys, from an already sanitized array).
+	 * @param array $posted Posted: event id => detail or button => '0'|'1', plus fields => form id =>
+	 *                      field key => '0'|'1' for form plugins that list their fields (or skip =>
+	 *                      form id => keys, from an already sanitized array).
 	 * @param array $stored Stored details.
 	 * @return array
 	 */
@@ -463,14 +588,23 @@ final class Honk_Details {
 	 * @return array
 	 */
 	private static function sanitize_row( $event_id, array $row, array $old ) {
-		$clean = array();
-		foreach ( self::facts( $event_id ) as $fact => $meta ) {
+		$clean    = array();
+		$defaults = array_merge(
+			array_map(
+				function ( $meta ) {
+					return $meta[1];
+				},
+				self::facts( $event_id )
+			),
+			array_fill_keys( array_keys( self::actions( $event_id ) ), false )
+		);
+		foreach ( $defaults as $fact => $default ) {
 			if ( array_key_exists( $fact, $row ) && is_scalar( $row[ $fact ] ) ) {
 				$clean[ $fact ] = ! empty( $row[ $fact ] );
 			} elseif ( array_key_exists( $fact, $old ) ) {
 				$clean[ $fact ] = (bool) $old[ $fact ];
 			} else {
-				$clean[ $fact ] = $meta[1];
+				$clean[ $fact ] = $default;
 			}
 		}
 		if ( in_array( $event_id, self::FORM_FIELD_EVENTS, true ) ) {
@@ -561,7 +695,8 @@ final class Honk_Details {
 	 */
 
 	/**
-	 * Translated label of a detail.
+	 * Translated label of a detail, or the title of a button (the same on the settings screen and
+	 * in the message).
 	 *
 	 * @param string $event_id Event id.
 	 * @param string $fact     Detail.
@@ -658,6 +793,14 @@ final class Honk_Details {
 				return 'woocommerce' === $section && 'woo_new_customer' !== $event_id ? __( 'Customer email', 'honk-me' ) : __( 'Email address', 'honk-me' );
 			case 'text':
 				return 'woo_new_review' === $event_id ? __( 'Review text', 'honk-me' ) : __( 'Comment text', 'honk-me' );
+			case 'action_email':
+				return 'user_registered' === $event_id ? __( 'Email user', 'honk-me' ) : __( 'Email customer', 'honk-me' );
+			case 'action_call':
+				return 'forms' === $section ? __( 'Call back', 'honk-me' ) : __( 'Call customer', 'honk-me' );
+			case 'action_reply':
+				return __( 'Reply by email', 'honk-me' );
+			case 'action_approve':
+				return __( 'Approve', 'honk-me' );
 		}
 		return $fact;
 	}

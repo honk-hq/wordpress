@@ -217,11 +217,12 @@ final class Honk_Preview {
 			case 'comment_pending':
 				return Honk_Module_Content::comment_spec(
 					array(
-						'post'  => self::post_title(),
-						'name'  => $person['name'],
-						'email' => $person['email'],
+						'post'    => self::post_title(),
+						'approve' => Honk_Notifier::approve_link( 1 ),
+						'name'    => $person['name'],
+						'email'   => $person['email'],
 						/* translators: sample comment in the notification preview */
-						'text'  => __( 'Do you also ship abroad?', 'honk-me' ),
+						'text'    => __( 'Do you also ship abroad?', 'honk-me' ),
 					)
 				);
 			case 'post_pending':
@@ -280,6 +281,7 @@ final class Honk_Preview {
 						'product' => self::product( 0 ),
 						'rating'  => 4,
 						'pending' => true,
+						'approve' => Honk_Notifier::approve_link( 1 ),
 						'name'    => $person['name'],
 						'email'   => $person['email'],
 						/* translators: sample product review in the notification preview */
@@ -315,7 +317,8 @@ final class Honk_Preview {
 
 	/**
 	 * A form submission: the first form the plugin lists, with sample answers, or a sample form.
-	 * Each field's line also needs its own "field:<form>:<key>" pseudo-detail.
+	 * Each field's line, and a button that uses the field, also needs the field's own
+	 * "field:<form>:<key>" pseudo-detail.
 	 *
 	 * @param string $event_id Event id.
 	 * @return array
@@ -327,46 +330,58 @@ final class Honk_Preview {
 			if ( empty( $form['fields'] ) ) {
 				continue;
 			}
-			$spec = Honk_Module_Forms::form_spec( '' !== $form['title'] ? $form['title'] : __( 'Form', 'honk-me' ), array() );
+			$name = '' !== $form['title'] ? $form['title'] : __( 'Form', 'honk-me' );
+			$spec = Honk_Module_Forms::form_spec( $name, array() );
+			$rows = array();
 			foreach ( $form['fields'] as $key => $field ) {
-				$lines = Honk_Module_Forms::field_lines(
-					array(
-						array(
-							'label' => $field['label'],
-							'value' => self::answer( $field, (string) $key ),
-							'type'  => $field['type'],
-						),
-					)
+				$row    = array(
+					'key'   => (string) $key,
+					'label' => $field['label'],
+					'value' => self::answer( $field, (string) $key ),
+					'type'  => $field['type'],
 				);
+				$rows[] = $row;
+				$lines  = Honk_Module_Forms::field_lines( array( $row ) );
 				if ( $lines ) {
 					$spec['lines'][] = Honk_Details::text( $lines[0], array( 'values', self::field_fact( (string) $form_id, (string) $key ) ) );
 				}
 			}
+			$contact = Honk_Module_Forms::contact( $rows );
+			$when    = array();
+			foreach ( array(
+				'action_reply' => 'email',
+				'action_call'  => 'phone',
+			) as $action => $kind ) {
+				if ( null !== $contact[ $kind ] ) {
+					$when[ $action ] = self::field_fact( (string) $form_id, $contact[ $kind ]['key'] );
+				}
+			}
+			$spec['actions'] = Honk_Module_Forms::contact_actions( $event_id, $name, $contact, $when );
 			return $spec;
 		}
 		/* translators: sample form name in the notification preview */
 		$name = __( 'Contact', 'honk-me' );
-		return Honk_Module_Forms::form_spec(
-			$name,
-			Honk_Module_Forms::field_lines(
-				array(
-					array(
-						'label' => __( 'Name', 'honk-me' ),
-						'value' => $person['name'],
-					),
-					array(
-						/* translators: a form field's label in the notification preview */
-						'label' => __( 'Email', 'honk-me' ),
-						'value' => $person['email'],
-					),
-					array(
-						/* translators: a form field's label in the notification preview */
-						'label' => __( 'Message', 'honk-me' ),
-						'value' => self::message(),
-					),
-				)
-			)
+		$rows = array(
+			array(
+				'label' => __( 'Name', 'honk-me' ),
+				'value' => $person['name'],
+			),
+			array(
+				/* translators: a form field's label in the notification preview */
+				'label' => __( 'Email', 'honk-me' ),
+				'value' => $person['email'],
+			),
+			array(
+				'label' => __( 'Phone number', 'honk-me' ),
+				'value' => $person['phone'],
+			),
+			array(
+				/* translators: a form field's label in the notification preview */
+				'label' => __( 'Message', 'honk-me' ),
+				'value' => self::message(),
+			),
 		);
+		return Honk_Module_Forms::form_spec( $name, Honk_Module_Forms::field_lines( $rows ), Honk_Module_Forms::contact_actions( $event_id, $name, Honk_Module_Forms::contact( $rows ) ) );
 	}
 
 	/**

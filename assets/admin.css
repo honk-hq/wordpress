@@ -104,12 +104,14 @@
 }
 
 .honk-settings .honk-facts-personal,
-.honk-settings .honk-form-fields {
+.honk-settings .honk-form-fields,
+.honk-settings .honk-actions {
 	margin-top: 4px;
 }
 
 .honk-settings .honk-facts-personal > legend,
-.honk-settings .honk-form-fields > legend {
+.honk-settings .honk-form-fields > legend,
+.honk-settings .honk-actions > legend {
 	margin: 0;
 	padding: 0;
 	font-weight: 600;
@@ -154,6 +156,27 @@
 	color: #3c434a;
 	white-space: pre-line;
 	overflow-wrap: anywhere;
+}
+
+.honk-settings .honk-details .honk-preview-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: 8px;
+}
+
+.honk-settings .honk-details .honk-preview-actions[hidden] {
+	display: none;
+}
+
+.honk-settings .honk-preview-action {
+	padding: 0 8px;
+	font-size: 12px;
+	line-height: 22px;
+	color: #1d2327;
+	background: #f6f7f7;
+	border: 1px solid #c3c4c7;
+	border-radius: 3px;
 }
 
 .honk-settings .honk-preview > .description {

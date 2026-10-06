@@ -5,6 +5,25 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 [Semantic Versioning](https://semver.org/). The WordPress.org changelog in `readme.txt` repeats
 each entry in short.
 
+## [Unreleased]
+
+### Added
+- **Buttons** on notifications (Honk's message actions, `contracts/API.md` §13), chosen per event
+  under Details → Buttons, with the preview showing them: **Email customer** and **Call
+  customer** on new orders, status changes and failed payments (Email customer also on refunds,
+  failed subscription renewals and new customer accounts), **Email user** on registrations,
+  **Approve** and **Reply by email** on comments and product reviews awaiting moderation, and
+  **Reply by email** and **Call back** on form entries, to the email address and phone number
+  that were entered. At most three per notification.
+- A button that emails or calls someone is added only while the notification includes that
+  email address or phone number (so only with "Include customer names and emails" on), and only
+  when the address or number is valid: phone numbers are reduced to their digits, and numbers
+  with letters or extensions get no button. Approve uses WordPress's own moderation link (which
+  asks to confirm) and needs an https dashboard. A button never repeats the notification's own
+  link.
+- Every button is off by default, so with the defaults every notification is exactly what 0.1.0
+  sent.
+
 ## [0.1.0] - 2026-10-05
 
 ### Added

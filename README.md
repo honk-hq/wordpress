@@ -40,7 +40,9 @@ WordPress hook ─▶ module (an outline of the message, in the notification lan
   locally for 24 h, so a hook that fires twice never queues twice.
 - **Limits** (`contracts/openapi.yaml`): title ≤ 160 code points, message ≤ 8 192 bytes,
   metadata ≤ 16 keys, the whole body ≤ 16 KiB (the message is shortened first), `url` only when
-  https (otherwise the link goes to `metadata.link`).
+  https (otherwise the link goes to `metadata.link`), at most 3 `actions` with titles ≤ 40 code
+  points and links the server accepts (`Honk_Payload::action_url()`; an invalid button is left
+  out, never the message).
 - **User-Agent** `honk-wordpress/<version> (+https://honk-me.app)`.
 
 ## What each notification says (Details)
@@ -66,6 +68,15 @@ always includes, and a preview.
   (`Honk_Module_Forms::forms()`, the first 20 forms), single fields can be left out per form
   (stored as `details.<event>.skip.<form id>`). Elementor Pro, Fluent Forms and Ninja Forms send
   every field or none.
+- **Buttons.** `Honk_Details::ACTIONS` lists each event's buttons (contracts/API.md §13) and the
+  detail each one needs: Email customer and Call customer on orders (`email`, `phone`), Approve
+  and Reply by email on comments and reviews, Reply by email and Call back on forms (`values`,
+  and on listed forms the field they use). A module's outline carries them as `actions`
+  (`Honk_Details::buttons()`), with links built by `Honk_Payload::mailto_url()` and `tel_url()`
+  ('' when the data is missing or invalid, and the button is left out). A button counts only
+  while its detail is on, so it never sends anything the text wouldn't, and every button is off
+  by default (`MessagesTest` still holds). On the screen, a button is disabled while its detail
+  is off, like a form field while "What people entered" is.
 - **Storage.** The choices live in `honk_settings` (`details`), next to the events, so
   uninstalling removes them with the rest.
 

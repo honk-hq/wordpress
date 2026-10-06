@@ -20,6 +20,12 @@ final class Honk_Payload {
 
 	const MAX_KEY_LENGTH = 128;
 
+	const MAX_ACTIONS = 3;
+
+	const MAX_ACTION_TITLE_CHARS = 40;
+
+	const MAX_URL_BYTES = 2048;
+
 	const ELLIPSIS = '…';
 
 	/**
@@ -112,12 +118,19 @@ final class Honk_Payload {
 			}
 		}
 
+		if ( isset( $fields['actions'] ) && is_array( $fields['actions'] ) ) {
+			$actions = self::actions( $fields['actions'], isset( $out['url'] ) ? $out['url'] : '' );
+			if ( ! empty( $actions ) ) {
+				$out['actions'] = $actions;
+			}
+		}
+
 		return self::fit( $out );
 	}
 
 	/**
 	 * Shrinks a message until its JSON body fits in 16 KiB: first the message text, then the
-	 * metadata.
+	 * metadata, then the buttons.
 	 *
 	 * @param array $payload Normalized payload.
 	 * @return array
@@ -140,6 +153,10 @@ final class Honk_Payload {
 		}
 		if ( $size > self::MAX_BODY_BYTES ) {
 			unset( $payload['metadata'] );
+			$size = strlen( self::encode( $payload ) );
+		}
+		if ( $size > self::MAX_BODY_BYTES ) {
+			unset( $payload['actions'] );
 		}
 		return $payload;
 	}
@@ -267,13 +284,177 @@ final class Honk_Payload {
 	}
 
 	/**
+	 * Buttons within the contract (contracts/API.md §13): at most three, each a one-line title of
+	 * at most 40 characters and a link the API accepts (action_url()). Invalid buttons are left
+	 * out, so one can never get the whole message refused, and so is an https button that only
+	 * repeats the message's own link.
+	 *
+	 * @param array  $actions Buttons: title, url.
+	 * @param string $url     The message's link.
+	 * @return array<int, array{title: string, url: string}>
+	 */
+	public static function actions( array $actions, $url = '' ) {
+		$out = array();
+		foreach ( $actions as $action ) {
+			if ( count( $out ) >= self::MAX_ACTIONS ) {
+				break;
+			}
+			if ( ! is_array( $action ) || ! isset( $action['title'], $action['url'] ) ) {
+				continue;
+			}
+			$title = self::truncate_chars( self::plain( $action['title'], true ), self::MAX_ACTION_TITLE_CHARS );
+			$link  = self::action_url( $action['url'] );
+			if ( '' === $title || 1 !== preg_match( '/^[^\p{Cc}\x{2028}\x{2029}]+$/u', $title ) || '' === $link || $link === $url ) {
+				continue;
+			}
+			$out[] = array(
+				'title' => $title,
+				'url'   => $link,
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * A button's link if the API accepts it, else '' (trimmed, at most 2048 bytes, no spaces or
+	 * control characters):
+	 * - https:// as https_url();
+	 * - mailto: exactly one address with a dotted domain, and only subject= and body= after "?";
+	 * - tel: or tel:// a number: + only first, then digits and - . ( ), at least one digit;
+	 * - sms: a number as for tel:, and only body= after "?".
+	 * Every other scheme is refused.
+	 *
+	 * @param mixed $url Link.
+	 * @return string
+	 */
+	public static function action_url( $url ) {
+		$url = is_string( $url ) ? trim( $url ) : '';
+		if ( '' === $url || strlen( $url ) > self::MAX_URL_BYTES || 1 !== preg_match( '/^[^\s\p{Z}\p{Cc}]+$/u', $url ) ) {
+			return '';
+		}
+		$parts = explode( ':', $url, 2 );
+		$rest  = isset( $parts[1] ) ? $parts[1] : '';
+		$split = explode( '?', $rest, 2 );
+		$query = isset( $split[1] ) ? $split[1] : '';
+		switch ( strtolower( $parts[0] ) ) {
+			case 'https':
+				// Valid percent-encoding and no port 0, as the server parses it.
+				$port = wp_parse_url( $url, PHP_URL_PORT );
+				return preg_match( '/%(?![0-9A-Fa-f]{2})/', $url ) || 0 === $port ? '' : self::https_url( $url );
+			case 'mailto':
+				return self::mail_address( $split[0] ) && self::link_query( $query, array( 'subject', 'body' ) ) ? $url : '';
+			case 'tel':
+				return self::phone_number( (string) preg_replace( '#^//#', '', $rest ) ) ? $url : '';
+			case 'sms':
+				return self::phone_number( $split[0] ) && self::link_query( $query, array( 'body' ) ) ? $url : '';
+		}
+		return '';
+	}
+
+	/**
+	 * Whether the (percent-encoded) address of a mailto: link is one plain address with a dotted
+	 * domain, as the server reads it.
+	 *
+	 * @param string $encoded Address.
+	 * @return bool
+	 */
+	private static function mail_address( $encoded ) {
+		if ( preg_match( '/%(?![0-9A-Fa-f]{2})/', $encoded ) ) {
+			return false;
+		}
+		$address = rawurldecode( $encoded );
+		$at      = strrpos( $address, '@' );
+		if ( '' === $address || preg_match( '/[,<>" ]/', $address ) || ! $at ) {
+			return false;
+		}
+		$atext = '[^\s\p{Cc}()<>\[\]:;@\\\\,".]';
+		return 1 === preg_match( '/^' . $atext . '+(?:\.' . $atext . '+)*$/u', substr( $address, 0, $at ) )
+			&& 1 === preg_match( '/^(?:' . $atext . '+(?:\.' . $atext . '+)+|\[[!-Z^-~]*\.[!-Z^-~]*\])$/u', substr( $address, $at + 1 ) );
+	}
+
+	/**
+	 * Whether a tel: or sms: number is one: + only first, then digits and - . ( ), at least one
+	 * digit.
+	 *
+	 * @param string $number Number.
+	 * @return bool
+	 */
+	private static function phone_number( $number ) {
+		return 1 === preg_match( '/^\+?[0-9().-]*[0-9][0-9().-]*$/', $number );
+	}
+
+	/**
+	 * Whether the query of a mailto: or sms: link is valid percent-encoding with only the allowed
+	 * keys ('' is no query).
+	 *
+	 * @param string   $query   Query, without "?".
+	 * @param string[] $allowed Keys.
+	 * @return bool
+	 */
+	private static function link_query( $query, array $allowed ) {
+		if ( preg_match( '/%(?![0-9A-Fa-f]{2})/', $query ) ) {
+			return false;
+		}
+		foreach ( explode( '&', $query ) as $pair ) {
+			if ( '' === $pair ) {
+				continue;
+			}
+			$key = explode( '=', $pair, 2 );
+			if ( false !== strpos( $pair, ';' ) || ! in_array( urldecode( $key[0] ), $allowed, true ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * A mailto: link to one email address, with a percent-encoded subject, or '' when the address
+	 * isn't one a mailto: link can carry as it is (letters, digits and . _ + - before the @, a
+	 * dotted domain).
+	 *
+	 * @param mixed  $email   Email address.
+	 * @param string $subject Subject ('' for none).
+	 * @return string
+	 */
+	public static function mailto_url( $email, $subject = '' ) {
+		$email = is_scalar( $email ) ? trim( (string) $email ) : '';
+		if ( ! preg_match( '/^[A-Za-z0-9._+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$/', $email ) || false === filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+			return '';
+		}
+		$subject = self::truncate_chars( self::plain( $subject, true ), 120 );
+		return 'mailto:' . $email . ( '' !== $subject ? '?subject=' . rawurlencode( $subject ) : '' );
+	}
+
+	/**
+	 * A tel: link to a phone number as entered, reduced to its digits (a leading + kept, and the
+	 * national 0 in "+44 (0)20…" dropped), or '' when the text isn't only a phone number: anything
+	 * but digits, spaces, + ( ) . / and dashes (an extension, a note), or fewer than 3 or more
+	 * than 20 digits. Letters are never stripped: "555 0142 ext. 12" would dial the wrong number.
+	 *
+	 * @param mixed $phone Phone number as entered.
+	 * @return string
+	 */
+	public static function tel_url( $phone ) {
+		$phone = self::plain( $phone, true );
+		if ( ! preg_match( '/^\+?[0-9 ().\/\-\x{2010}-\x{2015}\x{2212}]+$/u', $phone ) ) {
+			return '';
+		}
+		$plus   = '+' === $phone[0];
+		$digits = preg_replace( '/\D/', '', $plus ? preg_replace( '/\(\s*0\s*\)/', '', $phone ) : $phone );
+		if ( strlen( $digits ) < 3 || strlen( $digits ) > 20 ) {
+			return '';
+		}
+		return 'tel:' . ( $plus ? '+' : '' ) . $digits;
+	}
+
+	/**
 	 * The URL if it is https:// without credentials or fragment, else ''.
 	 *
 	 * @param mixed $url URL.
 	 * @return string
 	 */
 	public static function https_url( $url ) {
-		if ( ! is_string( $url ) || '' === $url || strlen( $url ) > 2048 ) {
+		if ( ! is_string( $url ) || '' === $url || strlen( $url ) > self::MAX_URL_BYTES ) {
 			return '';
 		}
 		$parts = wp_parse_url( $url );

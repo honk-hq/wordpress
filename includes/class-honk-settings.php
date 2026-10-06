@@ -25,11 +25,6 @@ final class Honk_Settings {
 	const ENVIRONMENTS = array( 'auto', 'production', 'staging', 'development' );
 
 	/**
-	 * Languages the plugin ships translations for (plus English).
-	 */
-	const LANGUAGES = array( 'en_US', 'ro_RO', 'es_ES', 'fr_FR', 'de_DE' );
-
-	/**
 	 * Per-request cache of the merged settings.
 	 *
 	 * @var array|null
@@ -249,7 +244,7 @@ final class Honk_Settings {
 	 */
 	public static function notification_locale() {
 		$language = (string) self::get( 'language' );
-		if ( '' !== $language && in_array( $language, self::LANGUAGES, true ) ) {
+		if ( '' !== $language && Honk_I18n::is_locale( $language ) ) {
 			return $language;
 		}
 		$locale = get_locale();
@@ -342,7 +337,7 @@ final class Honk_Settings {
 			} elseif ( self::is_valid_server_url( $url ) ) {
 				$out['server_url'] = $url;
 			} else {
-				add_settings_error( self::OPTION, 'server_url', __( 'The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept.', 'honk' ) );
+				add_settings_error( self::OPTION, 'server_url', __( 'The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept.', 'honk-me' ) );
 			}
 		}
 
@@ -353,7 +348,7 @@ final class Honk_Settings {
 			if ( self::is_valid_key( $key ) ) {
 				$out['api_key'] = $key;
 			} else {
-				add_settings_error( self::OPTION, 'api_key', __( 'That doesn’t look like a Honk API key (they start with honk_). Your previous key was kept.', 'honk' ) );
+				add_settings_error( self::OPTION, 'api_key', __( 'That doesn’t look like a Honk API key (they start with honk_). Your previous key was kept.', 'honk-me' ) );
 			}
 		}
 
@@ -364,7 +359,7 @@ final class Honk_Settings {
 
 		if ( isset( $input['language'] ) ) {
 			$lang            = (string) $input['language'];
-			$out['language'] = in_array( $lang, self::LANGUAGES, true ) ? $lang : '';
+			$out['language'] = Honk_I18n::is_locale( $lang ) ? $lang : '';
 		}
 
 		if ( isset( $input['burst_threshold'] ) ) {
@@ -451,15 +446,15 @@ final class Honk_Settings {
 	public static function severity_label( $severity ) {
 		switch ( $severity ) {
 			case 'info':
-				return __( 'Light honk', 'honk' );
+				return __( 'Light honk', 'honk-me' );
 			case 'success':
-				return __( 'Beep-beep', 'honk' );
+				return __( 'Beep-beep', 'honk-me' );
 			case 'warning':
-				return __( 'Loud honk', 'honk' );
+				return __( 'Loud honk', 'honk-me' );
 			case 'error':
-				return __( 'Long honk', 'honk' );
+				return __( 'Long honk', 'honk-me' );
 			case 'critical':
-				return __( 'Blast', 'honk' );
+				return __( 'Blast', 'honk-me' );
 		}
 		return $severity;
 	}
@@ -473,13 +468,13 @@ final class Honk_Settings {
 	public static function priority_label( $priority ) {
 		switch ( $priority ) {
 			case 'low':
-				return __( 'Low', 'honk' );
+				return __( 'Low', 'honk-me' );
 			case 'normal':
-				return __( 'Normal', 'honk' );
+				return __( 'Normal', 'honk-me' );
 			case 'high':
-				return __( 'High', 'honk' );
+				return __( 'High', 'honk-me' );
 			case 'urgent':
-				return __( 'Urgent', 'honk' );
+				return __( 'Urgent', 'honk-me' );
 		}
 		return $priority;
 	}

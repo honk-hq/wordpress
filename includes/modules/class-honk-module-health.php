@@ -243,8 +243,8 @@ final class Honk_Module_Health {
 					function () {
 						return Honk_Notifier::with_link(
 							array(
-								'title'      => __( 'Site Health: no critical issues', 'honk' ),
-								'message'    => __( 'The critical issues found earlier are resolved.', 'honk' ),
+								'title'      => __( 'Site Health: no critical issues', 'honk-me' ),
+								'message'    => __( 'The critical issues found earlier are resolved.', 'honk-me' ),
 								'group_key'  => 'wp/health/site-health',
 								'event_type' => 'recovery',
 							),
@@ -495,8 +495,8 @@ final class Honk_Module_Health {
 					'cron-recovered-' . (int) $open,
 					function () {
 						return array(
-							'title'      => __( 'Scheduled tasks are running again', 'honk' ),
-							'message'    => __( 'Scheduled tasks are on time again.', 'honk' ),
+							'title'      => __( 'Scheduled tasks are running again', 'honk-me' ),
+							'message'    => __( 'Scheduled tasks are on time again.', 'honk-me' ),
 							'group_key'  => 'wp/health/cron',
 							'event_type' => 'recovery',
 						);
@@ -634,9 +634,9 @@ final class Honk_Module_Health {
 				'disk-ok-' . $since,
 				function () use ( $disk ) {
 					return array(
-						'title'      => __( 'Disk space is fine again', 'honk' ),
+						'title'      => __( 'Disk space is fine again', 'honk-me' ),
 						/* translators: %s: free space */
-						'message'    => sprintf( __( '%s free.', 'honk' ), size_format( $disk['free'], 1 ) ),
+						'message'    => sprintf( __( '%s free.', 'honk-me' ), size_format( $disk['free'], 1 ) ),
 						'group_key'  => 'wp/health/disk',
 						'event_type' => 'recovery',
 					);
@@ -685,19 +685,19 @@ final class Honk_Module_Health {
 		if ( '' !== $d['name'] ) {
 			$title = 'theme' === $d['type']
 				/* translators: %s: theme name */
-				? sprintf( __( 'Critical error in the %s theme', 'honk' ), $d['name'] )
+				? sprintf( __( 'Critical error in the %s theme', 'honk-me' ), $d['name'] )
 				/* translators: %s: plugin name */
-				: sprintf( __( 'Critical error in the %s plugin', 'honk' ), $d['name'] );
+				: sprintf( __( 'Critical error in the %s plugin', 'honk-me' ), $d['name'] );
 		} else {
-			$title = __( 'Critical error', 'honk' );
+			$title = __( 'Critical error', 'honk-me' );
 		}
 		return array(
 			'title' => array( Honk_Details::part( $title ) ),
 			'lines' => array(
 				Honk_Details::text( $d['error'], 'error' ),
 				/* translators: 1: file, 2: line number */
-				Honk_Details::text( sprintf( __( '%1$s, line %2$d', 'honk' ), $d['file'], $d['line'] ), 'file' ),
-				Honk_Details::text( $d['recovery'] ? __( 'WordPress emailed the site administrator a link to fix it in recovery mode.', 'honk' ) : '' ),
+				Honk_Details::text( sprintf( __( '%1$s, line %2$d', 'honk-me' ), $d['file'], $d['line'] ), 'file' ),
+				Honk_Details::text( $d['recovery'] ? __( 'WordPress emailed the site administrator a link to fix it in recovery mode.', 'honk-me' ) : '' ),
 			),
 		);
 	}
@@ -712,7 +712,7 @@ final class Honk_Module_Health {
 		$count = count( $issues );
 		return array(
 			/* translators: %d: number of critical issues */
-			'title' => array( Honk_Details::part( sprintf( _n( 'Site Health: %d critical issue', 'Site Health: %d critical issues', $count, 'honk' ), $count ) ) ),
+			'title' => array( Honk_Details::part( sprintf( _n( 'Site Health: %d critical issue', 'Site Health: %d critical issues', $count, 'honk-me' ), $count ) ) ),
 			'lines' => array_map( array( 'Honk_Details', 'text' ), $issues ),
 		);
 	}
@@ -727,7 +727,7 @@ final class Honk_Module_Health {
 		$count = count( $failed );
 		return array(
 			/* translators: %d: number of failed updates */
-			'title' => array( Honk_Details::part( sprintf( _n( '%d automatic update failed', '%d automatic updates failed', $count, 'honk' ), $count ) ) ),
+			'title' => array( Honk_Details::part( sprintf( _n( '%d automatic update failed', '%d automatic updates failed', $count, 'honk-me' ), $count ) ) ),
 			'lines' => array_map( array( 'Honk_Details', 'text' ), $failed ),
 		);
 	}
@@ -742,7 +742,7 @@ final class Honk_Module_Health {
 		$count = count( $updates );
 		return array(
 			/* translators: %d: number of updates */
-			'title' => array( Honk_Details::part( sprintf( _n( '%d update available', '%d updates available', $count, 'honk' ), $count ) ) ),
+			'title' => array( Honk_Details::part( sprintf( _n( '%d update available', '%d updates available', $count, 'honk-me' ), $count ) ) ),
 			'lines' => array_map( array( 'Honk_Details', 'text' ), $updates ),
 		);
 	}
@@ -755,22 +755,22 @@ final class Honk_Module_Health {
 	 */
 	public static function cron_spec( array $d ) {
 		return array(
-			'title' => array( Honk_Details::part( __( 'Scheduled tasks are running late', 'honk' ) ) ),
+			'title' => array( Honk_Details::part( __( 'Scheduled tasks are running late', 'honk-me' ) ) ),
 			'lines' => array(
 				Honk_Details::text(
 					sprintf(
 						/* translators: 1: number of tasks, 2: duration, e.g. "2 hours" */
-						_n( '%1$d scheduled task is late, the oldest by %2$s.', '%1$d scheduled tasks are late, the oldest by %2$s.', $d['count'], 'honk' ),
+						_n( '%1$d scheduled task is late, the oldest by %2$s.', '%1$d scheduled tasks are late, the oldest by %2$s.', $d['count'], 'honk-me' ),
 						$d['count'],
 						$d['late']
 					)
 				),
 				/* translators: %s: hook name */
-				Honk_Details::text( sprintf( __( 'Oldest task: %s', 'honk' ), $d['hook'] ), 'hook' ),
+				Honk_Details::text( sprintf( __( 'Oldest task: %s', 'honk-me' ), $d['hook'] ), 'hook' ),
 				Honk_Details::text(
 					$d['disabled']
-						? __( 'DISABLE_WP_CRON is on, so a server cron job has to run wp-cron.php. Check that it’s still running.', 'honk' )
-						: __( 'WordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job.', 'honk' ),
+						? __( 'DISABLE_WP_CRON is on, so a server cron job has to run wp-cron.php. Check that it’s still running.', 'honk-me' )
+						: __( 'WordPress runs scheduled tasks when someone visits the site. Check Tools → Site Health for loopback errors, or ask your host to set up a server cron job.', 'honk-me' ),
 					'advice'
 				),
 			),
@@ -785,12 +785,12 @@ final class Honk_Module_Health {
 	 */
 	public static function disk_spec( array $disk ) {
 		return array(
-			'title' => array( Honk_Details::part( __( 'Disk almost full', 'honk' ) ) ),
+			'title' => array( Honk_Details::part( __( 'Disk almost full', 'honk-me' ) ) ),
 			'lines' => array(
 				Honk_Details::text(
 					sprintf(
 						/* translators: 1: free space, 2: total space, 3: percent free */
-						__( '%1$s free of %2$s (%3$s%%).', 'honk' ),
+						__( '%1$s free of %2$s (%3$s%%).', 'honk-me' ),
 						size_format( $disk['free'], 1 ),
 						size_format( $disk['total'], 1 ),
 						number_format_i18n( 100 * $disk['free'] / $disk['total'], 1 )

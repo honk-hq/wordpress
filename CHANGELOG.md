@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Honk WordPress plugin (slug `honk`) are documented here. The format
+All notable changes to the Honk Me WordPress plugin (slug `honk-me`) are documented here. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/). The WordPress.org changelog in `readme.txt` repeats
 each entry in short.
@@ -37,4 +37,7 @@ each entry in short.
   idempotency keys, the 16 KiB body limit, a delivery log of the last 50 sends.
 - "Send test notification" in Settings → Honk; a Honk tab in WooCommerce → Settings.
 - Heartbeat module, shown once the Honk server reports `heartbeats: true` in `GET /v1/config`.
-- Translations: Romanian, Spanish, French and German.
+- Name "Honk Me – Notifications for Sites, Shops and Forms", slug and text domain `honk-me`.
+- No bundled translation files: translations come from translate.wordpress.org; the notification
+  language works with any language installed on the site. The Romanian, Spanish, French and
+  German translations are ready to import (`languages-src/`).

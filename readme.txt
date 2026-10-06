@@ -1,5 +1,5 @@
-=== Honk – Notifications for Sites, Shops and Forms ===
-Contributors: honkhonk
+=== Honk Me – Notifications for Sites, Shops and Forms ===
+Contributors: honkme
 Tags: notifications, woocommerce, security, contact form, monitoring
 Requires at least: 6.4
 Tested up to: 7.1
@@ -12,7 +12,7 @@ Get orders, failed payments, form entries, suspicious sign-ins and site errors i
 
 == Description ==
 
-Honk is a calm notification inbox. This plugin tells Honk what happens on your WordPress site or WooCommerce store, so you hear about it on your iPhone, your Apple Watch and in the web app.
+Honk Me (honk-me.app) is a calm notification inbox, Honk for short, and this is its official WordPress plugin. It tells Honk what happens on your WordPress site or WooCommerce store, so you hear about it on your iPhone, your Apple Watch and in the web app.
 
 Honk groups repeats instead of sending each one: the first failed payment is a push, the tenth in a row just adds to a counter.
 
@@ -73,11 +73,11 @@ Notifications go out in the background (through Action Scheduler when WooCommerc
 
 = Languages =
 
-English, Romanian, Spanish, French and German. Notifications use your site's language, or another language you pick for them.
+Honk Me is translated on translate.wordpress.org, and WordPress installs the translations for your site's languages by itself. Notifications use your site's language, or another installed language you pick for them.
 
 == External services ==
 
-This plugin connects to the Honk API to deliver your notifications. Honk is a notification service at [honk-me.app](https://honk-me.app); you can also use your own Honk server. **Nothing is sent until you add an API key** in Settings → Honk.
+This plugin connects to the Honk API to deliver your notifications. Honk Me is a notification service at [honk-me.app](https://honk-me.app), run by the plugin's authors; you can also use your own Honk server. **Nothing is sent until you add an API key** in Settings → Honk.
 
 What is sent, and when:
 
@@ -93,7 +93,7 @@ The plugin doesn't track you or your visitors, and it loads no external scripts,
 
 == Installation ==
 
-1. In your dashboard, go to Plugins → Add Plugin, search for "Honk" and click Install Now. Or upload the `honk` folder to `/wp-content/plugins/`.
+1. In your dashboard, go to Plugins → Add Plugin, search for "Honk Me" and click Install Now. Or upload the `honk-me` folder to `/wp-content/plugins/`.
 2. Activate the plugin.
 3. In Honk (https://honk-me.app), open your project, go to Keys and create a new key. Copy it.
 4. In WordPress, go to Settings → Honk, paste the key into "API key" and click "Send test notification". The test should reach your Honk inbox within seconds.
@@ -164,7 +164,7 @@ The heartbeat ("tell me when my site stops checking in") needs support on the Ho
 == Changelog ==
 
 = 0.1.0 =
-* First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview; background sending with automatic retries; English, Romanian, Spanish, French and German.
+* First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview; background sending with automatic retries; notifications in your site's language.
 
 == Upgrade Notice ==
 

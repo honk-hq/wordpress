@@ -1,12 +1,15 @@
-# Honk for WordPress
+# Honk Me for WordPress
 
 [![CI](https://github.com/honk-me/honk-wordpress/actions/workflows/ci.yml/badge.svg)](https://github.com/honk-me/honk-wordpress/actions/workflows/ci.yml)
 
-The official WordPress plugin for [Honk](https://honk-me.app), the calm notification inbox:
-orders, payments, stock, sign-ins, site health and form submissions from WordPress, WooCommerce
-and the popular form plugins, in your Honk inbox, on iPhone, Apple Watch and the web.
+The official WordPress plugin for [Honk Me](https://honk-me.app) (Honk for short), the calm
+notification inbox: orders, payments, stock, sign-ins, site health and form submissions from
+WordPress, WooCommerce and the popular form plugins, in your Honk inbox, on iPhone, Apple Watch
+and the web.
 
-- WordPress.org slug: **`honk`**, name "Honk – Notifications for Sites, Shops and Forms".
+- WordPress.org slug: **`honk-me`**, name "Honk Me – Notifications for Sites, Shops and Forms",
+  main file `honk-me.php`, text domain `honk-me`. Options and code keep the `honk_` / `Honk_`
+  prefix.
 - PHP 7.4+, WordPress 6.4+ (tested up to 7.1), WooCommerce optional (HPOS and block checkout
   compatible). No Composer runtime dependencies: requests go through the WordPress HTTP API.
 - GPL-2.0-or-later. The user-facing documentation is [`readme.txt`](readme.txt) (the
@@ -140,18 +143,20 @@ only function that talks to the (provisional) endpoint `POST /v1/heartbeats/chec
 composer install            # PHPUnit 9.6, Brain Monkey, WPCS 3, PHPCompatibilityWP (dev only)
 composer test               # unit tests (Brain Monkey + an in-memory WordPress)
 composer lint               # PHPCS: WordPress-Extra, WordPress-Docs, PHP 7.4 compatibility
-bin/build.sh                # build/honk/ and build/honk-<version>.zip, as published (.distignore)
+bin/build.sh                # build/honk-me/ and build/honk-me-<version>.zip, as published (.distignore)
 ```
 
-Translations live in `languages/`: `honk.pot` (WP-CLI `wp i18n make-pot`), `.po`, `.mo` and
-`.l10n.php` for `ro_RO`, `es_ES`, `fr_FR` and `de_DE`. Terminology follows the Honk glossary
+The plugin ships no translation files: WordPress downloads its translations from
+translate.wordpress.org (language packs) for the languages installed on a site and loads them by
+itself, and the notification language switches with `switch_to_locale()` (`Honk_I18n`). The
+reviewed translations live outside the zip, in `languages-src/`: `honk-me.pot` (WP-CLI
+`wp i18n make-pot . languages-src/honk-me.pot --slug=honk-me --domain=honk-me`) and
+`honk-me-<locale>.po` for `ro_RO`, `es_ES`, `fr_FR` and `de_DE`, to import into
+translate.wordpress.org. Terminology follows the Honk glossary
 (the Honk scale names…) and, for WordPress and WooCommerce screens, the words WordPress uses in
 each language. Copy that site and shop owners see avoids developer jargon: the settings screen
 calls the ingestion key an "API key" and points people to **Keys** in the Honk web app, and a
-recovery is an "all-clear". `.mo` files are built with `msgfmt` and `.l10n.php` files with
-`wp i18n make-php` from the same entries; fuzzy entries are left out of both until a translator
-confirms them. The bundled files are used until a language pack from translate.wordpress.org is
-installed.
+recovery is an "all-clear". `msgfmt -c` checks every `.po` (CI does too).
 
 ### Integration test (what was run before 0.1.0)
 
@@ -160,11 +165,12 @@ A throwaway WordPress 7.1 + WooCommerce 11.1 (HPOS on) + Contact Form 7 in Docke
 mode, the plugin pointed at it through `host.docker.internal`. Triggered with WP-CLI, the Store
 API (block checkout), `wp-login.php` and the dashboard editor; every message was checked in the
 Honk inbox (titles, levels, group keys, problem/recovery episodes) and duplicate hooks did not
-duplicate. Plugin Check (`wp plugin check honk`) reports no errors or warnings.
+duplicate. Plugin Check (`wp plugin check honk-me`, the plugin installed from the zip) reports no
+errors or warnings.
 
 ## Releasing
 
-The version lives in `honk.php` (header `Version` and `HONK_VERSION`) and in `readme.txt`
+The version lives in `honk-me.php` (header `Version` and `HONK_VERSION`) and in `readme.txt`
 (`Stable tag`); `release.yml` checks that they, `CHANGELOG.md` and the tag agree.
 
 1. Bump the three, add `## [x.y.z] - YYYY-MM-DD` to `CHANGELOG.md` and `= x.y.z =` to the

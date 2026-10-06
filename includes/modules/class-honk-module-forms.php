@@ -251,7 +251,7 @@ final class Honk_Module_Forms {
 			$event_id,
 			'form-' . $plugin . '-' . $form_id . '-' . $entry,
 			function () use ( $event_id, $plugin, $form_id, $title, $rows ) {
-				$name  = '' !== trim( $title ) ? Honk_Payload::plain( $title, true ) : __( 'Form', 'honk' );
+				$name  = '' !== trim( $title ) ? Honk_Payload::plain( $title, true ) : __( 'Form', 'honk-me' );
 				$lines = Honk_Details::on( $event_id, 'values' ) ? self::field_lines( self::without_skipped( $event_id, $form_id, $rows ) ) : array();
 				return Honk_Details::fields(
 					$event_id,
@@ -304,7 +304,7 @@ final class Honk_Module_Forms {
 			'title'    => array( Honk_Details::part( $name ) ),
 			'lines'    => array(),
 			/* translators: %s: form name */
-			'fallback' => sprintf( __( 'Someone sent the “%s” form.', 'honk' ), $name ),
+			'fallback' => sprintf( __( 'Someone sent the “%s” form.', 'honk-me' ), $name ),
 		);
 		foreach ( $lines as $line ) {
 			$spec['lines'][] = Honk_Details::text( $line, 'values' );
@@ -515,7 +515,7 @@ final class Honk_Module_Forms {
 				continue;
 			}
 			if ( 'file' === $type || 'file-upload' === $type || 'fileupload' === $type || 'upload' === $type ) {
-				$value = __( '(file attached)', 'honk' );
+				$value = __( '(file attached)', 'honk-me' );
 			}
 			$label   = Honk_Payload::plain( isset( $row['label'] ) ? $row['label'] : '', true );
 			$value   = Honk_Payload::truncate_chars( $value, self::MAX_VALUE_CHARS );

@@ -50,7 +50,7 @@ class UninstallTest extends Honk_Test_Case {
 		Functions\when( 'wp_unschedule_hook' )->justReturn( 0 );
 		Functions\when( 'delete_metadata' )->justReturn( true );
 
-		define( 'WP_UNINSTALL_PLUGIN', 'honk/honk.php' );
+		define( 'WP_UNINSTALL_PLUGIN', 'honk-me/honk-me.php' );
 		require HONK_DIR . 'uninstall.php';
 
 		$this->assertSame( array( 'blogname' ), array_keys( $this->options ), 'only the site\'s own options are left' );

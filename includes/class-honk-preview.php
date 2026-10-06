@@ -190,10 +190,10 @@ final class Honk_Preview {
 				);
 			case 'site_health_critical':
 				/* translators: sample Site Health issue in the notification preview */
-				return Honk_Module_Health::site_health_spec( array( __( 'Your site couldn’t complete a loopback request', 'honk' ) ) );
+				return Honk_Module_Health::site_health_spec( array( __( 'Your site couldn’t complete a loopback request', 'honk-me' ) ) );
 			case 'auto_update_failed':
 				/* translators: sample update error in the notification preview */
-				return Honk_Module_Health::update_failed_spec( array( self::example_plugin() . ': ' . __( 'Download failed.', 'honk' ) ) );
+				return Honk_Module_Health::update_failed_spec( array( self::example_plugin() . ': ' . __( 'Download failed.', 'honk-me' ) ) );
 			case 'updates_available':
 				return Honk_Module_Health::updates_available_spec( array( 'WooCommerce 11.1.2 → 11.2.0', 'Contact Form 7 6.1.1 → 6.1.2' ) );
 			case 'cron_overdue':
@@ -221,7 +221,7 @@ final class Honk_Preview {
 						'name'  => $person['name'],
 						'email' => $person['email'],
 						/* translators: sample comment in the notification preview */
-						'text'  => __( 'Do you also ship abroad?', 'honk' ),
+						'text'  => __( 'Do you also ship abroad?', 'honk-me' ),
 					)
 				);
 			case 'post_pending':
@@ -233,7 +233,7 @@ final class Honk_Preview {
 						'type'    => $type && isset( $type->labels->singular_name ) ? (string) $type->labels->singular_name : 'Post',
 						'author'  => $actor,
 						/* translators: sample post excerpt in the notification preview */
-						'excerpt' => __( 'All linen is on sale until Sunday.', 'honk' ),
+						'excerpt' => __( 'All linen is on sale until Sunday.', 'honk-me' ),
 					),
 					'post_pending' === $event_id
 				);
@@ -257,7 +257,7 @@ final class Honk_Preview {
 							'amount' => Honk_Notifier::money( 20, self::currency() ),
 							'full'   => false,
 							/* translators: sample refund reason in the notification preview */
-							'reason' => __( 'Damaged in transit', 'honk' ),
+							'reason' => __( 'Damaged in transit', 'honk-me' ),
 						)
 					)
 				);
@@ -283,7 +283,7 @@ final class Honk_Preview {
 						'name'    => $person['name'],
 						'email'   => $person['email'],
 						/* translators: sample product review in the notification preview */
-						'text'    => __( 'Lovely fabric, and it washes well.', 'honk' ),
+						'text'    => __( 'Lovely fabric, and it washes well.', 'honk-me' ),
 					)
 				);
 			case 'woo_subscription_failed':
@@ -327,7 +327,7 @@ final class Honk_Preview {
 			if ( empty( $form['fields'] ) ) {
 				continue;
 			}
-			$spec = Honk_Module_Forms::form_spec( '' !== $form['title'] ? $form['title'] : __( 'Form', 'honk' ), array() );
+			$spec = Honk_Module_Forms::form_spec( '' !== $form['title'] ? $form['title'] : __( 'Form', 'honk-me' ), array() );
 			foreach ( $form['fields'] as $key => $field ) {
 				$lines = Honk_Module_Forms::field_lines(
 					array(
@@ -345,23 +345,23 @@ final class Honk_Preview {
 			return $spec;
 		}
 		/* translators: sample form name in the notification preview */
-		$name = __( 'Contact', 'honk' );
+		$name = __( 'Contact', 'honk-me' );
 		return Honk_Module_Forms::form_spec(
 			$name,
 			Honk_Module_Forms::field_lines(
 				array(
 					array(
-						'label' => __( 'Name', 'honk' ),
+						'label' => __( 'Name', 'honk-me' ),
 						'value' => $person['name'],
 					),
 					array(
 						/* translators: a form field's label in the notification preview */
-						'label' => __( 'Email', 'honk' ),
+						'label' => __( 'Email', 'honk-me' ),
 						'value' => $person['email'],
 					),
 					array(
 						/* translators: a form field's label in the notification preview */
-						'label' => __( 'Message', 'honk' ),
+						'label' => __( 'Message', 'honk-me' ),
 						'value' => self::message(),
 					),
 				)
@@ -409,15 +409,15 @@ final class Honk_Preview {
 	private static function person() {
 		return array(
 			/* translators: sample customer name in the notification preview */
-			'name'  => __( 'Jane Doe', 'honk' ),
+			'name'  => __( 'Jane Doe', 'honk-me' ),
 			/* translators: sample username in the notification preview: the sample first name in lowercase */
-			'login' => __( 'jane', 'honk' ),
+			'login' => __( 'jane', 'honk-me' ),
 			/* translators: sample email address in the notification preview, matching the sample name */
-			'email' => __( 'jane@example.com', 'honk' ),
+			'email' => __( 'jane@example.com', 'honk-me' ),
 			/* translators: sample phone number in the notification preview */
-			'phone' => __( '+1 503 555 0142', 'honk' ),
+			'phone' => __( '+1 503 555 0142', 'honk-me' ),
 			/* translators: sample billing city and country in the notification preview */
-			'city'  => __( 'Portland, United States', 'honk' ),
+			'city'  => __( 'Portland, United States', 'honk-me' ),
 		);
 	}
 
@@ -454,16 +454,16 @@ final class Honk_Preview {
 				'count'    => 3,
 				'status'   => self::status( 'processing' ),
 				/* translators: sample payment method in the notification preview */
-				'payment'  => __( 'Credit card', 'honk' ),
+				'payment'  => __( 'Credit card', 'honk-me' ),
 				'products' => array( array( self::product( 0 ), 1 ), array( self::product( 1 ), 2 ) ),
 				/* translators: sample shipping method in the notification preview (WooCommerce's own name for it) */
-				'shipping' => __( 'Flat rate', 'honk' ),
+				'shipping' => __( 'Flat rate', 'honk-me' ),
 				'name'     => $person['name'],
 				'email'    => $person['email'],
 				'phone'    => $person['phone'],
 				'city'     => $person['city'],
 				/* translators: sample note a customer left at checkout, in the notification preview */
-				'note'     => __( 'Please leave it with the neighbors.', 'honk' ),
+				'note'     => __( 'Please leave it with the neighbors.', 'honk-me' ),
 			),
 			$extra
 		);
@@ -477,7 +477,7 @@ final class Honk_Preview {
 	 */
 	private static function product( $index ) {
 		/* translators: sample product name in the notification preview */
-		return 0 === $index ? __( 'Linen Apron', 'honk' ) : __( 'Ceramic Mug', 'honk' );
+		return 0 === $index ? __( 'Linen Apron', 'honk-me' ) : __( 'Ceramic Mug', 'honk-me' );
 	}
 
 	/**
@@ -487,7 +487,7 @@ final class Honk_Preview {
 	 */
 	private static function post_title() {
 		/* translators: sample post title in the notification preview */
-		return __( 'Autumn sale', 'honk' );
+		return __( 'Autumn sale', 'honk-me' );
 	}
 
 	/**
@@ -497,7 +497,7 @@ final class Honk_Preview {
 	 */
 	private static function message() {
 		/* translators: sample message sent through a contact form, in the notification preview */
-		return __( 'Hi, do you deliver on Saturdays?', 'honk' );
+		return __( 'Hi, do you deliver on Saturdays?', 'honk-me' );
 	}
 
 	/**
@@ -507,7 +507,7 @@ final class Honk_Preview {
 	 */
 	private static function example_plugin() {
 		/* translators: sample plugin name in the notification preview */
-		return __( 'Example Plugin', 'honk' );
+		return __( 'Example Plugin', 'honk-me' );
 	}
 
 	/**

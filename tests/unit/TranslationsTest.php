@@ -1,6 +1,7 @@
 <?php
 /**
- * The bundled translations: complete, same placeholders as English, glossary terms.
+ * The translation sources in languages-src/ (imported into translate.wordpress.org; the plugin
+ * ships no translation files): complete, same placeholders as English, glossary terms.
  *
  * @package Honk
  */
@@ -46,9 +47,8 @@ class TranslationsTest extends Honk_Test_Case {
 	 * @dataProvider locales
 	 */
 	public function test_every_string_is_translated_with_the_same_placeholders( $locale, $forms ) {
-		$pot = $this->parse( HONK_DIR . 'languages/honk.pot' );
-		$po  = $this->parse( HONK_DIR . 'languages/honk-' . $locale . '.po' );
-		$this->assertFileExists( HONK_DIR . 'languages/honk-' . $locale . '.mo' );
+		$pot = $this->parse( HONK_DIR . 'languages-src/honk-me.pot' );
+		$po  = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
 		foreach ( $pot as $msgid => $entry ) {
 			if ( 'https://honk-me.app' === $msgid ) {
 				continue;
@@ -77,7 +77,7 @@ class TranslationsTest extends Honk_Test_Case {
 		);
 		$english = array( 'Light honk', 'Beep-beep', 'Loud honk', 'Long honk', 'Blast' );
 		foreach ( $scale as $locale => $names ) {
-			$po = $this->parse( HONK_DIR . 'languages/honk-' . $locale . '.po' );
+			$po = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
 			foreach ( $english as $i => $msgid ) {
 				$this->assertSame( $names[ $i ], $po[ $msgid ][1][0], $locale . ' ' . $msgid );
 			}
@@ -85,7 +85,7 @@ class TranslationsTest extends Honk_Test_Case {
 	}
 
 	public function test_french_uses_non_breaking_spaces_before_colons() {
-		$po = $this->parse( HONK_DIR . 'languages/honk-fr_FR.po' );
+		$po = $this->parse( HONK_DIR . 'languages-src/honk-me-fr_FR.po' );
 		$this->assertSame( "Rôle\u{00a0}: %s", $po['Role: %s'][1][0] );
 		$this->assertStringNotContainsString( ' :', implode( "\n", array_merge( ...array_column( $po, 1 ) ) ) );
 	}

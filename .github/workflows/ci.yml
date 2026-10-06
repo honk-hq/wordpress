@@ -55,7 +55,7 @@ jobs:
       - name: Translations compile (msgfmt -c) and match the POT
         run: |
           sudo apt-get install -y --no-install-recommends gettext >/dev/null
-          for po in languages/*.po; do msgfmt -c --statistics -o /dev/null "$po"; done
+          for po in languages-src/*.po; do msgfmt -c --statistics -o /dev/null "$po"; done
 
   plugin-check:
     name: plugin check
@@ -68,5 +68,5 @@ jobs:
         run: bin/build.sh build
       - uses: wordpress/plugin-check-action@v1
         with:
-          build-dir: build/honk
+          build-dir: build/honk-me
           include-experimental: true

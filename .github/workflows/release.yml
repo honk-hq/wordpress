@@ -1,5 +1,5 @@
 # Runs when a tag vX.Y.Z is pushed (the monorepo's sdk-mirror workflow pushes it for a monorepo
-# tag sdk-wordpress-vX.Y.Z). Checks that the tag, honk.php, readme.txt and CHANGELOG.md agree,
+# tag sdk-wordpress-vX.Y.Z). Checks that the tag, honk-me.php, readme.txt and CHANGELOG.md agree,
 # runs the tests, deploys the plugin to the WordPress.org SVN repository (trunk, tags/X.Y.Z and
 # the .wordpress-org assets) and attaches the zip to the GitHub release.
 #
@@ -30,12 +30,12 @@ jobs:
         with:
           persist-credentials: false
       - id: v
-        name: The tag, honk.php, readme.txt and CHANGELOG.md agree
+        name: The tag, honk-me.php, readme.txt and CHANGELOG.md agree
         run: |
           v="${GITHUB_REF_NAME#v}"
           [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::tag $GITHUB_REF_NAME is not vX.Y.Z"; exit 1; }
-          constant="$(sed -nE "s/^define\( 'HONK_VERSION', '([^']+)' \);$/\1/p" honk.php)"
-          header="$(sed -nE 's/^ \* Version:[[:space:]]+(.+)$/\1/p' honk.php)"
+          constant="$(sed -nE "s/^define\( 'HONK_VERSION', '([^']+)' \);$/\1/p" honk-me.php)"
+          header="$(sed -nE 's/^ \* Version:[[:space:]]+(.+)$/\1/p' honk-me.php)"
           stable="$(sed -nE 's/^Stable tag:[[:space:]]+(.+)$/\1/p' readme.txt)"
           for pair in "HONK_VERSION:$constant" "Version header:$header" "readme.txt Stable tag:$stable"; do
             [ "${pair#*:}" = "$v" ] || { echo "::error::${pair%%:*} is '${pair#*:}' but the tag is $GITHUB_REF_NAME"; exit 1; }
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-24.04
     environment:
       name: wordpress-org
-      url: https://wordpress.org/plugins/honk/
+      url: https://wordpress.org/plugins/honk-me/
     permissions:
       contents: write # the GitHub release
     steps:
@@ -72,7 +72,7 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: honk
+          SLUG: honk-me
           VERSION: ${{ needs.verify.outputs.version }}
           ASSETS_DIR: .wordpress-org
       - name: The zip (pre-releases are not deployed, so build it here)
@@ -93,12 +93,12 @@ jobs:
           ZIP: ${{ steps.zip.outputs.path }}
         run: |
           awk -v h="## [$VERSION]" 'index($0, h) == 1 {f = 1; next} f && /^## \[/ {exit} f' CHANGELOG.md > notes.md
-          printf '\nWordPress.org: https://wordpress.org/plugins/honk/\n' >> notes.md
-          cp "$ZIP" "honk-$VERSION.zip"
+          printf '\nWordPress.org: https://wordpress.org/plugins/honk-me/\n' >> notes.md
+          cp "$ZIP" "honk-me-$VERSION.zip"
           flags=()
           [ "$PRERELEASE" = true ] && flags+=(--prerelease)
           if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            gh release upload "$GITHUB_REF_NAME" "honk-$VERSION.zip" --clobber
+            gh release upload "$GITHUB_REF_NAME" "honk-me-$VERSION.zip" --clobber
           else
-            gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md "${flags[@]}" "honk-$VERSION.zip"
+            gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md "${flags[@]}" "honk-me-$VERSION.zip"
           fi

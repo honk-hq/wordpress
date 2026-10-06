@@ -6,6 +6,7 @@
 /.phpunit.cache
 /bin
 /build
+/languages-src
 /node_modules
 /tests
 /vendor

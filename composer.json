@@ -1,6 +1,6 @@
 {
     "name": "honk-me/honk-wordpress",
-    "description": "Honk – Notifications for WordPress and WooCommerce. Composer is used for development tools only; the plugin has no runtime dependencies.",
+    "description": "Honk Me – Notifications for Sites, Shops and Forms (WordPress plugin, slug honk-me). Composer is used for development tools only; the plugin has no runtime dependencies.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "homepage": "https://honk-me.app",

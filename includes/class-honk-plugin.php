@@ -59,7 +59,6 @@ final class Honk_Plugin {
 	public static function boot() {
 		add_action( 'before_woocommerce_init', array( __CLASS__, 'declare_woocommerce_compatibility' ) );
 
-		Honk_I18n::register();
 		Honk_Queue::register();
 		Honk_Settings::register();
 

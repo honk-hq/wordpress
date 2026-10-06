@@ -97,7 +97,7 @@ final class Honk_Notifier {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			return 'WP-CLI';
 		}
-		return wp_doing_cron() ? __( 'a scheduled task', 'honk' ) : __( 'WordPress', 'honk' );
+		return wp_doing_cron() ? __( 'a scheduled task', 'honk-me' ) : __( 'WordPress', 'honk-me' );
 	}
 
 	/**
@@ -113,7 +113,7 @@ final class Honk_Notifier {
 			$user = get_userdata( (int) $user );
 		}
 		if ( ! $user ) {
-			return __( 'unknown user', 'honk' );
+			return __( 'unknown user', 'honk-me' );
 		}
 		if ( $pii ) {
 			$name = trim( $user->display_name );
@@ -123,7 +123,7 @@ final class Honk_Notifier {
 			return $user->user_login;
 		}
 		/* translators: %d: user id */
-		return sprintf( __( 'user #%d', 'honk' ), $user->ID );
+		return sprintf( __( 'user #%d', 'honk-me' ), $user->ID );
 	}
 
 	/**

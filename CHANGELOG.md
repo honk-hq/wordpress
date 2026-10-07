@@ -5,7 +5,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
 [Semantic Versioning](https://semver.org/). The WordPress.org changelog in `readme.txt` repeats
 each entry in short.
 
-## [Unreleased]
+## [0.2.0] - 2026-10-07
 
 ### Added
 - **Buttons** on notifications (Honk's message actions, `contracts/API.md` §13), chosen per event

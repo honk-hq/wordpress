@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Honk Me 0.1.0\n"
+"Project-Id-Version: Honk Me 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/honk-me/honk-wordpress/issues\n"
 "Last-Translator: Honk Me <sdk@honk-me.app>\n"
 "Language-Team: Honk Me <sdk@honk-me.app>\n"

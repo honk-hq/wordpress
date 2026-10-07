@@ -15,7 +15,7 @@ define( 'WP_LANG_DIR', '/tmp/wordpress/wp-content/languages' );
 define( 'MINUTE_IN_SECONDS', 60 );
 define( 'HOUR_IN_SECONDS', 3600 );
 define( 'DAY_IN_SECONDS', 86400 );
-define( 'HONK_VERSION', '0.1.0' );
+define( 'HONK_VERSION', '0.2.0' );
 define( 'HONK_FILE', dirname( __DIR__ ) . '/honk-me.php' );
 define( 'HONK_DIR', dirname( __DIR__ ) . '/' );
 

@@ -21,7 +21,7 @@ class ClientTest extends Honk_Test_Case {
 		$this->assertSame( 'Bearer honk_ab_secretsecret', $request['args']['headers']['Authorization'] );
 		$this->assertSame( 'wp-abcd1234-test', $request['args']['headers']['Idempotency-Key'] );
 		$this->assertSame( 'application/json', $request['args']['headers']['Content-Type'] );
-		$this->assertSame( 'honk-wordpress/0.1.0 (+https://honk-me.app)', $request['args']['user-agent'] );
+		$this->assertSame( 'honk-wordpress/' . HONK_VERSION . ' (+https://honk-me.app)', $request['args']['user-agent'] );
 		$this->assertSame( 0, $request['args']['redirection'] );
 		$this->assertSame( 5.0, (float) $request['args']['timeout'] );
 	}

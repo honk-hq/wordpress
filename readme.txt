@@ -4,7 +4,7 @@ Tags: notifications, woocommerce, security, contact form, monitoring
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,10 +165,16 @@ The heartbeat ("tell me when my site stops checking in") needs support on the Ho
 
 == Changelog ==
 
+= 0.2.0 =
+* Buttons on notifications: email or call the customer, reply to a form entry or a comment, approve a comment. Choose them for each event under Details → Buttons. They are off by default, so your notifications stay as they were.
+
 = 0.1.0 =
 * First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview; background sending with automatic retries; notifications in your site's language.
 
 == Upgrade Notice ==
+
+= 0.2.0 =
+Optional buttons on notifications (email or call the customer, reply, approve), off by default.
 
 = 0.1.0 =
 First release.

@@ -191,5 +191,8 @@ The version lives in `honk-me.php` (header `Version` and `HONK_VERSION`) and in 
    assets from `.wordpress-org/`) with `10up/action-wordpress-plugin-deploy`, and attaches the
    zip to the GitHub release.
 
+The directory's icon and banners in `.wordpress-org/` come from the monorepo's
+`design/brand/plugin_icons.py`, which copies the live app icon's set there.
+
 Secrets (environment `wordpress-org`): `SVN_USERNAME`, `SVN_PASSWORD` (the WordPress.org
 account's SVN password, set in its profile).

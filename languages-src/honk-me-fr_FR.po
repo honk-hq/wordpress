@@ -1210,7 +1210,7 @@ msgstr "Coup de klaxon appuyé"
 
 #: includes/class-honk-settings.php:455
 msgid "Long honk"
-msgstr "Long coup de klaxon"
+msgstr "Klaxon long"
 
 #: includes/class-honk-settings.php:457
 msgid "Blast"

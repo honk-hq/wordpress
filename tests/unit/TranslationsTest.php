@@ -72,7 +72,7 @@ class TranslationsTest extends Honk_Test_Case {
 		$scale = array(
 			'ro_RO' => array( 'Claxon ușor', 'Bip-bip', 'Claxon puternic', 'Claxon lung', 'Claxon continuu' ),
 			'es_ES' => array( 'Bocinazo suave', 'Bip-bip', 'Bocinazo fuerte', 'Bocinazo largo', 'Bocina sin parar' ),
-			'fr_FR' => array( 'Petit coup de klaxon', 'Bip-bip', 'Coup de klaxon appuyé', 'Long coup de klaxon', 'Klaxon continu' ),
+			'fr_FR' => array( 'Petit coup de klaxon', 'Bip-bip', 'Coup de klaxon appuyé', 'Klaxon long', 'Klaxon continu' ),
 			'de_DE' => array( 'Leichtes Hupen', 'Tüt-tüt', 'Lautes Hupen', 'Langes Hupen', 'Dauerhupen' ),
 		);
 		$english = array( 'Light honk', 'Beep-beep', 'Loud honk', 'Long honk', 'Blast' );

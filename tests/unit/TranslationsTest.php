@@ -50,7 +50,7 @@ class TranslationsTest extends Honk_Test_Case {
 		$pot = $this->parse( HONK_DIR . 'languages-src/honk-me.pot' );
 		$po  = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
 		foreach ( $pot as $msgid => $entry ) {
-			if ( 'https://honk-me.app' === $msgid ) {
+			if ( 'https://honk-honk.app' === $msgid ) {
 				continue;
 			}
 			$this->assertArrayHasKey( $msgid, $po, $locale . ': missing ' . $msgid );

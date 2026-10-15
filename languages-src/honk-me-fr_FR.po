@@ -22,8 +22,8 @@ msgstr "Honk Me – Notifications pour sites, boutiques et formulaires"
 
 #. Plugin URI of the plugin
 #: honk-me.php
-msgid "https://honk-me.app"
-msgstr "https://honk-me.app/fr"
+msgid "https://honk-honk.app"
+msgstr "https://honk-honk.app/fr"
 
 #. Description of the plugin
 #: honk-me.php
@@ -65,8 +65,8 @@ msgid "Open Honk settings"
 msgstr "Ouvrir les réglages de Honk"
 
 #: includes/class-honk-admin.php:146
-msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-me.app) or to another Honk server the site owner chose."
-msgstr "Ce site utilise Honk pour informer son propriétaire de l’activité du site, comme les commandes, les formulaires envoyés et les alertes de sécurité. Ces notifications sont envoyées au service Honk (honk-me.app) ou à un autre serveur Honk choisi par le propriétaire du site."
+msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-honk.app) or to another Honk server the site owner chose."
+msgstr "Ce site utilise Honk pour informer son propriétaire de l’activité du site, comme les commandes, les formulaires envoyés et les alertes de sécurité. Ces notifications sont envoyées au service Honk (honk-honk.app) ou à un autre serveur Honk choisi par le propriétaire du site."
 
 #: includes/class-honk-admin.php:147
 msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
@@ -99,8 +99,8 @@ msgid "Server URL"
 msgstr "URL du serveur"
 
 #: includes/class-honk-admin.php:216
-msgid "Leave this as https://honk-me.app unless you run your own Honk server."
-msgstr "Laissez https://honk-me.app, sauf si vous avez votre propre serveur Honk."
+msgid "Leave this as https://honk-honk.app unless you run your own Honk server."
+msgstr "Laissez https://honk-honk.app, sauf si vous avez votre propre serveur Honk."
 
 #: includes/class-honk-admin.php:220
 msgid "API key"

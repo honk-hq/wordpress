@@ -12,7 +12,7 @@ Get orders, failed payments, form entries, suspicious sign-ins and site errors i
 
 == Description ==
 
-Honk Me (honk-me.app) is a calm notification inbox, Honk for short, and this is its official WordPress plugin. It tells Honk what happens on your WordPress site or WooCommerce store, so you hear about it on your iPhone, your Apple Watch and in the web app.
+Honk Me (honk-honk.app) is a calm notification inbox, Honk for short, and this is its official WordPress plugin. It tells Honk what happens on your WordPress site or WooCommerce store, so you hear about it on your iPhone, your Apple Watch and in the web app.
 
 Honk groups repeats instead of sending each one: the first failed payment is a push, the tenth in a row just adds to a counter.
 
@@ -79,7 +79,7 @@ Honk Me is translated on translate.wordpress.org, and WordPress installs the tra
 
 == External services ==
 
-This plugin connects to the Honk API to deliver your notifications. Honk Me is a notification service at [honk-me.app](https://honk-me.app), run by the plugin's authors; you can also use your own Honk server. **Nothing is sent until you add an API key** in Settings → Honk.
+This plugin connects to the Honk API to deliver your notifications. Honk Me is a notification service at [honk-honk.app](https://honk-honk.app), run by the plugin's authors; you can also use your own Honk server. **Nothing is sent until you add an API key** in Settings → Honk.
 
 What is sent, and when:
 
@@ -89,7 +89,7 @@ What is sent, and when:
 * **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. This request contains no data about your site.
 * **The heartbeat** (once Honk supports it, and only if you turn it on) checks in every 5 minutes with your site's address and environment.
 
-Honk's privacy policy: [https://honk-me.app/privacy](https://honk-me.app/privacy). Terms and support: [https://honk-me.app/support](https://honk-me.app/support).
+Honk's privacy policy: [https://honk-honk.app/privacy](https://honk-honk.app/privacy). Terms and support: [https://honk-honk.app/support](https://honk-honk.app/support).
 
 The plugin doesn't track you or your visitors, and it loads no external scripts, styles or fonts.
 
@@ -97,7 +97,7 @@ The plugin doesn't track you or your visitors, and it loads no external scripts,
 
 1. In your dashboard, go to Plugins → Add Plugin, search for "Honk Me" and click Install Now. Or upload the `honk-me` folder to `/wp-content/plugins/`.
 2. Activate the plugin.
-3. In Honk (https://honk-me.app), open your project, go to Keys and create a new key. Copy it.
+3. In Honk (https://honk-honk.app), open your project, go to Keys and create a new key. Copy it.
 4. In WordPress, go to Settings → Honk, paste the key into "API key" and click "Send test notification". The test should reach your Honk inbox within seconds.
 5. Choose your events, their levels and priorities. Open Details under an event to choose what its notification says, then click Save Changes.
 

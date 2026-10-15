@@ -21,7 +21,7 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #: honk-me.php
-msgid "https://honk-me.app"
+msgid "https://honk-honk.app"
 msgstr ""
 
 #. Description of the plugin
@@ -64,7 +64,7 @@ msgid "Open Honk settings"
 msgstr ""
 
 #: includes/class-honk-admin.php:146
-msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-me.app) or to another Honk server the site owner chose."
+msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-honk.app) or to another Honk server the site owner chose."
 msgstr ""
 
 #: includes/class-honk-admin.php:147
@@ -98,7 +98,7 @@ msgid "Server URL"
 msgstr ""
 
 #: includes/class-honk-admin.php:216
-msgid "Leave this as https://honk-me.app unless you run your own Honk server."
+msgid "Leave this as https://honk-honk.app unless you run your own Honk server."
 msgstr ""
 
 #: includes/class-honk-admin.php:220

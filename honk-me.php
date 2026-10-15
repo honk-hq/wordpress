@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:          Honk Me – Notifications for Sites, Shops and Forms
- * Plugin URI:           https://honk-me.app
+ * Plugin URI:           https://honk-honk.app
  * Description:          Orders, failed payments, form entries, suspicious sign-ins and site errors from WordPress and WooCommerce, in your Honk inbox on iPhone, Apple Watch and the web.
  * Version:              0.2.0
  * Requires at least:    6.4

@@ -28,7 +28,7 @@ final class Honk_Client {
 	 * @return string
 	 */
 	public static function user_agent() {
-		return 'honk-wordpress/' . HONK_VERSION . ' (+https://honk-me.app)';
+		return 'honk-wordpress/' . HONK_VERSION . ' (+https://honk-honk.app)';
 	}
 
 	/**

@@ -16,7 +16,7 @@ final class Honk_Settings {
 
 	const SITE_ID_OPTION = 'honk_site_id';
 
-	const DEFAULT_SERVER = 'https://honk-me.app';
+	const DEFAULT_SERVER = 'https://honk-honk.app';
 
 	const SEVERITIES = array( 'info', 'success', 'warning', 'error', 'critical' );
 

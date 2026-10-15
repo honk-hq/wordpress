@@ -143,12 +143,12 @@ final class Honk_Admin {
 		if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
 			return;
 		}
-		$text = '<p>' . esc_html__( 'This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-me.app) or to another Honk server the site owner chose.', 'honk-me' ) . '</p>'
+		$text = '<p>' . esc_html__( 'This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-honk.app) or to another Honk server the site owner chose.', 'honk-me' ) . '</p>'
 			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device.', 'honk-me' ) . '</p>'
 			. '<p>' . sprintf(
 				/* translators: %s: link to the Honk privacy policy */
 				esc_html__( 'Honk privacy policy: %s', 'honk-me' ),
-				'<a href="https://honk-me.app/privacy">https://honk-me.app/privacy</a>'
+				'<a href="https://honk-honk.app/privacy">https://honk-honk.app/privacy</a>'
 			) . '</p>';
 		wp_add_privacy_policy_content( 'Honk', wp_kses_post( $text ) );
 	}
@@ -213,7 +213,7 @@ final class Honk_Admin {
 					<th scope="row"><label for="honk-server-url"><?php esc_html_e( 'Server URL', 'honk-me' ); ?></label></th>
 					<td>
 						<input type="url" id="honk-server-url" class="regular-text code" name="<?php echo esc_attr( $opt ); ?>[server_url]" value="<?php echo esc_attr( $s['server_url'] ); ?>" placeholder="<?php echo esc_attr( Honk_Settings::DEFAULT_SERVER ); ?>">
-						<p class="description"><?php esc_html_e( 'Leave this as https://honk-me.app unless you run your own Honk server.', 'honk-me' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Leave this as https://honk-honk.app unless you run your own Honk server.', 'honk-me' ); ?></p>
 					</td>
 				</tr>
 				<tr>

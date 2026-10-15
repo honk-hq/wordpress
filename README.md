@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/honk-me/honk-wordpress/actions/workflows/ci.yml/badge.svg)](https://github.com/honk-me/honk-wordpress/actions/workflows/ci.yml)
 
-The official WordPress plugin for [Honk Me](https://honk-me.app) (Honk for short), the calm
+The official WordPress plugin for [Honk Me](https://honk-honk.app) (Honk for short), the calm
 notification inbox: orders, payments, stock, sign-ins, site health and form submissions from
 WordPress, WooCommerce and the popular form plugins, in your Honk inbox, on iPhone, Apple Watch
 and the web.
@@ -43,7 +43,7 @@ WordPress hook ─▶ module (an outline of the message, in the notification lan
   https (otherwise the link goes to `metadata.link`), at most 3 `actions` with titles ≤ 40 code
   points and links the server accepts (`Honk_Payload::action_url()`; an invalid button is left
   out, never the message).
-- **User-Agent** `honk-wordpress/<version> (+https://honk-me.app)`.
+- **User-Agent** `honk-wordpress/<version> (+https://honk-honk.app)`.
 
 ## What each notification says (Details)
 

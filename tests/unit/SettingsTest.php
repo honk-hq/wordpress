@@ -18,7 +18,7 @@ class SettingsTest extends Honk_Test_Case {
 
 	public function test_defaults_send_nothing() {
 		$this->assertFalse( Honk_Settings::is_configured() );
-		$this->assertSame( 'https://honk-me.app', Honk_Settings::server_url() );
+		$this->assertSame( 'https://honk-honk.app', Honk_Settings::server_url() );
 		$this->assertFalse( Honk_Settings::include_pii() );
 	}
 
@@ -45,17 +45,17 @@ class SettingsTest extends Honk_Test_Case {
 	}
 
 	public function test_server_urls_must_be_https_except_local_hosts() {
-		$this->assertTrue( Honk_Settings::is_valid_server_url( 'https://honk-me.app' ) );
+		$this->assertTrue( Honk_Settings::is_valid_server_url( 'https://honk-honk.app' ) );
 		$this->assertTrue( Honk_Settings::is_valid_server_url( 'http://localhost:8090' ) );
 		$this->assertTrue( Honk_Settings::is_valid_server_url( 'http://host.docker.internal:28437' ) );
 		$this->assertTrue( Honk_Settings::is_valid_server_url( 'http://192.168.1.20' ) );
-		$this->assertFalse( Honk_Settings::is_valid_server_url( 'http://honk-me.app' ) );
+		$this->assertFalse( Honk_Settings::is_valid_server_url( 'http://honk-honk.app' ) );
 		$this->assertFalse( Honk_Settings::is_valid_server_url( 'http://8.8.8.8' ) );
-		$this->assertFalse( Honk_Settings::is_valid_server_url( 'https://user:pass@honk-me.app' ) );
-		$this->assertFalse( Honk_Settings::is_valid_server_url( 'ftp://honk-me.app' ) );
+		$this->assertFalse( Honk_Settings::is_valid_server_url( 'https://user:pass@honk-honk.app' ) );
+		$this->assertFalse( Honk_Settings::is_valid_server_url( 'ftp://honk-honk.app' ) );
 
 		$out = Honk_Settings::sanitize( array( 'server_url' => 'http://example.com' ) );
-		$this->assertSame( 'https://honk-me.app', $out['server_url'] );
+		$this->assertSame( 'https://honk-honk.app', $out['server_url'] );
 		$out = Honk_Settings::sanitize( array( 'server_url' => 'https://honk.example.com/' ) );
 		$this->assertSame( 'https://honk.example.com', $out['server_url'] );
 	}

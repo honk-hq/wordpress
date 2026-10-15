@@ -22,7 +22,7 @@ msgstr "Honk Me – Notificări pentru site-uri, magazine și formulare"
 
 #. Plugin URI of the plugin
 #: honk-me.php
-msgid "https://honk-me.app"
+msgid "https://honk-honk.app"
 msgstr ""
 
 #. Description of the plugin
@@ -65,8 +65,8 @@ msgid "Open Honk settings"
 msgstr "Deschide setările Honk"
 
 #: includes/class-honk-admin.php:146
-msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-me.app) or to another Honk server the site owner chose."
-msgstr "Acest site folosește Honk ca să-i trimită proprietarului notificări despre activitatea de pe site, cum ar fi comenzile, formularele trimise și alertele de securitate. Notificările ajung la serviciul Honk (honk-me.app) sau la alt server Honk ales de proprietarul site-ului."
+msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-honk.app) or to another Honk server the site owner chose."
+msgstr "Acest site folosește Honk ca să-i trimită proprietarului notificări despre activitatea de pe site, cum ar fi comenzile, formularele trimise și alertele de securitate. Notificările ajung la serviciul Honk (honk-honk.app) sau la alt server Honk ales de proprietarul site-ului."
 
 #: includes/class-honk-admin.php:147
 msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
@@ -99,8 +99,8 @@ msgid "Server URL"
 msgstr "Adresă server (URL)"
 
 #: includes/class-honk-admin.php:216
-msgid "Leave this as https://honk-me.app unless you run your own Honk server."
-msgstr "Lasă https://honk-me.app dacă nu ai propriul server Honk."
+msgid "Leave this as https://honk-honk.app unless you run your own Honk server."
+msgstr "Lasă https://honk-honk.app dacă nu ai propriul server Honk."
 
 #: includes/class-honk-admin.php:220
 msgid "API key"

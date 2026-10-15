@@ -1,6 +1,6 @@
 # Honk Me for WordPress
 
-[![CI](https://github.com/honk-me/honk-wordpress/actions/workflows/ci.yml/badge.svg)](https://github.com/honk-me/honk-wordpress/actions/workflows/ci.yml)
+[![CI](https://github.com/honkhonk/wordpress/actions/workflows/ci.yml/badge.svg)](https://github.com/honkhonk/wordpress/actions/workflows/ci.yml)
 
 The official WordPress plugin for [Honk Me](https://honk-honk.app) (Honk for short), the calm
 notification inbox: orders, payments, stock, sign-ins, site health and form submissions from

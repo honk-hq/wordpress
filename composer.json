@@ -1,12 +1,12 @@
 {
-    "name": "honkhonk/wordpress",
+    "name": "honk-hq/wordpress",
     "description": "Honk Me – Notifications for Sites, Shops and Forms (WordPress plugin, slug honk-me). Composer is used for development tools only; the plugin has no runtime dependencies.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "homepage": "https://honk-honk.app",
     "support": {
-        "issues": "https://github.com/honkhonk/wordpress/issues",
-        "source": "https://github.com/honkhonk/wordpress"
+        "issues": "https://github.com/honk-hq/wordpress/issues",
+        "source": "https://github.com/honk-hq/wordpress"
     },
     "require": {
         "php": ">=7.4"

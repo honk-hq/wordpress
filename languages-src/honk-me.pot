@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Honk Me – Notifications for Sites, Shops and Forms 0.2.0\n"
-"Report-Msgid-Bugs-To: https://github.com/honkhonk/wordpress/issues\n"
+"Report-Msgid-Bugs-To: https://github.com/honk-hq/wordpress/issues\n"
 "Last-Translator: Honk Me <sdk@honk-honk.app>\n"
 "Language-Team: Honk Me <sdk@honk-honk.app>\n"
 "MIME-Version: 1.0\n"

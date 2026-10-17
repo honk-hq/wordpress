@@ -375,7 +375,7 @@ class DetailsTest extends Honk_Test_Case {
 		$this->options['honk_settings']['include_pii'] = true;
 		Honk_Settings::flush();
 		$order = Honk_Details::compose( 'woo_new_order', $specs['woo_new_order'], Honk_Details::states( 'woo_new_order' ) );
-		$this->assertSame( "Order #1234 · €84.00 · 3 items\nProcessing · Credit card\nJane Doe · jane@example.com", $order['message'] );
+		$this->assertSame( "Order #1234 · €84.00 · 3 items\nProcessing · Credit card\nMaria Tudor · maria@example.com", $order['message'] );
 	}
 
 	public function test_form_plugins_list_their_fields() {
@@ -448,7 +448,7 @@ class DetailsTest extends Honk_Test_Case {
 		$spec = Honk_Preview::spec( 'form_cf7' );
 		$this->assertSame( 'Quote request', $spec['title'][0]['t'] );
 		$composed = Honk_Details::compose( 'form_cf7', $spec, array( 'values' => true, 'field:10:your-name' => true, 'field:10:your-email' => false ) );
-		$this->assertSame( 'Name: Jane Doe', $composed['message'] );
+		$this->assertSame( 'Name: Maria Tudor', $composed['message'] );
 	}
 
 	public function test_a_form_plugin_whose_api_breaks_lists_nothing() {

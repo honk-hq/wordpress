@@ -1123,68 +1123,53 @@ msgstr "E-Mail"
 msgid "Message"
 msgstr "Nachricht"
 
-#. translators: sample customer name in the notification preview
-#: includes/class-honk-preview.php:427
-msgid "Jane Doe"
-msgstr "Anna Schmidt"
-
-#. translators: sample username in the notification preview: the sample first name in lowercase
-#: includes/class-honk-preview.php:429
-msgid "jane"
-msgstr "anna"
-
-#. translators: sample email address in the notification preview, matching the sample name
-#: includes/class-honk-preview.php:431
-msgid "jane@example.com"
-msgstr "anna@example.com"
-
 #. translators: sample phone number in the notification preview
-#: includes/class-honk-preview.php:433
+#: includes/class-honk-preview.php:431
 msgid "+1 503 555 0142"
 msgstr "+49 151 23456789"
 
 #. translators: sample billing city and country in the notification preview
-#: includes/class-honk-preview.php:435
+#: includes/class-honk-preview.php:433
 msgid "Portland, United States"
 msgstr "Leipzig, Deutschland"
 
 #. translators: sample payment method in the notification preview
-#: includes/class-honk-preview.php:472
+#: includes/class-honk-preview.php:470
 msgid "Credit card"
 msgstr "Kreditkarte"
 
 #. translators: sample shipping method in the notification preview (WooCommerce's own name for it)
-#: includes/class-honk-preview.php:475
+#: includes/class-honk-preview.php:473
 msgid "Flat rate"
 msgstr "Versandkostenpauschale"
 
 #. translators: sample note a customer left at checkout, in the notification preview
-#: includes/class-honk-preview.php:481
+#: includes/class-honk-preview.php:479
 msgid "Please leave it with the neighbors."
 msgstr "Bitte bei den Nachbarn abgeben."
 
 #. translators: sample product name in the notification preview
-#: includes/class-honk-preview.php:495
+#: includes/class-honk-preview.php:493
 msgid "Linen Apron"
 msgstr "Leinenschürze"
 
 #. translators: sample product name in the notification preview
-#: includes/class-honk-preview.php:495
+#: includes/class-honk-preview.php:493
 msgid "Ceramic Mug"
 msgstr "Keramikbecher"
 
 #. translators: sample post title in the notification preview
-#: includes/class-honk-preview.php:505
+#: includes/class-honk-preview.php:503
 msgid "Autumn sale"
 msgstr "Herbstaktion"
 
 #. translators: sample message sent through a contact form, in the notification preview
-#: includes/class-honk-preview.php:515
+#: includes/class-honk-preview.php:513
 msgid "Hi, do you deliver on Saturdays?"
 msgstr "Hallo, liefert ihr auch samstags?"
 
 #. translators: sample plugin name in the notification preview
-#: includes/class-honk-preview.php:525
+#: includes/class-honk-preview.php:523
 msgid "Example Plugin"
 msgstr "Beispiel-Plugin"
 

@@ -423,12 +423,10 @@ final class Honk_Preview {
 	 */
 	private static function person() {
 		return array(
-			/* translators: sample customer name in the notification preview */
-			'name'  => __( 'Jane Doe', 'honk-me' ),
-			/* translators: sample username in the notification preview: the sample first name in lowercase */
-			'login' => __( 'jane', 'honk-me' ),
-			/* translators: sample email address in the notification preview, matching the sample name */
-			'email' => __( 'jane@example.com', 'honk-me' ),
+			// the same sample person in every language: not for translation
+			'name'  => 'Maria Tudor',
+			'login' => 'maria',
+			'email' => 'maria@example.com',
 			/* translators: sample phone number in the notification preview */
 			'phone' => __( '+1 503 555 0142', 'honk-me' ),
 			/* translators: sample billing city and country in the notification preview */

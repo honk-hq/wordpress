@@ -347,7 +347,7 @@ class ActionsTest extends Honk_Test_Case {
 		$specs = Honk_Preview::specs();
 		$all   = array( 'email' => true, 'phone' => true, 'action_email' => true, 'action_call' => true );
 		$this->assertSame(
-			array( $this->button( 'Email customer', 'mailto:jane@example.com?subject=Order%20%231234' ), $this->button( 'Call customer', 'tel:+15035550142' ) ),
+			array( $this->button( 'Email customer', 'mailto:maria@example.com?subject=Order%20%231234' ), $this->button( 'Call customer', 'tel:+15035550142' ) ),
 			Honk_Details::compose( 'woo_new_order', $specs['woo_new_order'], $all )['actions']
 		);
 		$this->assertSame( array(), Honk_Details::compose( 'woo_new_order', $specs['woo_new_order'], Honk_Details::states( 'woo_new_order' ) )['actions'], 'off by default' );
@@ -377,6 +377,6 @@ class ActionsTest extends Honk_Test_Case {
 		$on   = array( 'values' => true, 'action_reply' => true, 'action_call' => true, 'field:3:1' => true, 'field:3:2' => true, 'field:3:4' => true );
 		$this->assertSame( array( 'Reply by email', 'Call back' ), array_column( Honk_Details::compose( 'form_wpforms', $spec, $on )['actions'], 'title' ) );
 		$this->assertSame( array( 'Call back' ), array_column( Honk_Details::compose( 'form_wpforms', $spec, array_merge( $on, array( 'field:3:2' => false ) ) )['actions'], 'title' ), 'the email field is left out' );
-		$this->assertSame( 'mailto:jane@example.com?subject=Re%3A%20Contact', Honk_Details::compose( 'form_wpforms', $spec, $on )['actions'][0]['url'] );
+		$this->assertSame( 'mailto:maria@example.com?subject=Re%3A%20Contact', Honk_Details::compose( 'form_wpforms', $spec, $on )['actions'][0]['url'] );
 	}
 }

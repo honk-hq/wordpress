@@ -141,7 +141,7 @@ final class Honk_Notifier {
 	}
 
 	/**
-	 * A user as an outline line: "Jane Doe · jane · jane@example.com" (the name only when it
+	 * A user as an outline line: "Maria Tudor · maria · maria@example.com" (the name only when it
 	 * differs from the login), as user_label() writes it with personal data.
 	 *
 	 * @param array  $d     user_data().

@@ -423,7 +423,7 @@ final class Honk_Preview {
 	 */
 	private static function person() {
 		return array(
-			// the same sample person in every language: not for translation
+			// The same sample person in every language: not for translation.
 			'name'  => 'Maria Tudor',
 			'login' => 'maria',
 			'email' => 'maria@example.com',

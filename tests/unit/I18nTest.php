@@ -106,14 +106,14 @@ class I18nTest extends Honk_Test_Case {
 
 	public function test_the_plugin_is_honk_me_and_ships_no_translation_files() {
 		$header = file_get_contents( HONK_DIR . 'honk-me.php' );
-		$this->assertStringContainsString( 'Plugin Name:          Honk Me – Notifications for Sites, Shops and Forms', $header );
+		$this->assertStringContainsString( 'Plugin Name:          Honk! Honk! – Notifications for Sites, Shops and Forms', $header );
 		$this->assertStringContainsString( 'Text Domain:          honk-me', $header );
 		$this->assertStringNotContainsString( 'Domain Path', $header );
 		$this->assertSame( 'honk-me', Honk_I18n::DOMAIN );
 		$this->assertDirectoryDoesNotExist( HONK_DIR . 'languages' );
 		$this->assertStringContainsString( '/languages-src', file_get_contents( HONK_DIR . '.distignore' ) );
 		$readme = file_get_contents( HONK_DIR . 'readme.txt' );
-		$this->assertStringStartsWith( '=== Honk Me – Notifications for Sites, Shops and Forms ===', $readme );
+		$this->assertStringStartsWith( '=== Honk! Honk! – Notifications for Sites, Shops and Forms ===', $readme );
 		$this->assertMatchesRegularExpression( '/^Contributors: honkme$/m', $readme );
 
 		// Every translatable string uses the honk-me text domain.

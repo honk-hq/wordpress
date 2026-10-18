@@ -1,9 +1,16 @@
 # Changelog
 
-All notable changes to the Honk Me WordPress plugin (slug `honk-me`) are documented here. The format
-follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+All notable changes to the Honk! Honk! WordPress plugin (slug `honk-me`) are documented here. The
+format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/). The WordPress.org changelog in `readme.txt` repeats
 each entry in short.
+
+## [Unreleased]
+
+### Changed
+- The plugin is now called "Honk! Honk! – Notifications for Sites, Shops and Forms", and its
+  settings screen, menu, WooCommerce tab, notices and messages say Honk! Honk! (it was Honk Me,
+  or Honk). The slug and text domain stay `honk-me`; options, hooks and filters are unchanged.
 
 ## [0.2.0] - 2026-10-07
 

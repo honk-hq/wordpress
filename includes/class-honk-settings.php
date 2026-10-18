@@ -348,7 +348,7 @@ final class Honk_Settings {
 			if ( self::is_valid_key( $key ) ) {
 				$out['api_key'] = $key;
 			} else {
-				add_settings_error( self::OPTION, 'api_key', __( 'That doesn’t look like a Honk API key (they start with honk_). Your previous key was kept.', 'honk-me' ) );
+				add_settings_error( self::OPTION, 'api_key', __( 'That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept.', 'honk-me' ) );
 			}
 		}
 

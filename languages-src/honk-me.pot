@@ -1,11 +1,11 @@
-# Copyright (C) 2026 Honk Me
+# Copyright (C) 2026 Honk! Honk!
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Honk Me – Notifications for Sites, Shops and Forms 0.2.0\n"
+"Project-Id-Version: Honk! Honk! – Notifications for Sites, Shops and Forms 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/honk-hq/wordpress/issues\n"
-"Last-Translator: Honk Me <sdk@honk-honk.app>\n"
-"Language-Team: Honk Me <sdk@honk-honk.app>\n"
+"Last-Translator: Honk! Honk! <sdk@honk-honk.app>\n"
+"Language-Team: Honk! Honk! <sdk@honk-honk.app>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: honk-me.php
-msgid "Honk Me – Notifications for Sites, Shops and Forms"
+msgid "Honk! Honk! – Notifications for Sites, Shops and Forms"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -26,19 +26,16 @@ msgstr ""
 
 #. Description of the plugin
 #: honk-me.php
-msgid "Orders, failed payments, form entries, suspicious sign-ins and site errors from WordPress and WooCommerce, in your Honk inbox on iPhone, Apple Watch and the web."
+msgid "Orders, failed payments, form entries, suspicious sign-ins and site errors from WordPress and WooCommerce, in your Honk! Honk! inbox on iPhone, Apple Watch and the web."
 msgstr ""
 
 #. Author of the plugin
 #: honk-me.php
-msgid "Honk Me"
-msgstr ""
-
 #: includes/class-honk-admin.php:57
 #: includes/class-honk-admin.php:178
 #: includes/class-honk-admin.php:923
 #: includes/class-honk-admin.php:935
-msgid "Honk"
+msgid "Honk! Honk!"
 msgstr ""
 
 #: includes/class-honk-admin.php:82
@@ -55,30 +52,30 @@ msgid "Settings"
 msgstr ""
 
 #: includes/class-honk-admin.php:111
-msgid "Honk is almost set up. Add your API key to start getting notifications."
+msgid "Honk! Honk! is almost set up. Add your API key to start getting notifications."
 msgstr ""
 
 #: includes/class-honk-admin.php:113
 #: includes/class-honk-admin.php:937
-msgid "Open Honk settings"
+msgid "Open Honk! Honk! settings"
 msgstr ""
 
 #: includes/class-honk-admin.php:146
-msgid "This site uses Honk to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk service (honk-honk.app) or to another Honk server the site owner chose."
+msgid "This site uses Honk! Honk! to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk! Honk! service (honk-honk.app) or to another Honk! Honk! server the site owner chose."
 msgstr ""
 
 #: includes/class-honk-admin.php:147
 msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
 msgstr ""
 
-#. translators: %s: link to the Honk privacy policy
+#. translators: %s: link to the Honk! Honk! privacy policy
 #: includes/class-honk-admin.php:150
 #, php-format
-msgid "Honk privacy policy: %s"
+msgid "Honk! Honk! privacy policy: %s"
 msgstr ""
 
 #: includes/class-honk-admin.php:179
-msgid "Get this site’s orders, form entries and alerts in Honk, on your iPhone, Apple Watch and the web."
+msgid "Get this site’s orders, form entries and alerts in Honk! Honk!, on your iPhone, Apple Watch and the web."
 msgstr ""
 
 #: includes/class-honk-admin.php:180
@@ -98,7 +95,7 @@ msgid "Server URL"
 msgstr ""
 
 #: includes/class-honk-admin.php:216
-msgid "Leave this as https://honk-honk.app unless you run your own Honk server."
+msgid "Leave this as https://honk-honk.app unless you run your own Honk! Honk! server."
 msgstr ""
 
 #: includes/class-honk-admin.php:220
@@ -112,7 +109,7 @@ msgid "Saved key: %s. Leave the field empty to keep it."
 msgstr ""
 
 #: includes/class-honk-admin.php:232
-msgid "In Honk, open your project, go to Keys and create a new key. Nothing is sent until you save one here."
+msgid "In Honk! Honk!, open your project, go to Keys and create a new key. Nothing is sent until you save one here."
 msgstr ""
 
 #: includes/class-honk-admin.php:237
@@ -164,7 +161,7 @@ msgid "Automatic (%s)"
 msgstr ""
 
 #: includes/class-honk-admin.php:279
-msgid "Tells Honk whether this is your live site or a test copy. Automatic uses the environment type set in WordPress."
+msgid "Tells Honk! Honk! whether this is your live site or a test copy. Automatic uses the environment type set in WordPress."
 msgstr ""
 
 #: includes/class-honk-admin.php:289
@@ -176,7 +173,7 @@ msgid "Site language"
 msgstr ""
 
 #: includes/class-honk-admin.php:297
-msgid "Notifications use the WordPress translations of Honk Me. Every language installed on this site is listed here; where a language has no translation yet, notifications are in English."
+msgid "Notifications use the WordPress translations of the Honk! Honk! plugin. Every language installed on this site is listed here; where a language has no translation yet, notifications are in English."
 msgstr ""
 
 #: includes/class-honk-admin.php:302
@@ -184,11 +181,11 @@ msgid "Events"
 msgstr ""
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk groups repeats, so you only get a push when something needs you."
+msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
 msgstr ""
 
 #: includes/class-honk-admin.php:304
-msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk."
+msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!"
 msgstr ""
 
 #: includes/class-honk-admin.php:334
@@ -196,7 +193,7 @@ msgid "WooCommerce isn’t active. Its events show up here once it is."
 msgstr ""
 
 #: includes/class-honk-admin.php:340
-msgid "No supported form plugin is active. Honk works with Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms."
+msgid "No supported form plugin is active. Honk! Honk! works with Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms."
 msgstr ""
 
 #: includes/class-honk-admin.php:343
@@ -276,13 +273,13 @@ msgid "Buttons"
 msgstr ""
 
 #: includes/class-honk-admin.php:569
-msgid "Shown with the notification in Honk. A button that emails or calls someone is only added while the notification includes their email address or phone number."
+msgid "Shown in Honk! Honk! with the notification. A button that emails or calls someone is only added while the notification includes their email address or phone number."
 msgstr ""
 
 #. translators: %s: form plugin name, e.g. Fluent Forms
 #: includes/class-honk-admin.php:611
 #, php-format
-msgid "%s doesn’t share a form’s list of fields with other plugins, so Honk includes every field or none."
+msgid "%s doesn’t share a form’s list of fields with other plugins, so Honk! Honk! includes every field or none."
 msgstr ""
 
 #: includes/class-honk-admin.php:627
@@ -325,7 +322,7 @@ msgid "Coming soon."
 msgstr ""
 
 #: includes/class-honk-admin.php:715
-msgid "Honk will let you know when this site goes quiet, even if it’s too broken to say so itself. The option appears here once your Honk server supports it."
+msgid "Honk! Honk! will let you know when this site goes quiet, even if it’s too broken to say so itself. The option appears here once your Honk! Honk! server supports it."
 msgstr ""
 
 #: includes/class-honk-admin.php:733
@@ -333,7 +330,7 @@ msgid "Delivery log cleared."
 msgstr ""
 
 #: includes/class-honk-admin.php:736
-msgid "The last 50 notifications this site sent to Honk, newest first. They’re sent in the background and retried if Honk is busy or can’t be reached."
+msgid "The last 50 notifications this site sent to Honk! Honk!, newest first. They’re sent in the background and retried if Honk! Honk! is busy or can’t be reached."
 msgstr ""
 
 #: includes/class-honk-admin.php:740
@@ -414,13 +411,13 @@ msgid "Test from %s"
 msgstr ""
 
 #: includes/class-honk-admin.php:871
-msgid "If you can read this, your site is connected to Honk. Sent from Settings → Honk."
+msgid "If you can read this, your site is connected. Sent from Settings → Honk! Honk!"
 msgstr ""
 
 #. translators: 1: message id, 2: duration in milliseconds
 #: includes/class-honk-admin.php:897
 #, php-format
-msgid "It works. The test notification should be in your Honk inbox now (ID %1$s, %2$d ms)."
+msgid "It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms)."
 msgstr ""
 
 #. translators: 1: server URL, 2: error message
@@ -430,17 +427,17 @@ msgid "Couldn’t reach %1$s: %2$s"
 msgstr ""
 
 #: includes/class-honk-admin.php:908
-msgid "Honk didn’t accept this key. Check that you copied all of it and that it hasn’t been revoked in Honk."
+msgid "Honk! Honk! didn’t accept this key. Check that you copied all of it and that it hasn’t been revoked in Honk! Honk!"
 msgstr ""
 
 #. translators: 1: HTTP status, 2: error code, 3: error message
 #: includes/class-honk-admin.php:911
 #, php-format
-msgid "Honk returned an error (%1$d %2$s): %3$s"
+msgid "Honk! Honk! returned an error (%1$d %2$s): %3$s"
 msgstr ""
 
 #: includes/class-honk-admin.php:936
-msgid "Order, payment, stock, customer and review notifications are set up under Settings → Honk, with the rest of the site’s notifications."
+msgid "Order, payment, stock, customer and review notifications are set up under Settings → Honk! Honk!, with the rest of the site’s notifications."
 msgstr ""
 
 #: includes/class-honk-details.php:709
@@ -1051,7 +1048,7 @@ msgid "Yesterday’s orders and revenue, every morning at 8:00 site time."
 msgstr ""
 
 #: includes/class-honk-heartbeat.php:50
-msgid "Every 5 minutes (Honk heartbeat)"
+msgid "Every 5 minutes (Honk! Honk! heartbeat)"
 msgstr ""
 
 #: includes/class-honk-notifier.php:100
@@ -1177,7 +1174,7 @@ msgid "The server URL must start with https:// (http:// works only for local add
 msgstr ""
 
 #: includes/class-honk-settings.php:351
-msgid "That doesn’t look like a Honk API key (they start with honk_). Your previous key was kept."
+msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept."
 msgstr ""
 
 #: includes/class-honk-settings.php:449

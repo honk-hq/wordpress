@@ -1,13 +1,13 @@
-# Honk Me for WordPress
+# Honk! Honk! for WordPress
 
 [![CI](https://github.com/honk-hq/wordpress/actions/workflows/ci.yml/badge.svg)](https://github.com/honk-hq/wordpress/actions/workflows/ci.yml)
 
-The official WordPress plugin for [Honk Me](https://honk-honk.app) (Honk for short), the calm
-notification inbox: orders, payments, stock, sign-ins, site health and form submissions from
-WordPress, WooCommerce and the popular form plugins, in your Honk inbox, on iPhone, Apple Watch
-and the web.
+The official WordPress plugin for [Honk! Honk!](https://honk-honk.app), the calm notification
+inbox: orders, payments, stock, sign-ins, site health and form submissions from WordPress,
+WooCommerce and the popular form plugins, in your Honk! Honk! inbox, on iPhone, Apple Watch and
+the web.
 
-- WordPress.org slug: **`honk-me`**, name "Honk Me – Notifications for Sites, Shops and Forms",
+- WordPress.org slug: **`honk-me`**, name "Honk! Honk! – Notifications for Sites, Shops and Forms",
   main file `honk-me.php`, text domain `honk-me`. Options and code keep the `honk_` / `Honk_`
   prefix.
 - PHP 7.4+, WordPress 6.4+ (tested up to 7.1), WooCommerce optional (HPOS and block checkout
@@ -47,7 +47,7 @@ WordPress hook ─▶ module (an outline of the message, in the notification lan
 
 ## What each notification says (Details)
 
-Every event lists, in Settings → Honk → Details, the facts its notification can include
+Every event lists, in Settings → Honk! Honk! → Details, the facts its notification can include
 (`Honk_Details::FACTS`: per event, each detail with "personal data" and "on by default"), what it
 always includes, and a preview.
 
@@ -83,7 +83,7 @@ always includes, and a preview.
 ## Events
 
 Defaults follow the plan: new order Beep-beep, failed payment Loud honk, fatal error Long honk,
-new administrator Blast. Every event has its own switch, level and priority in Settings → Honk.
+new administrator Blast. Every event has its own switch, level and priority in Settings → Honk! Honk!
 
 | Event | Hooks | `group_key` | Idempotency key | Default |
 |---|---|---|---|---|
@@ -103,7 +103,7 @@ new administrator Blast. Every event has its own switch, level and priority in S
 | New administrator | `user_register`, `set_user_role`, `add_user_role` (at shutdown), `granted_super_admin` | `wp/security/admins` | `admin-<user>-<YmdH>` | Blast, high |
 | Role changed | `set_user_role`, `add_user_role` / `remove_user_role` (at shutdown, outside `set_role()`) | `wp/security/roles` | `role-<user>-<hash>-<YmdH>` | Loud honk, normal |
 | Admin email / site address changed | `update_option_admin_email`, `update_option_siteurl`, `update_option_home` | `wp/security/site-identity` | `identity-<option>-<hash>` | Long honk, high |
-| Plugin installed / activated / deactivated / deleted | `upgrader_process_complete`, `activated_plugin`, `deactivated_plugin` (Honk itself: sent before the request ends), `delete_plugin` + `deleted_plugin` | `wp/security/plugins` | `plugin-<action>-<hash>-<YmdHi>` | Loud honk, normal |
+| Plugin installed / activated / deactivated / deleted | `upgrader_process_complete`, `activated_plugin`, `deactivated_plugin` (Honk! Honk! itself: sent before the request ends), `delete_plugin` + `deleted_plugin` | `wp/security/plugins` | `plugin-<action>-<hash>-<YmdHi>` | Loud honk, normal |
 | Theme installed / switched / deleted | `upgrader_process_complete`, `switch_theme`, `delete_theme` + `deleted_theme` | `wp/security/themes` | `theme-<action>-<hash>-<YmdHi>` | Loud honk, normal |
 | File edited in the dashboard | `wp_ajax_edit-theme-plugin-file` (nonce checked, checksum before and at shutdown) | `wp/security/file-edits` | `edit-<path hash>-<md5>` | Long honk, high |
 | Updates installed | `upgrader_process_complete` (update), `_core_updated_successfully`, `automatic_updates_complete` | `wp/security/updates` | `updated-<type>-<hash>` | Light honk, low |
@@ -163,19 +163,19 @@ itself, and the notification language switches with `switch_to_locale()` (`Honk_
 reviewed translations live outside the zip, in `languages-src/`: `honk-me.pot` (WP-CLI
 `wp i18n make-pot . languages-src/honk-me.pot --slug=honk-me --domain=honk-me`) and
 `honk-me-<locale>.po` for `ro_RO`, `es_ES`, `fr_FR` and `de_DE`, to import into
-translate.wordpress.org. Terminology follows the Honk glossary
+translate.wordpress.org. Terminology follows the Honk! Honk! glossary
 (the Honk scale names…) and, for WordPress and WooCommerce screens, the words WordPress uses in
 each language. Copy that site and shop owners see avoids developer jargon: the settings screen
-calls the ingestion key an "API key" and points people to **Keys** in the Honk web app, and a
+calls the ingestion key an "API key" and points people to **Keys** in the Honk! Honk! web app, and a
 recovery is an "all-clear". `msgfmt -c` checks every `.po` (CI does too).
 
 ### Integration test (what was run before 0.1.0)
 
 A throwaway WordPress 7.1 + WooCommerce 11.1 (HPOS on) + Contact Form 7 in Docker (official
-`wordpress`, `mariadb` and `wordpress:cli` images), a scratch Honk server from `server/` in dev
+`wordpress`, `mariadb` and `wordpress:cli` images), a scratch Honk! Honk! server from `server/` in dev
 mode, the plugin pointed at it through `host.docker.internal`. Triggered with WP-CLI, the Store
 API (block checkout), `wp-login.php` and the dashboard editor; every message was checked in the
-Honk inbox (titles, levels, group keys, problem/recovery episodes) and duplicate hooks did not
+Honk! Honk! inbox (titles, levels, group keys, problem/recovery episodes) and duplicate hooks did not
 duplicate. Plugin Check (`wp plugin check honk-me`, the plugin installed from the zip) reports no
 errors or warnings.
 

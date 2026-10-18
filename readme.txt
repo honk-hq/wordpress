@@ -1,4 +1,4 @@
-=== Honk Me – Notifications for Sites, Shops and Forms ===
+=== Honk! Honk! – Notifications for Sites, Shops and Forms ===
 Contributors: honkme
 Tags: notifications, woocommerce, security, contact form, monitoring
 Requires at least: 6.4
@@ -8,17 +8,17 @@ Stable tag: 0.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Get orders, failed payments, form entries, suspicious sign-ins and site errors in Honk, on your iPhone, Apple Watch and the web.
+Get orders, failed payments, form entries, suspicious sign-ins and site errors in Honk! Honk!, on your iPhone, Apple Watch and the web.
 
 == Description ==
 
-Honk Me (honk-honk.app) is a calm notification inbox, Honk for short, and this is its official WordPress plugin. It tells Honk what happens on your WordPress site or WooCommerce store, so you hear about it on your iPhone, your Apple Watch and in the web app.
+Honk! Honk! (honk-honk.app) is a calm notification inbox, and this is its official WordPress plugin. It tells Honk! Honk! what happens on your WordPress site or WooCommerce store, so you hear about it on your iPhone, your Apple Watch and in the web app.
 
-Honk groups repeats instead of sending each one: the first failed payment is a push, the tenth in a row just adds to a counter.
+Honk! Honk! groups repeats instead of sending each one: the first failed payment is a push, the tenth in a row just adds to a counter.
 
 You decide what you hear about. Every event has its own on/off switch, a priority, and a level on the Honk scale: Light honk, Beep-beep, Loud honk, Long honk or Blast.
 
-You also decide what each notification says, without code. Open Details under an event to see what it can include, from the order total, the payment method and the products to the customer's name, phone and billing city, and tick what you want. A preview next to the choices shows how the notification will read in Honk.
+You also decide what each notification says, without code. Open Details under an event to see what it can include, from the order total, the payment method and the products to the customer's name, phone and billing city, and tick what you want. A preview next to the choices shows how the notification will read in Honk! Honk!
 
 Notifications can also carry buttons, so you can act on them right away: Email customer and Call customer on orders, Approve and Reply by email on comments and reviews awaiting moderation, Reply by email and Call back on form entries. Pick them in the same Details.
 
@@ -71,43 +71,43 @@ Out of the box, notifications contain no personal data: a new order reads "Order
 
 = Never slows your site down =
 
-Notifications go out in the background (through Action Scheduler when WooCommerce is installed, otherwise WP-Cron) and are retried automatically. A slow or unreachable Honk server never holds up a page or a checkout, and a retry never notifies you twice.
+Notifications go out in the background (through Action Scheduler when WooCommerce is installed, otherwise WP-Cron) and are retried automatically. A slow or unreachable Honk! Honk! server never holds up a page or a checkout, and a retry never notifies you twice.
 
 = Languages =
 
-Honk Me is translated on translate.wordpress.org, and WordPress installs the translations for your site's languages by itself. Notifications use your site's language, or another installed language you pick for them.
+Honk! Honk! is translated on translate.wordpress.org, and WordPress installs the translations for your site's languages by itself. Notifications use your site's language, or another installed language you pick for them.
 
 == External services ==
 
-This plugin connects to the Honk API to deliver your notifications. Honk Me is a notification service at [honk-honk.app](https://honk-honk.app), run by the plugin's authors; you can also use your own Honk server. **Nothing is sent until you add an API key** in Settings → Honk.
+This plugin connects to the Honk! Honk! API to deliver your notifications. Honk! Honk! is a notification service at [honk-honk.app](https://honk-honk.app), run by the plugin's authors; you can also use your own Honk! Honk! server. **Nothing is sent until you add an API key** in Settings → Honk! Honk!
 
 What is sent, and when:
 
-* **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed). If you choose buttons in an event's Details, it also contains them: a title and a link, such as a link to approve a comment in your dashboard, or an email address or phone number to write to or call, which is sent only when the notification already includes it.
+* **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk! Honk! server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed). If you choose buttons in an event's Details, it also contains them: a title and a link, such as a link to approve a comment in your dashboard, or an email address or phone number to write to or call, which is sent only when the notification already includes it.
 * **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24). A customer's phone number, billing city and country and order note are sent only if you also tick them in an event's Details, and Details let you leave out any of the others.
 * **When you click "Send test notification"**, one test message is sent.
 * **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. This request contains no data about your site.
-* **The heartbeat** (once Honk supports it, and only if you turn it on) checks in every 5 minutes with your site's address and environment.
+* **The heartbeat** (once Honk! Honk! supports it, and only if you turn it on) checks in every 5 minutes with your site's address and environment.
 
-Honk's privacy policy: [https://honk-honk.app/privacy](https://honk-honk.app/privacy). Terms and support: [https://honk-honk.app/support](https://honk-honk.app/support).
+Honk! Honk! privacy policy: [https://honk-honk.app/privacy](https://honk-honk.app/privacy). Terms and support: [https://honk-honk.app/support](https://honk-honk.app/support).
 
 The plugin doesn't track you or your visitors, and it loads no external scripts, styles or fonts.
 
 == Installation ==
 
-1. In your dashboard, go to Plugins → Add Plugin, search for "Honk Me" and click Install Now. Or upload the `honk-me` folder to `/wp-content/plugins/`.
+1. In your dashboard, go to Plugins → Add Plugin, search for "Honk! Honk!" and click Install Now. Or upload the `honk-me` folder to `/wp-content/plugins/`.
 2. Activate the plugin.
-3. In Honk (https://honk-honk.app), open your project, go to Keys and create a new key. Copy it.
-4. In WordPress, go to Settings → Honk, paste the key into "API key" and click "Send test notification". The test should reach your Honk inbox within seconds.
+3. In Honk! Honk! (https://honk-honk.app), open your project, go to Keys and create a new key. Copy it.
+4. In WordPress, go to Settings → Honk! Honk!, paste the key into "API key" and click "Send test notification". The test should reach your Honk! Honk! inbox within seconds.
 5. Choose your events, their levels and priorities. Open Details under an event to choose what its notification says, then click Save Changes.
 
-WooCommerce stores also get a Honk tab under WooCommerce → Settings that links to the same page.
+WooCommerce stores also get a Honk! Honk! tab under WooCommerce → Settings that links to the same page.
 
 == Frequently Asked Questions ==
 
-= Do I need a Honk account? =
+= Do I need a Honk! Honk! account? =
 
-Yes. Honk is where your notifications arrive. Create a project in Honk, add a key under Keys, and paste it into Settings → Honk.
+Yes. Honk! Honk! is where your notifications arrive. Create a project in Honk! Honk!, add a key under Keys, and paste it into Settings → Honk! Honk!
 
 = Is anything sent before I add a key? =
 
@@ -117,9 +117,9 @@ No. Until a key is saved, the plugin doesn't listen to any events and sends noth
 
 No. Notifications are queued and sent in the background, with Action Scheduler when WooCommerce is installed and with WP-Cron otherwise. At checkout, the plugin only saves one small queue entry.
 
-= What if Honk is down or slow? =
+= What if Honk! Honk! is down or slow? =
 
-The plugin tries again with longer and longer pauses, for up to about two hours, and waits longer whenever the server asks it to. Each notification has its own ID, so a retry never notifies you twice. Errors that trying again can't fix, such as a revoked key, aren't retried; you'll find them under Settings → Honk → Delivery log.
+The plugin tries again with longer and longer pauses, for up to about two hours, and waits longer whenever the server asks it to. Each notification has its own ID, so a retry never notifies you twice. Errors that trying again can't fix, such as a revoked key, aren't retried; you'll find them under Settings → Honk! Honk! → Delivery log.
 
 = What personal data is sent? =
 
@@ -129,13 +129,13 @@ None by default. Orders are described by their number, total and number of items
 
 Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms. Active ones are found automatically and get their own switch.
 
-= Can I run my own Honk server? =
+= Can I run my own Honk! Honk! server? =
 
 Yes. Enter its address as the server URL. It must use https; http works only for local and private addresses, for development.
 
 = Why do some events come with an all-clear? =
 
-Things that start and stop, such as many failed sign-ins, a product out of stock, scheduled tasks running late or a Site Health issue, are sent twice: once as a problem when they start, and once as an all-clear (a recovery, in Honk's words) when they're over. Honk shows both as one episode that closes when the all-clear arrives.
+Things that start and stop, such as many failed sign-ins, a product out of stock, scheduled tasks running late or a Site Health issue, are sent twice: once as a problem when they start, and once as an all-clear (a recovery, as Honk! Honk! calls it) when they're over. Honk! Honk! shows both as one episode that closes when the all-clear arrives.
 
 = How does it know a sign-in is from a new device? =
 
@@ -143,7 +143,7 @@ For administrators, the plugin remembers the browser, operating system and IP ne
 
 = Can I choose what a notification says? =
 
-Yes. In Settings → Honk, open Details under an event. It lists what that notification always includes, such as the order number and a link to the order, what you can add or leave out, and the buttons it can carry (such as Email customer or Approve), with a preview of how it will read in Honk. Your choices apply to every notification of that event from then on. Buttons are off until you pick them.
+Yes. In Settings → Honk! Honk!, open Details under an event. It lists what that notification always includes, such as the order number and a link to the order, what you can add or leave out, and the buttons it can carry (such as Email customer or Approve), with a preview of how Honk! Honk! will show it. Your choices apply to every notification of that event from then on. Buttons are off until you pick them.
 
 = Can I change a message before it's sent? =
 
@@ -151,17 +151,17 @@ Most changes don't need code: use an event's Details. Developers can also use th
 
 = Where's the heartbeat? =
 
-The heartbeat ("tell me when my site stops checking in") needs support on the Honk server, which is on its way. The option shows up in Settings → Honk as soon as your server supports it.
+The heartbeat ("tell me when my site stops checking in") needs support on the Honk! Honk! server, which is on its way. The option shows up in Settings → Honk! Honk! as soon as your server supports it.
 
 == Screenshots ==
 
-1. Settings → Honk: connection, test button, privacy and language.
+1. Settings → Honk! Honk!: connection, test button, privacy and language.
 2. Events grouped into Security, Site health, Content & users, Forms and WooCommerce, each with its own level and priority.
-3. An event's Details: choose what the notification says, with a preview of how it will read in Honk.
+3. An event's Details: choose what the notification says, with a preview of how it will read in Honk! Honk!
 4. The result of "Send test notification".
 5. The delivery log: the last 50 notifications and their status.
-6. A new administrator, low stock and a failed payment in the Honk inbox.
-7. Many failed sign-ins as one episode in Honk, closed by its all-clear.
+6. A new administrator, low stock and a failed payment in the Honk! Honk! inbox.
+7. Many failed sign-ins as one episode in Honk! Honk!, closed by its all-clear.
 
 == Changelog ==
 

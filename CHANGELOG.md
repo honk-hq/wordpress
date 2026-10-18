@@ -7,34 +7,7 @@ each entry in short.
 
 ## [Unreleased]
 
-## [0.3.0] - 2026-10-18
-
-### Changed
-- The plugin is now called "Honk! Honk! – Notifications for Sites, Shops and Forms", and its
-  settings screen, menu, WooCommerce tab, notices and messages say Honk! Honk! (it was Honk Me,
-  or Honk). The slug and text domain are now `honk-honk` (main file `honk-honk.php`, settings
-  page `options-general.php?page=honk-honk`); options, hooks and filters are unchanged.
-
-## [0.2.0] - 2026-10-07
-
-### Added
-- **Buttons** on notifications (Honk's message actions, `contracts/API.md` §13), chosen per event
-  under Details → Buttons, with the preview showing them: **Email customer** and **Call
-  customer** on new orders, status changes and failed payments (Email customer also on refunds,
-  failed subscription renewals and new customer accounts), **Email user** on registrations,
-  **Approve** and **Reply by email** on comments and product reviews awaiting moderation, and
-  **Reply by email** and **Call back** on form entries, to the email address and phone number
-  that were entered. At most three per notification.
-- A button that emails or calls someone is added only while the notification includes that
-  email address or phone number (so only with "Include customer names and emails" on), and only
-  when the address or number is valid: phone numbers are reduced to their digits, and numbers
-  with letters or extensions get no button. Approve uses WordPress's own moderation link (which
-  asks to confirm) and needs an https dashboard. A button never repeats the notification's own
-  link.
-- Every button is off by default, so with the defaults every notification is exactly what 0.1.0
-  sent.
-
-## [0.1.0] - 2026-10-05
+## [0.1.0] - 2026-10-18
 
 ### Added
 - **WooCommerce:** new order (classic checkout, block checkout through the Store API, admin and
@@ -59,14 +32,28 @@ each entry in short.
 - **Details** for every event: what its notification always includes and what can be added or
   left out (for a new order: total, items, status, payment and shipping method, the first three
   products, the customer's name, email, phone, billing city and note), with a preview of how it
-  reads in Honk. Personal details count only while the privacy switch is on. Contact Form 7,
+  reads in Honk! Honk!. Personal details count only while the privacy switch is on. Contact Form 7,
   WPForms and Gravity Forms fields can be left out one by one. With the defaults, messages are
   the same as without the details.
+- **Buttons** on notifications (message actions, `contracts/API.md` §13), chosen per event
+  under Details → Buttons, with the preview showing them: **Email customer** and **Call
+  customer** on new orders, status changes and failed payments (Email customer also on refunds,
+  failed subscription renewals and new customer accounts), **Email user** on registrations,
+  **Approve** and **Reply by email** on comments and product reviews awaiting moderation, and
+  **Reply by email** and **Call back** on form entries, to the email address and phone number
+  that were entered. At most three per notification.
+- A button that emails or calls someone is added only while the notification includes that
+  email address or phone number (so only with "Include customer names and emails" on), and only
+  when the address or number is valid: phone numbers are reduced to their digits, and numbers
+  with letters or extensions get no button. Approve uses WordPress's own moderation link (which
+  asks to confirm) and needs an https dashboard. A button never repeats the notification's own
+  link.
+- Every button is off by default.
 - Background delivery with Action Scheduler or WP-Cron, retries with backoff and `Retry-After`,
   idempotency keys, the 16 KiB body limit, a delivery log of the last 50 sends.
-- "Send test notification" in Settings → Honk; a Honk tab in WooCommerce → Settings.
-- Heartbeat module, shown once the Honk server reports `heartbeats: true` in `GET /v1/config`.
-- Name "Honk Me – Notifications for Sites, Shops and Forms", slug and text domain `honk-me`.
+- "Send test notification" in Settings → Honk! Honk!; a Honk! Honk! tab in WooCommerce → Settings.
+- Heartbeat module, shown once the server reports `heartbeats: true` in `GET /v1/config`.
+- Name "Honk! Honk! – Notifications for Sites, Shops and Forms", slug and text domain `honk-honk`.
 - No bundled translation files: translations come from translate.wordpress.org; the notification
   language works with any language installed on the site. The Romanian, Spanish, French and
   German translations are ready to import (`languages-src/`).

@@ -337,7 +337,7 @@ final class Honk_Settings {
 			} elseif ( self::is_valid_server_url( $url ) ) {
 				$out['server_url'] = $url;
 			} else {
-				add_settings_error( self::OPTION, 'server_url', __( 'The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept.', 'honk-me' ) );
+				add_settings_error( self::OPTION, 'server_url', __( 'The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept.', 'honk-honk' ) );
 			}
 		}
 
@@ -348,7 +348,7 @@ final class Honk_Settings {
 			if ( self::is_valid_key( $key ) ) {
 				$out['api_key'] = $key;
 			} else {
-				add_settings_error( self::OPTION, 'api_key', __( 'That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept.', 'honk-me' ) );
+				add_settings_error( self::OPTION, 'api_key', __( 'That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept.', 'honk-honk' ) );
 			}
 		}
 
@@ -446,15 +446,15 @@ final class Honk_Settings {
 	public static function severity_label( $severity ) {
 		switch ( $severity ) {
 			case 'info':
-				return __( 'Light honk', 'honk-me' );
+				return __( 'Light honk', 'honk-honk' );
 			case 'success':
-				return __( 'Beep-beep', 'honk-me' );
+				return __( 'Beep-beep', 'honk-honk' );
 			case 'warning':
-				return __( 'Loud honk', 'honk-me' );
+				return __( 'Loud honk', 'honk-honk' );
 			case 'error':
-				return __( 'Long honk', 'honk-me' );
+				return __( 'Long honk', 'honk-honk' );
 			case 'critical':
-				return __( 'Blast', 'honk-me' );
+				return __( 'Blast', 'honk-honk' );
 		}
 		return $severity;
 	}
@@ -468,13 +468,13 @@ final class Honk_Settings {
 	public static function priority_label( $priority ) {
 		switch ( $priority ) {
 			case 'low':
-				return __( 'Low', 'honk-me' );
+				return __( 'Low', 'honk-honk' );
 			case 'normal':
-				return __( 'Normal', 'honk-me' );
+				return __( 'Normal', 'honk-honk' );
 			case 'high':
-				return __( 'High', 'honk-me' );
+				return __( 'High', 'honk-honk' );
 			case 'urgent':
-				return __( 'Urgent', 'honk-me' );
+				return __( 'Urgent', 'honk-honk' );
 		}
 		return $priority;
 	}

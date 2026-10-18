@@ -399,7 +399,7 @@ final class Honk_Module_Security {
 			'login-burst-' . $start . '-recovered',
 			function () use ( $start, $last, $total ) {
 				return array(
-					'title'      => __( 'Failed sign-ins have stopped', 'honk-me' ),
+					'title'      => __( 'Failed sign-ins have stopped', 'honk-honk' ),
 					'message'    => self::burst_summary( $total, $start, $last ),
 					'group_key'  => 'wp/security/login-burst',
 					'event_type' => 'recovery',
@@ -424,10 +424,10 @@ final class Honk_Module_Security {
 		$to     = wp_date( $format, $last );
 		if ( $from === $to ) {
 			/* translators: 1: number of failed sign-ins, 2: time */
-			return sprintf( _n( '%1$d failed sign-in at %2$s.', '%1$d failed sign-ins at %2$s.', $total, 'honk-me' ), $total, $from );
+			return sprintf( _n( '%1$d failed sign-in at %2$s.', '%1$d failed sign-ins at %2$s.', $total, 'honk-honk' ), $total, $from );
 		}
 		/* translators: 1: number of failed sign-ins, 2: start time, 3: end time */
-		return sprintf( _n( '%1$d failed sign-in between %2$s and %3$s.', '%1$d failed sign-ins between %2$s and %3$s.', $total, 'honk-me' ), $total, $from, $to );
+		return sprintf( _n( '%1$d failed sign-in between %2$s and %3$s.', '%1$d failed sign-ins between %2$s and %3$s.', $total, 'honk-honk' ), $total, $from, $to );
 	}
 
 	/*
@@ -651,7 +651,7 @@ final class Honk_Module_Security {
 	 */
 	private static function role_names( array $roles ) {
 		if ( empty( $roles ) ) {
-			return __( 'no role', 'honk-me' );
+			return __( 'no role', 'honk-honk' );
 		}
 		$names = array();
 		$all   = wp_roles()->get_names();
@@ -1099,24 +1099,24 @@ final class Honk_Module_Security {
 		return array(
 			'title' => array(
 				/* translators: %s: user login */
-				Honk_Details::part( sprintf( __( '%s signed in from a new device', 'honk-me' ), $d['login'] ), 'username' ),
-				Honk_Details::part( __( 'An administrator signed in from a new device', 'honk-me' ), array(), 'username' ),
+				Honk_Details::part( sprintf( __( '%s signed in from a new device', 'honk-honk' ), $d['login'] ), 'username' ),
+				Honk_Details::part( __( 'An administrator signed in from a new device', 'honk-honk' ), array(), 'username' ),
 			),
 			'lines' => array(
 				/* translators: %s: browser and operating system, e.g. "Chrome on macOS" */
-				Honk_Details::text( sprintf( __( 'Device: %s', 'honk-me' ), $d['device'] ), 'device' ),
+				Honk_Details::text( sprintf( __( 'Device: %s', 'honk-honk' ), $d['device'] ), 'device' ),
 				Honk_Details::line(
 					array(
 						/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
-						Honk_Details::part( '' !== $d['ip'] ? sprintf( __( 'Network: %s', 'honk-me' ), $d['ip'] ) : '', 'ip' ),
+						Honk_Details::part( '' !== $d['ip'] ? sprintf( __( 'Network: %s', 'honk-honk' ), $d['ip'] ) : '', 'ip' ),
 						/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
-						Honk_Details::part( '' !== $d['network'] && '' === $d['ip'] ? sprintf( __( 'Network: %s', 'honk-me' ), $d['network'] ) : '', 'network' ),
+						Honk_Details::part( '' !== $d['network'] && '' === $d['ip'] ? sprintf( __( 'Network: %s', 'honk-honk' ), $d['network'] ) : '', 'network' ),
 						/* translators: %s: IP address or network, e.g. 203.0.113.0/24 */
-						Honk_Details::part( '' !== $d['network'] && '' !== $d['ip'] ? sprintf( __( 'Network: %s', 'honk-me' ), $d['network'] ) : '', 'network', 'ip' ),
+						Honk_Details::part( '' !== $d['network'] && '' !== $d['ip'] ? sprintf( __( 'Network: %s', 'honk-honk' ), $d['network'] ) : '', 'network', 'ip' ),
 					)
 				),
-				Honk_Details::text( $d['new_device'] ? __( 'This account hasn’t used this browser and device before.', 'honk-me' ) : __( 'This account hasn’t signed in from this network before.', 'honk-me' ) ),
-				Honk_Details::text( __( 'If this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.', 'honk-me' ) ),
+				Honk_Details::text( $d['new_device'] ? __( 'This account hasn’t used this browser and device before.', 'honk-honk' ) : __( 'This account hasn’t signed in from this network before.', 'honk-honk' ) ),
+				Honk_Details::text( __( 'If this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.', 'honk-honk' ) ),
 			),
 		);
 	}
@@ -1132,7 +1132,7 @@ final class Honk_Module_Security {
 			Honk_Details::text(
 				sprintf(
 					/* translators: 1: number of failed sign-ins, 2: duration, e.g. "5 mins" */
-					_n( '%1$d failed sign-in within %2$s.', '%1$d failed sign-ins within %2$s.', $d['count'], 'honk-me' ),
+					_n( '%1$d failed sign-in within %2$s.', '%1$d failed sign-ins within %2$s.', $d['count'], 'honk-honk' ),
 					$d['count'],
 					$d['window']
 				)
@@ -1140,7 +1140,7 @@ final class Honk_Module_Security {
 			Honk_Details::text(
 				sprintf(
 					/* translators: %d: number of IP addresses */
-					_n( 'From %d IP address.', 'From %d IP addresses.', $d['ips'], 'honk-me' ),
+					_n( 'From %d IP address.', 'From %d IP addresses.', $d['ips'], 'honk-honk' ),
 					$d['ips']
 				),
 				'ip_count'
@@ -1148,11 +1148,11 @@ final class Honk_Module_Security {
 		);
 		if ( ! empty( $d['usernames'] ) ) {
 			/* translators: %s: comma-separated usernames */
-			$lines[] = Honk_Details::text( sprintf( __( 'Usernames tried: %s', 'honk-me' ), implode( ', ', $d['usernames'] ) ), 'usernames' );
+			$lines[] = Honk_Details::text( sprintf( __( 'Usernames tried: %s', 'honk-honk' ), implode( ', ', $d['usernames'] ) ), 'usernames' );
 		}
-		$lines[] = Honk_Details::text( __( 'You’ll get an all-clear once they stop.', 'honk-me' ) );
+		$lines[] = Honk_Details::text( __( 'You’ll get an all-clear once they stop.', 'honk-honk' ) );
 		return array(
-			'title' => array( Honk_Details::part( __( 'Many failed sign-ins', 'honk-me' ) ) ),
+			'title' => array( Honk_Details::part( __( 'Many failed sign-ins', 'honk-honk' ) ) ),
 			'lines' => $lines,
 		);
 	}
@@ -1167,16 +1167,16 @@ final class Honk_Module_Security {
 		$who = Honk_Notifier::user_line( $d, '' );
 		return array(
 			/* translators: %s: user login */
-			'title' => array( Honk_Details::part( sprintf( __( 'New administrator: %s', 'honk-me' ), $d['login'] ) ) ),
+			'title' => array( Honk_Details::part( sprintf( __( 'New administrator: %s', 'honk-honk' ), $d['login'] ) ) ),
 			'lines' => array(
 				$who + array(
 					'wrap' => $d['created']
 						/* translators: 1: user, 2: who did it */
-						? sprintf( __( '%1$s was created as an administrator by %2$s.', 'honk-me' ), "\x01", $d['actor'] )
+						? sprintf( __( '%1$s was created as an administrator by %2$s.', 'honk-honk' ), "\x01", $d['actor'] )
 						/* translators: 1: user, 2: who did it */
-						: sprintf( __( '%1$s was made an administrator by %2$s.', 'honk-me' ), "\x01", $d['actor'] ),
+						: sprintf( __( '%1$s was made an administrator by %2$s.', 'honk-honk' ), "\x01", $d['actor'] ),
 				),
-				Honk_Details::text( __( 'If you didn’t expect this, check the account now.', 'honk-me' ) ),
+				Honk_Details::text( __( 'If you didn’t expect this, check the account now.', 'honk-honk' ) ),
 			),
 		);
 	}
@@ -1192,10 +1192,10 @@ final class Honk_Module_Security {
 		$who['any'] = array( 'name', 'email' );
 		return array(
 			/* translators: %s: user */
-			'title' => array( Honk_Details::part( sprintf( __( 'Role changed for %s', 'honk-me' ), $d['label'] ) ) ),
+			'title' => array( Honk_Details::part( sprintf( __( 'Role changed for %s', 'honk-honk' ), $d['label'] ) ) ),
 			'lines' => array(
 				/* translators: 1: previous value, 2: new value, 3: who did it */
-				Honk_Details::text( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk-me' ), $d['from'], $d['to'], $d['actor'] ) ),
+				Honk_Details::text( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk-honk' ), $d['from'], $d['to'], $d['actor'] ) ),
 				$who,
 			),
 		);
@@ -1209,25 +1209,25 @@ final class Honk_Module_Security {
 	 */
 	public static function identity_spec( array $d ) {
 		if ( 'admin_email' === $d['option'] ) {
-			$title = __( 'Administration email address changed', 'honk-me' );
+			$title = __( 'Administration email address changed', 'honk-honk' );
 			$what  = Honk_Details::line(
 				array(
 					/* translators: 1: previous value, 2: new value, 3: who did it */
-					Honk_Details::part( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk-me' ), $d['old'], $d['new'], $d['actor'] ), 'emails' ),
+					Honk_Details::part( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk-honk' ), $d['old'], $d['new'], $d['actor'] ), 'emails' ),
 					/* translators: %s: who did it */
-					Honk_Details::part( sprintf( __( 'Changed by %s.', 'honk-me' ), $d['actor'] ), array(), 'emails' ),
+					Honk_Details::part( sprintf( __( 'Changed by %s.', 'honk-honk' ), $d['actor'] ), array(), 'emails' ),
 				)
 			);
 		} else {
-			$title = 'siteurl' === $d['option'] ? __( 'WordPress address (URL) changed', 'honk-me' ) : __( 'Site address (URL) changed', 'honk-me' );
+			$title = 'siteurl' === $d['option'] ? __( 'WordPress address (URL) changed', 'honk-honk' ) : __( 'Site address (URL) changed', 'honk-honk' );
 			/* translators: 1: previous value, 2: new value, 3: who did it */
-			$what = Honk_Details::text( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk-me' ), $d['old'], $d['new'], $d['actor'] ) );
+			$what = Honk_Details::text( sprintf( __( '%1$s → %2$s, by %3$s.', 'honk-honk' ), $d['old'], $d['new'], $d['actor'] ) );
 		}
 		return array(
 			'title' => array( Honk_Details::part( $title ) ),
 			'lines' => array(
 				$what,
-				Honk_Details::text( __( 'If you didn’t expect this, check Settings → General now.', 'honk-me' ) ),
+				Honk_Details::text( __( 'If you didn’t expect this, check Settings → General now.', 'honk-honk' ) ),
 			),
 		);
 	}
@@ -1242,19 +1242,19 @@ final class Honk_Module_Security {
 		switch ( $d['action'] ) {
 			case 'activated':
 				/* translators: %s: plugin name */
-				$title = sprintf( __( 'Plugin activated: %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Plugin activated: %s', 'honk-honk' ), $d['name'] );
 				break;
 			case 'deactivated':
 				/* translators: %s: plugin name */
-				$title = sprintf( __( 'Plugin deactivated: %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Plugin deactivated: %s', 'honk-honk' ), $d['name'] );
 				break;
 			case 'deleted':
 				/* translators: %s: plugin name */
-				$title = sprintf( __( 'Plugin deleted: %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Plugin deleted: %s', 'honk-honk' ), $d['name'] );
 				break;
 			default:
 				/* translators: %s: plugin name */
-				$title = sprintf( __( 'Plugin installed: %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Plugin installed: %s', 'honk-honk' ), $d['name'] );
 		}
 		return array(
 			'title' => array( Honk_Details::part( $title ) ),
@@ -1262,8 +1262,8 @@ final class Honk_Module_Security {
 				Honk_Details::line(
 					array(
 						/* translators: %s: who did it */
-						Honk_Details::part( sprintf( __( 'By %s.', 'honk-me' ), $d['actor'] ), 'actor' ),
-						Honk_Details::part( $d['network'] ? __( 'Network-wide.', 'honk-me' ) : '' ),
+						Honk_Details::part( sprintf( __( 'By %s.', 'honk-honk' ), $d['actor'] ), 'actor' ),
+						Honk_Details::part( $d['network'] ? __( 'Network-wide.', 'honk-honk' ) : '' ),
 					),
 					' '
 				),
@@ -1282,23 +1282,23 @@ final class Honk_Module_Security {
 		switch ( $d['action'] ) {
 			case 'switched':
 				/* translators: %s: theme name */
-				$title = sprintf( __( 'Theme switched to %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Theme switched to %s', 'honk-honk' ), $d['name'] );
 				break;
 			case 'deleted':
 				/* translators: %s: theme name */
-				$title = sprintf( __( 'Theme deleted: %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Theme deleted: %s', 'honk-honk' ), $d['name'] );
 				break;
 			default:
 				/* translators: %s: theme name */
-				$title = sprintf( __( 'Theme installed: %s', 'honk-me' ), $d['name'] );
+				$title = sprintf( __( 'Theme installed: %s', 'honk-honk' ), $d['name'] );
 		}
 		return array(
 			'title' => array( Honk_Details::part( $title ) ),
 			'lines' => array(
 				/* translators: %s: who did it */
-				Honk_Details::text( sprintf( __( 'By %s.', 'honk-me' ), $d['actor'] ), 'actor' ),
+				Honk_Details::text( sprintf( __( 'By %s.', 'honk-honk' ), $d['actor'] ), 'actor' ),
 				/* translators: %s: previous theme name */
-				Honk_Details::text( '' !== $d['previous'] ? sprintf( __( 'Previous theme: %s', 'honk-me' ), $d['previous'] ) : '', 'previous' ),
+				Honk_Details::text( '' !== $d['previous'] ? sprintf( __( 'Previous theme: %s', 'honk-honk' ), $d['previous'] ) : '', 'previous' ),
 			),
 		);
 	}
@@ -1315,21 +1315,21 @@ final class Honk_Module_Security {
 				Honk_Details::part(
 					'theme' === $d['kind']
 						/* translators: %s: theme name */
-						? sprintf( __( 'Theme file edited: %s', 'honk-me' ), $d['what'] )
+						? sprintf( __( 'Theme file edited: %s', 'honk-honk' ), $d['what'] )
 						/* translators: %s: plugin name */
-						: sprintf( __( 'Plugin file edited: %s', 'honk-me' ), $d['what'] )
+						: sprintf( __( 'Plugin file edited: %s', 'honk-honk' ), $d['what'] )
 				),
 			),
 			'lines' => array(
 				Honk_Details::line(
 					array(
 						/* translators: 1: file, 2: who did it */
-						Honk_Details::part( sprintf( __( '%1$s was edited in the file editor by %2$s.', 'honk-me' ), $d['file'], $d['actor'] ), 'actor' ),
+						Honk_Details::part( sprintf( __( '%1$s was edited in the file editor by %2$s.', 'honk-honk' ), $d['file'], $d['actor'] ), 'actor' ),
 						/* translators: %s: file */
-						Honk_Details::part( sprintf( __( '%s was edited in the file editor.', 'honk-me' ), $d['file'] ), array(), 'actor' ),
+						Honk_Details::part( sprintf( __( '%s was edited in the file editor.', 'honk-honk' ), $d['file'] ), array(), 'actor' ),
 					)
 				),
-				Honk_Details::text( __( 'Tip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.', 'honk-me' ), 'tip' ),
+				Honk_Details::text( __( 'Tip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.', 'honk-honk' ), 'tip' ),
 			),
 		);
 	}
@@ -1344,22 +1344,22 @@ final class Honk_Module_Security {
 		$count = count( $d['items'] );
 		switch ( $d['type'] ) {
 			case 'core':
-				$title = __( 'WordPress updated', 'honk-me' );
+				$title = __( 'WordPress updated', 'honk-honk' );
 				break;
 			case 'theme':
 				/* translators: %d: number of themes */
-				$title = sprintf( _n( '%d theme updated', '%d themes updated', $count, 'honk-me' ), $count );
+				$title = sprintf( _n( '%d theme updated', '%d themes updated', $count, 'honk-honk' ), $count );
 				break;
 			default:
 				/* translators: %d: number of plugins */
-				$title = sprintf( _n( '%d plugin updated', '%d plugins updated', $count, 'honk-me' ), $count );
+				$title = sprintf( _n( '%d plugin updated', '%d plugins updated', $count, 'honk-honk' ), $count );
 		}
 		$lines = array();
 		foreach ( $d['items'] as $item ) {
 			$lines[] = Honk_Details::text( $item );
 		}
 		/* translators: %s: who did it */
-		$lines[] = $d['auto'] ? Honk_Details::text( __( 'Updated automatically.', 'honk-me' ) ) : Honk_Details::text( sprintf( __( 'By %s.', 'honk-me' ), $d['actor'] ), 'actor' );
+		$lines[] = $d['auto'] ? Honk_Details::text( __( 'Updated automatically.', 'honk-honk' ) ) : Honk_Details::text( sprintf( __( 'By %s.', 'honk-honk' ), $d['actor'] ), 'actor' );
 		return array(
 			'title' => array( Honk_Details::part( $title ) ),
 			'lines' => $lines,

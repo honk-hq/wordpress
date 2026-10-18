@@ -148,11 +148,11 @@ final class Honk_Events {
 	 */
 	public static function sections() {
 		return array(
-			'security'    => __( 'Security', 'honk-me' ),
-			'health'      => __( 'Site health', 'honk-me' ),
-			'content'     => __( 'Content & users', 'honk-me' ),
-			'forms'       => __( 'Forms', 'honk-me' ),
-			'woocommerce' => __( 'WooCommerce', 'honk-me' ),
+			'security'    => __( 'Security', 'honk-honk' ),
+			'health'      => __( 'Site health', 'honk-honk' ),
+			'content'     => __( 'Content & users', 'honk-honk' ),
+			'forms'       => __( 'Forms', 'honk-honk' ),
+			'woocommerce' => __( 'WooCommerce', 'honk-honk' ),
 		);
 	}
 
@@ -165,43 +165,43 @@ final class Honk_Events {
 	public static function label( $id ) {
 		switch ( $id ) {
 			case 'admin_login_new_device':
-				return array( __( 'Administrator signs in from a new device', 'honk-me' ), __( 'An account that can manage the site signs in from a new browser, device or network. Devices are recognized without storing IP addresses or browser details.', 'honk-me' ) );
+				return array( __( 'Administrator signs in from a new device', 'honk-honk' ), __( 'An account that can manage the site signs in from a new browser, device or network. Devices are recognized without storing IP addresses or browser details.', 'honk-honk' ) );
 			case 'login_failures_burst':
-				return array( __( 'Many failed sign-ins', 'honk-me' ), __( 'Someone may be trying to guess a password. You’ll get an all-clear once it stops.', 'honk-me' ) );
+				return array( __( 'Many failed sign-ins', 'honk-honk' ), __( 'Someone may be trying to guess a password. You’ll get an all-clear once it stops.', 'honk-honk' ) );
 			case 'new_administrator':
-				return array( __( 'New administrator', 'honk-me' ), __( 'Someone was added as an administrator or given the Administrator role.', 'honk-me' ) );
+				return array( __( 'New administrator', 'honk-honk' ), __( 'Someone was added as an administrator or given the Administrator role.', 'honk-honk' ) );
 			case 'role_changed':
-				return array( __( 'User role changed', 'honk-me' ), __( 'Someone’s role was changed, added or removed.', 'honk-me' ) );
+				return array( __( 'User role changed', 'honk-honk' ), __( 'Someone’s role was changed, added or removed.', 'honk-honk' ) );
 			case 'site_identity_changed':
-				return array( __( 'Admin email or site address changed', 'honk-me' ), __( 'The administration email, the WordPress address or the site address changed.', 'honk-me' ) );
+				return array( __( 'Admin email or site address changed', 'honk-honk' ), __( 'The administration email, the WordPress address or the site address changed.', 'honk-honk' ) );
 			case 'plugin_changed':
-				return array( __( 'Plugin installed, activated, deactivated or deleted', 'honk-me' ), '' );
+				return array( __( 'Plugin installed, activated, deactivated or deleted', 'honk-honk' ), '' );
 			case 'theme_changed':
-				return array( __( 'Theme installed, switched or deleted', 'honk-me' ), '' );
+				return array( __( 'Theme installed, switched or deleted', 'honk-honk' ), '' );
 			case 'file_edited':
-				return array( __( 'Theme or plugin file edited in the dashboard', 'honk-me' ), '' );
+				return array( __( 'Theme or plugin file edited in the dashboard', 'honk-honk' ), '' );
 			case 'updates_installed':
-				return array( __( 'Updates installed', 'honk-me' ), __( 'WordPress, a plugin or a theme was updated, by hand or automatically.', 'honk-me' ) );
+				return array( __( 'Updates installed', 'honk-honk' ), __( 'WordPress, a plugin or a theme was updated, by hand or automatically.', 'honk-honk' ) );
 			case 'fatal_error':
-				return array( __( 'Critical error', 'honk-me' ), __( 'A PHP error crashed a page and WordPress showed its “critical error” message. This doesn’t replace WordPress’s own email.', 'honk-me' ) );
+				return array( __( 'Critical error', 'honk-honk' ), __( 'A PHP error crashed a page and WordPress showed its “critical error” message. This doesn’t replace WordPress’s own email.', 'honk-honk' ) );
 			case 'site_health_critical':
-				return array( __( 'Site Health critical issues', 'honk-me' ), __( 'Checked daily. You’ll get an all-clear once they’re fixed.', 'honk-me' ) );
+				return array( __( 'Site Health critical issues', 'honk-honk' ), __( 'Checked daily. You’ll get an all-clear once they’re fixed.', 'honk-honk' ) );
 			case 'auto_update_failed':
-				return array( __( 'Automatic update failed', 'honk-me' ), '' );
+				return array( __( 'Automatic update failed', 'honk-honk' ), '' );
 			case 'updates_available':
-				return array( __( 'Updates available', 'honk-me' ), __( 'Checked daily. One notification lists the WordPress, plugin and theme updates whenever the list changes.', 'honk-me' ) );
+				return array( __( 'Updates available', 'honk-honk' ), __( 'Checked daily. One notification lists the WordPress, plugin and theme updates whenever the list changes.', 'honk-honk' ) );
 			case 'cron_overdue':
-				return array( __( 'Scheduled tasks running late', 'honk-me' ), __( 'WordPress’s scheduled tasks (WP-Cron) are more than 30 minutes late.', 'honk-me' ) );
+				return array( __( 'Scheduled tasks running late', 'honk-honk' ), __( 'WordPress’s scheduled tasks (WP-Cron) are more than 30 minutes late.', 'honk-honk' ) );
 			case 'disk_space_low':
-				return array( __( 'Disk almost full', 'honk-me' ), __( 'Less than 5% or 1 GB of disk space left. Only works if your host lets WordPress check it.', 'honk-me' ) );
+				return array( __( 'Disk almost full', 'honk-honk' ), __( 'Less than 5% or 1 GB of disk space left. Only works if your host lets WordPress check it.', 'honk-honk' ) );
 			case 'user_registered':
-				return array( __( 'New user registration', 'honk-me' ), '' );
+				return array( __( 'New user registration', 'honk-honk' ), '' );
 			case 'comment_pending':
-				return array( __( 'Comment awaiting moderation', 'honk-me' ), '' );
+				return array( __( 'Comment awaiting moderation', 'honk-honk' ), '' );
 			case 'post_pending':
-				return array( __( 'Post pending review', 'honk-me' ), '' );
+				return array( __( 'Post pending review', 'honk-honk' ), '' );
 			case 'post_published':
-				return array( __( 'Post published', 'honk-me' ), '' );
+				return array( __( 'Post published', 'honk-honk' ), '' );
 			case 'form_cf7':
 				return array( 'Contact Form 7', '' );
 			case 'form_wpforms':
@@ -215,25 +215,25 @@ final class Honk_Events {
 			case 'form_ninjaforms':
 				return array( 'Ninja Forms', '' );
 			case 'woo_new_order':
-				return array( __( 'New order', 'honk-me' ), __( 'When an order is paid or put on hold, just like WooCommerce’s “New order” email.', 'honk-me' ) );
+				return array( __( 'New order', 'honk-honk' ), __( 'When an order is paid or put on hold, just like WooCommerce’s “New order” email.', 'honk-honk' ) );
 			case 'woo_order_status':
-				return array( __( 'Order status changed', 'honk-me' ), __( 'Other status changes, such as Completed or Cancelled.', 'honk-me' ) );
+				return array( __( 'Order status changed', 'honk-honk' ), __( 'Other status changes, such as Completed or Cancelled.', 'honk-honk' ) );
 			case 'woo_payment_failed':
-				return array( __( 'Failed payment', 'honk-me' ), '' );
+				return array( __( 'Failed payment', 'honk-honk' ), '' );
 			case 'woo_refund':
-				return array( __( 'Refund', 'honk-me' ), '' );
+				return array( __( 'Refund', 'honk-honk' ), '' );
 			case 'woo_low_stock':
-				return array( __( 'Low stock', 'honk-me' ), __( 'You’ll get an all-clear when it’s back in stock.', 'honk-me' ) );
+				return array( __( 'Low stock', 'honk-honk' ), __( 'You’ll get an all-clear when it’s back in stock.', 'honk-honk' ) );
 			case 'woo_out_of_stock':
-				return array( __( 'Out of stock', 'honk-me' ), __( 'You’ll get an all-clear when it’s back in stock.', 'honk-me' ) );
+				return array( __( 'Out of stock', 'honk-honk' ), __( 'You’ll get an all-clear when it’s back in stock.', 'honk-honk' ) );
 			case 'woo_new_customer':
-				return array( __( 'New customer account', 'honk-me' ), '' );
+				return array( __( 'New customer account', 'honk-honk' ), '' );
 			case 'woo_new_review':
-				return array( __( 'New product review', 'honk-me' ), '' );
+				return array( __( 'New product review', 'honk-honk' ), '' );
 			case 'woo_subscription_failed':
-				return array( __( 'Subscription renewal failed', 'honk-me' ), __( 'WooCommerce Subscriptions.', 'honk-me' ) );
+				return array( __( 'Subscription renewal failed', 'honk-honk' ), __( 'WooCommerce Subscriptions.', 'honk-honk' ) );
 			case 'woo_daily_summary':
-				return array( __( 'Daily sales summary', 'honk-me' ), __( 'Yesterday’s orders and revenue, every morning at 8:00 site time.', 'honk-me' ) );
+				return array( __( 'Daily sales summary', 'honk-honk' ), __( 'Yesterday’s orders and revenue, every morning at 8:00 site time.', 'honk-honk' ) );
 		}
 		return array( $id, '' );
 	}

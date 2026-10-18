@@ -4,7 +4,7 @@ Tags: notifications, woocommerce, security, contact form, monitoring
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,7 +95,7 @@ The plugin doesn't track you or your visitors, and it loads no external scripts,
 
 == Installation ==
 
-1. In your dashboard, go to Plugins → Add Plugin, search for "Honk! Honk!" and click Install Now. Or upload the `honk-me` folder to `/wp-content/plugins/`.
+1. In your dashboard, go to Plugins → Add Plugin, search for "Honk! Honk!" and click Install Now. Or upload the `honk-honk` folder to `/wp-content/plugins/`.
 2. Activate the plugin.
 3. In Honk! Honk! (https://honk-honk.app), open your project, go to Keys and create a new key. Copy it.
 4. In WordPress, go to Settings → Honk! Honk!, paste the key into "API key" and click "Send test notification". The test should reach your Honk! Honk! inbox within seconds.
@@ -165,6 +165,9 @@ The heartbeat ("tell me when my site stops checking in") needs support on the Ho
 
 == Changelog ==
 
+= 0.3.0 =
+* The plugin is now called Honk! Honk! – Notifications for Sites, Shops and Forms, and its settings page, menu and messages use the new name. Your settings, events and keys stay as they were.
+
 = 0.2.0 =
 * Buttons on notifications: email or call the customer, reply to a form entry or a comment, approve a comment. Choose them for each event under Details → Buttons. They are off by default, so your notifications stay as they were.
 
@@ -172,6 +175,9 @@ The heartbeat ("tell me when my site stops checking in") needs support on the Ho
 * First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview; background sending with automatic retries; notifications in your site's language.
 
 == Upgrade Notice ==
+
+= 0.3.0 =
+The plugin is now called Honk! Honk! Your settings stay as they are.
 
 = 0.2.0 =
 Optional buttons on notifications (email or call the customer, reply, approve), off by default.

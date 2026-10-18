@@ -3,13 +3,13 @@
  * Plugin Name:          Honk! Honk! – Notifications for Sites, Shops and Forms
  * Plugin URI:           https://honk-honk.app
  * Description:          Orders, failed payments, form entries, suspicious sign-ins and site errors from WordPress and WooCommerce, in your Honk! Honk! inbox on iPhone, Apple Watch and the web.
- * Version:              0.2.0
+ * Version:              0.3.0
  * Requires at least:    6.4
  * Requires PHP:         7.4
  * Author:               Honk! Honk!
  * License:              GPL-2.0-or-later
  * License URI:          https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:          honk-me
+ * Text Domain:          honk-honk
  * WC requires at least: 8.0
  * WC tested up to:      11.1
  *
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'HONK_VERSION', '0.2.0' );
+define( 'HONK_VERSION', '0.3.0' );
 define( 'HONK_FILE', __FILE__ );
 define( 'HONK_DIR', plugin_dir_path( __FILE__ ) );
 

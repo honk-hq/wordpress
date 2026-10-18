@@ -104,20 +104,20 @@ class I18nTest extends Honk_Test_Case {
 		$this->assertSame( 'en_US', Honk_Settings::notification_locale(), 'an invalid saved value means the site language' );
 	}
 
-	public function test_the_plugin_is_honk_me_and_ships_no_translation_files() {
-		$header = file_get_contents( HONK_DIR . 'honk-me.php' );
+	public function test_the_plugin_is_honk_honk_and_ships_no_translation_files() {
+		$header = file_get_contents( HONK_DIR . 'honk-honk.php' );
 		$this->assertStringContainsString( 'Plugin Name:          Honk! Honk! – Notifications for Sites, Shops and Forms', $header );
-		$this->assertStringContainsString( 'Text Domain:          honk-me', $header );
+		$this->assertStringContainsString( 'Text Domain:          honk-honk', $header );
 		$this->assertStringNotContainsString( 'Domain Path', $header );
-		$this->assertSame( 'honk-me', Honk_I18n::DOMAIN );
+		$this->assertSame( 'honk-honk', Honk_I18n::DOMAIN );
 		$this->assertDirectoryDoesNotExist( HONK_DIR . 'languages' );
 		$this->assertStringContainsString( '/languages-src', file_get_contents( HONK_DIR . '.distignore' ) );
 		$readme = file_get_contents( HONK_DIR . 'readme.txt' );
 		$this->assertStringStartsWith( '=== Honk! Honk! – Notifications for Sites, Shops and Forms ===', $readme );
 		$this->assertMatchesRegularExpression( '/^Contributors: honkme$/m', $readme );
 
-		// Every translatable string uses the honk-me text domain.
-		$files = array_merge( array( HONK_DIR . 'honk-me.php' ), glob( HONK_DIR . 'includes/*.php' ), glob( HONK_DIR . 'includes/modules/*.php' ) );
+		// Every translatable string uses the honk-honk text domain.
+		$files = array_merge( array( HONK_DIR . 'honk-honk.php' ), glob( HONK_DIR . 'includes/*.php' ), glob( HONK_DIR . 'includes/modules/*.php' ) );
 		foreach ( $files as $file ) {
 			$code = file_get_contents( $file );
 			$this->assertSame( 0, preg_match_all( "/\\b(?:__|_e|_x|_n|_nx|esc_html__|esc_html_e|esc_attr__|esc_attr_e)\\([^;]*?,\\s*'honk'\\s*\\)/", $code ), basename( $file ) );

@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Honk_I18n {
 
-	const DOMAIN = 'honk-me';
+	const DOMAIN = 'honk-honk';
 
 	/**
 	 * Runs a callback with the notification language active and returns its result.

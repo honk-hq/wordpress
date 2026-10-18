@@ -706,101 +706,101 @@ final class Honk_Details {
 		$section = Honk_Events::section( $event_id );
 		switch ( $fact ) {
 			case 'total':
-				return __( 'Order total', 'honk-me' );
+				return __( 'Order total', 'honk-honk' );
 			case 'count':
-				return __( 'Number of items', 'honk-me' );
+				return __( 'Number of items', 'honk-honk' );
 			case 'status':
-				return __( 'Order status', 'honk-me' );
+				return __( 'Order status', 'honk-honk' );
 			case 'payment':
-				return __( 'Payment method', 'honk-me' );
+				return __( 'Payment method', 'honk-honk' );
 			case 'products':
-				return __( 'Products (the first three)', 'honk-me' );
+				return __( 'Products (the first three)', 'honk-honk' );
 			case 'shipping':
-				return __( 'Shipping method', 'honk-me' );
+				return __( 'Shipping method', 'honk-honk' );
 			case 'phone':
-				return __( 'Phone number', 'honk-me' );
+				return __( 'Phone number', 'honk-honk' );
 			case 'city':
-				return __( 'Billing city and country', 'honk-me' );
+				return __( 'Billing city and country', 'honk-honk' );
 			case 'note':
-				return __( 'Customer’s note', 'honk-me' );
+				return __( 'Customer’s note', 'honk-honk' );
 			case 'reason':
-				return __( 'Refund reason', 'honk-me' );
+				return __( 'Refund reason', 'honk-honk' );
 			case 'renewal':
-				return __( 'Renewal order number', 'honk-me' );
+				return __( 'Renewal order number', 'honk-honk' );
 			case 'sku':
-				return __( 'SKU', 'honk-me' );
+				return __( 'SKU', 'honk-honk' );
 			case 'stock':
-				return __( 'Units in stock', 'honk-me' );
+				return __( 'Units in stock', 'honk-honk' );
 			case 'items':
-				return __( 'Items sold', 'honk-me' );
+				return __( 'Items sold', 'honk-honk' );
 			case 'refunds':
-				return __( 'Refunded amount', 'honk-me' );
+				return __( 'Refunded amount', 'honk-honk' );
 			case 'rating':
-				return __( 'Rating', 'honk-me' );
+				return __( 'Rating', 'honk-honk' );
 			case 'post':
-				return __( 'Post title', 'honk-me' );
+				return __( 'Post title', 'honk-honk' );
 			case 'author':
-				return __( 'Author', 'honk-me' );
+				return __( 'Author', 'honk-honk' );
 			case 'excerpt':
-				return __( 'Excerpt', 'honk-me' );
+				return __( 'Excerpt', 'honk-honk' );
 			case 'values':
-				return __( 'What people entered', 'honk-me' );
+				return __( 'What people entered', 'honk-honk' );
 			case 'username':
-				return __( 'Username', 'honk-me' );
+				return __( 'Username', 'honk-honk' );
 			case 'role':
-				return __( 'Role', 'honk-me' );
+				return __( 'Role', 'honk-honk' );
 			case 'device':
-				return __( 'Browser and operating system', 'honk-me' );
+				return __( 'Browser and operating system', 'honk-honk' );
 			case 'network':
-				return __( 'Network (for example 203.0.113.0/24)', 'honk-me' );
+				return __( 'Network (for example 203.0.113.0/24)', 'honk-honk' );
 			case 'ip':
-				return __( 'Full IP address', 'honk-me' );
+				return __( 'Full IP address', 'honk-honk' );
 			case 'ip_count':
-				return __( 'Number of IP addresses', 'honk-me' );
+				return __( 'Number of IP addresses', 'honk-honk' );
 			case 'usernames':
-				return __( 'Usernames tried', 'honk-me' );
+				return __( 'Usernames tried', 'honk-honk' );
 			case 'emails':
-				return __( 'Old and new email address', 'honk-me' );
+				return __( 'Old and new email address', 'honk-honk' );
 			case 'actor':
-				return __( 'Who made the change', 'honk-me' );
+				return __( 'Who made the change', 'honk-honk' );
 			case 'previous':
-				return __( 'Previous theme', 'honk-me' );
+				return __( 'Previous theme', 'honk-honk' );
 			case 'tip':
-				return __( 'How to turn off the file editors', 'honk-me' );
+				return __( 'How to turn off the file editors', 'honk-honk' );
 			case 'error':
-				return __( 'Error message', 'honk-me' );
+				return __( 'Error message', 'honk-honk' );
 			case 'hook':
-				return __( 'Name of the oldest task', 'honk-me' );
+				return __( 'Name of the oldest task', 'honk-honk' );
 			case 'advice':
-				return __( 'What to check', 'honk-me' );
+				return __( 'What to check', 'honk-honk' );
 			case 'file':
-				return 'plugin_changed' === $event_id ? __( 'Plugin file', 'honk-me' ) : __( 'File and line', 'honk-me' );
+				return 'plugin_changed' === $event_id ? __( 'Plugin file', 'honk-honk' ) : __( 'File and line', 'honk-honk' );
 			case 'name':
 				if ( 'woo_new_review' === $event_id ) {
-					return __( 'Reviewer’s name', 'honk-me' );
+					return __( 'Reviewer’s name', 'honk-honk' );
 				}
 				if ( 'comment_pending' === $event_id ) {
-					return __( 'Commenter’s name', 'honk-me' );
+					return __( 'Commenter’s name', 'honk-honk' );
 				}
-				return 'woocommerce' === $section && 'woo_new_customer' !== $event_id ? __( 'Customer name', 'honk-me' ) : __( 'Name', 'honk-me' );
+				return 'woocommerce' === $section && 'woo_new_customer' !== $event_id ? __( 'Customer name', 'honk-honk' ) : __( 'Name', 'honk-honk' );
 			case 'email':
 				if ( 'woo_new_review' === $event_id ) {
-					return __( 'Reviewer’s email', 'honk-me' );
+					return __( 'Reviewer’s email', 'honk-honk' );
 				}
 				if ( 'comment_pending' === $event_id ) {
-					return __( 'Commenter’s email', 'honk-me' );
+					return __( 'Commenter’s email', 'honk-honk' );
 				}
-				return 'woocommerce' === $section && 'woo_new_customer' !== $event_id ? __( 'Customer email', 'honk-me' ) : __( 'Email address', 'honk-me' );
+				return 'woocommerce' === $section && 'woo_new_customer' !== $event_id ? __( 'Customer email', 'honk-honk' ) : __( 'Email address', 'honk-honk' );
 			case 'text':
-				return 'woo_new_review' === $event_id ? __( 'Review text', 'honk-me' ) : __( 'Comment text', 'honk-me' );
+				return 'woo_new_review' === $event_id ? __( 'Review text', 'honk-honk' ) : __( 'Comment text', 'honk-honk' );
 			case 'action_email':
-				return 'user_registered' === $event_id ? __( 'Email user', 'honk-me' ) : __( 'Email customer', 'honk-me' );
+				return 'user_registered' === $event_id ? __( 'Email user', 'honk-honk' ) : __( 'Email customer', 'honk-honk' );
 			case 'action_call':
-				return 'forms' === $section ? __( 'Call back', 'honk-me' ) : __( 'Call customer', 'honk-me' );
+				return 'forms' === $section ? __( 'Call back', 'honk-honk' ) : __( 'Call customer', 'honk-honk' );
 			case 'action_reply':
-				return __( 'Reply by email', 'honk-me' );
+				return __( 'Reply by email', 'honk-honk' );
 			case 'action_approve':
-				return __( 'Approve', 'honk-me' );
+				return __( 'Approve', 'honk-honk' );
 		}
 		return $fact;
 	}
@@ -812,68 +812,68 @@ final class Honk_Details {
 	 * @return string[]
 	 */
 	public static function always( $event_id ) {
-		$order_link = __( 'a link to the order', 'honk-me' );
-		$order      = __( 'the order number', 'honk-me' );
-		$who        = __( 'who made the change', 'honk-me' );
+		$order_link = __( 'a link to the order', 'honk-honk' );
+		$order      = __( 'the order number', 'honk-honk' );
+		$who        = __( 'who made the change', 'honk-honk' );
 		if ( 'forms' === Honk_Events::section( $event_id ) ) {
-			return array( __( 'the form’s name', 'honk-me' ) );
+			return array( __( 'the form’s name', 'honk-honk' ) );
 		}
 		switch ( $event_id ) {
 			case 'admin_login_new_device':
-				return array( __( 'whether the browser or the network is new', 'honk-me' ), __( 'what to do if it wasn’t you', 'honk-me' ) );
+				return array( __( 'whether the browser or the network is new', 'honk-honk' ), __( 'what to do if it wasn’t you', 'honk-honk' ) );
 			case 'login_failures_burst':
-				return array( __( 'the number of failed sign-ins', 'honk-me' ), __( 'an all-clear when they stop', 'honk-me' ) );
+				return array( __( 'the number of failed sign-ins', 'honk-honk' ), __( 'an all-clear when they stop', 'honk-honk' ) );
 			case 'new_administrator':
-				return array( __( 'the username', 'honk-me' ), $who );
+				return array( __( 'the username', 'honk-honk' ), $who );
 			case 'role_changed':
-				return array( __( 'the username', 'honk-me' ), __( 'the old and new role', 'honk-me' ), $who );
+				return array( __( 'the username', 'honk-honk' ), __( 'the old and new role', 'honk-honk' ), $who );
 			case 'site_identity_changed':
-				return array( __( 'what changed', 'honk-me' ), __( 'the old and new site address', 'honk-me' ), $who );
+				return array( __( 'what changed', 'honk-honk' ), __( 'the old and new site address', 'honk-honk' ), $who );
 			case 'plugin_changed':
-				return array( __( 'the plugin’s name', 'honk-me' ), __( 'what happened', 'honk-me' ) );
+				return array( __( 'the plugin’s name', 'honk-honk' ), __( 'what happened', 'honk-honk' ) );
 			case 'theme_changed':
-				return array( __( 'the theme’s name', 'honk-me' ), __( 'what happened', 'honk-me' ) );
+				return array( __( 'the theme’s name', 'honk-honk' ), __( 'what happened', 'honk-honk' ) );
 			case 'file_edited':
-				return array( __( 'the file', 'honk-me' ), __( 'the plugin or theme it belongs to', 'honk-me' ) );
+				return array( __( 'the file', 'honk-honk' ), __( 'the plugin or theme it belongs to', 'honk-honk' ) );
 			case 'updates_installed':
-				return array( __( 'what was updated, with the new versions', 'honk-me' ) );
+				return array( __( 'what was updated, with the new versions', 'honk-honk' ) );
 			case 'fatal_error':
-				return array( __( 'the plugin or theme that caused it', 'honk-me' ), __( 'whether WordPress emailed a recovery link', 'honk-me' ) );
+				return array( __( 'the plugin or theme that caused it', 'honk-honk' ), __( 'whether WordPress emailed a recovery link', 'honk-honk' ) );
 			case 'site_health_critical':
-				return array( __( 'the critical issues', 'honk-me' ), __( 'an all-clear once they’re fixed', 'honk-me' ) );
+				return array( __( 'the critical issues', 'honk-honk' ), __( 'an all-clear once they’re fixed', 'honk-honk' ) );
 			case 'auto_update_failed':
-				return array( __( 'what failed to update, and why', 'honk-me' ) );
+				return array( __( 'what failed to update, and why', 'honk-honk' ) );
 			case 'updates_available':
-				return array( __( 'the available updates, with their versions', 'honk-me' ) );
+				return array( __( 'the available updates, with their versions', 'honk-honk' ) );
 			case 'cron_overdue':
-				return array( __( 'how many tasks are late', 'honk-me' ), __( 'an all-clear when they’re on time again', 'honk-me' ) );
+				return array( __( 'how many tasks are late', 'honk-honk' ), __( 'an all-clear when they’re on time again', 'honk-honk' ) );
 			case 'disk_space_low':
-				return array( __( 'the free and total disk space', 'honk-me' ), __( 'an all-clear when there’s room again', 'honk-me' ) );
+				return array( __( 'the free and total disk space', 'honk-honk' ), __( 'an all-clear when there’s room again', 'honk-honk' ) );
 			case 'user_registered':
-				return array( __( 'a link to the user’s profile', 'honk-me' ) );
+				return array( __( 'a link to the user’s profile', 'honk-honk' ) );
 			case 'comment_pending':
-				return array( __( 'a link to the comments awaiting moderation', 'honk-me' ) );
+				return array( __( 'a link to the comments awaiting moderation', 'honk-honk' ) );
 			case 'post_pending':
 			case 'post_published':
-				return array( __( 'the title', 'honk-me' ), __( 'the post type', 'honk-me' ), __( 'a link to the post', 'honk-me' ) );
+				return array( __( 'the title', 'honk-honk' ), __( 'the post type', 'honk-honk' ), __( 'a link to the post', 'honk-honk' ) );
 			case 'woo_new_order':
 			case 'woo_payment_failed':
 				return array( $order, $order_link );
 			case 'woo_order_status':
-				return array( $order, __( 'the old and new status', 'honk-me' ), $order_link );
+				return array( $order, __( 'the old and new status', 'honk-honk' ), $order_link );
 			case 'woo_refund':
-				return array( __( 'the refunded amount', 'honk-me' ), $order, $order_link );
+				return array( __( 'the refunded amount', 'honk-honk' ), $order, $order_link );
 			case 'woo_low_stock':
 			case 'woo_out_of_stock':
-				return array( __( 'the product’s name', 'honk-me' ), __( 'a link to the product', 'honk-me' ), __( 'an all-clear when it’s back in stock', 'honk-me' ) );
+				return array( __( 'the product’s name', 'honk-honk' ), __( 'a link to the product', 'honk-honk' ), __( 'an all-clear when it’s back in stock', 'honk-honk' ) );
 			case 'woo_new_customer':
-				return array( __( 'a link to the customer’s profile', 'honk-me' ) );
+				return array( __( 'a link to the customer’s profile', 'honk-honk' ) );
 			case 'woo_new_review':
-				return array( __( 'the product’s name', 'honk-me' ), __( 'whether it’s awaiting moderation', 'honk-me' ), __( 'a link to the reviews', 'honk-me' ) );
+				return array( __( 'the product’s name', 'honk-honk' ), __( 'whether it’s awaiting moderation', 'honk-honk' ), __( 'a link to the reviews', 'honk-honk' ) );
 			case 'woo_subscription_failed':
-				return array( __( 'the subscription number', 'honk-me' ), __( 'the amount', 'honk-me' ), __( 'a link to the subscription', 'honk-me' ) );
+				return array( __( 'the subscription number', 'honk-honk' ), __( 'the amount', 'honk-honk' ), __( 'a link to the subscription', 'honk-honk' ) );
 			case 'woo_daily_summary':
-				return array( __( 'the date', 'honk-me' ), __( 'the number of orders', 'honk-me' ), __( 'the revenue', 'honk-me' ) );
+				return array( __( 'the date', 'honk-honk' ), __( 'the number of orders', 'honk-honk' ), __( 'the revenue', 'honk-honk' ) );
 		}
 		return array();
 	}

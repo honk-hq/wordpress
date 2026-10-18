@@ -137,7 +137,7 @@ class DetailsTest extends Honk_Test_Case {
 		$this->assertStringNotContainsString( 'Network:', $m[0][1] );
 
 		$m = $this->messages( 'login_failures_burst', true, array( 'login_failures_burst' => array( 'ip_count' => false ) ) );
-		$this->assertSame( "10 failed sign-ins within 5 mins.\nUsernames tried: root\nYou’ll get an all-clear once they stop.", $m[0][1] );
+		$this->assertSame( "10 failed sign-ins within 5 mins.\nUsernames tried: root, admin.\nYou’ll get an all-clear once they stop.", $m[0][1] );
 
 		$m = $this->messages( 'new_administrator', true, array( 'new_administrator' => array( 'email' => false ) ) );
 		$this->assertStringStartsWith( 'Ops Team · ops was created as an administrator by admin.', $m[0][1] );

@@ -14,6 +14,7 @@ mkdir -p "$out"
 out="$(cd "$out" && pwd)"
 rm -f "$out/$slug-$version.zip"
 mkdir -p "$out/$slug"
-rsync -a --delete --exclude-from=.distignore ./ "$out/$slug/"
+# --delete-excluded: a file left in the build folder by an earlier build (or by Finder) goes too
+rsync -a --delete --delete-excluded --exclude-from=.distignore ./ "$out/$slug/"
 (cd "$out" && zip -qr "$slug-$version.zip" "$slug")
 echo "$out/$slug-$version.zip"

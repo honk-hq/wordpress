@@ -23,7 +23,7 @@ final class Honk_I18n {
 	/**
 	 * Runs a callback with the notification language active and returns its result.
 	 *
-	 * Uses switch_to_locale(), so WordPress, WooCommerce and Honk Me strings (order statuses
+	 * Uses switch_to_locale(), so WordPress, WooCommerce and the plugin's own strings (order statuses
 	 * included) all follow. It works for any language installed on the site; for another one, or
 	 * before WordPress can switch languages (very early in a request), the text is written in the
 	 * current language.

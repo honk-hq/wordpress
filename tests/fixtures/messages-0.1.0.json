@@ -1041,7 +1041,7 @@
                 "pii": true,
                 "payload": {
                     "title": "Many failed sign-ins",
-                    "message": "10 failed sign-ins within 5 mins.\nFrom 1 IP address.\nUsernames tried: root\nYou’ll get an all-clear once they stop.",
+                    "message": "10 failed sign-ins within 5 mins.\nFrom 1 IP address.\nUsernames tried: root, admin.\nYou’ll get an all-clear once they stop.",
                     "severity": "error",
                     "priority": "high",
                     "source": "shop.example.com",

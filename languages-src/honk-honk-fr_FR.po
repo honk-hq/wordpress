@@ -418,7 +418,7 @@ msgstr "Si vous lisez ceci, votre site est bien connecté. Envoyé depuis Régla
 #. translators: 1: message id, 2: duration in milliseconds
 #: includes/class-honk-admin.php:897
 #, php-format
-msgid "It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms)."
+msgid "It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms)."
 msgstr "Tout fonctionne. La notification de test devrait déjà se trouver dans votre boîte de réception Honk! Honk! (ID %1$s, %2$d ms)."
 
 #. translators: 1: server URL, 2: error message
@@ -1465,8 +1465,8 @@ msgstr[1] "Depuis %d adresses IP."
 #. translators: %s: comma-separated usernames
 #: includes/modules/class-honk-module-security.php:1151
 #, php-format
-msgid "Usernames tried: %s"
-msgstr "Identifiants essayés : %s"
+msgid "Usernames tried: %s."
+msgstr "Identifiants essayés : %s."
 
 #: includes/modules/class-honk-module-security.php:1153
 msgid "You’ll get an all-clear once they stop."

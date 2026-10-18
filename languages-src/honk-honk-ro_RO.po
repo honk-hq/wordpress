@@ -419,8 +419,8 @@ msgstr "Dacă vezi acest mesaj, site-ul tău e conectat. Trimis din Setări → 
 #. translators: 1: message id, 2: duration in milliseconds
 #: includes/class-honk-admin.php:897
 #, php-format
-msgid "It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms)."
-msgstr "Funcționează. Notificarea de test ar trebui să fie acum în inboxul Honk! Honk! (ID %1$s, %2$d ms)."
+msgid "It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms)."
+msgstr "Funcționează. Notificarea de test ar trebui să fie acum în inboxul Honk! Honk! (ID %1$s, %2$d ms)."
 
 #. translators: 1: server URL, 2: error message
 #: includes/class-honk-admin.php:906
@@ -1474,8 +1474,8 @@ msgstr[2] "De la %d de adrese IP."
 #. translators: %s: comma-separated usernames
 #: includes/modules/class-honk-module-security.php:1151
 #, php-format
-msgid "Usernames tried: %s"
-msgstr "Nume de utilizator încercate: %s"
+msgid "Usernames tried: %s."
+msgstr "Nume de utilizator încercate: %s."
 
 #: includes/modules/class-honk-module-security.php:1153
 msgid "You’ll get an all-clear once they stop."

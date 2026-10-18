@@ -327,6 +327,7 @@ final class Honk_Module_Security {
 		$state = array_merge(
 			array(
 				'buckets' => array(),
+				'recent'  => array(),
 				'burst'   => null,
 			),
 			$state
@@ -339,17 +340,38 @@ final class Honk_Module_Security {
 				unset( $state['buckets'][ $m ] );
 			}
 		}
-		$window = (int) array_sum( $state['buckets'] );
+		foreach ( array_keys( $state['recent'] ) as $m ) {
+			if ( $m <= $minute - $minutes ) {
+				unset( $state['recent'][ $m ] );
+			}
+		}
+		$window   = (int) array_sum( $state['buckets'] );
+		$username = sanitize_user( $username, true );
+
+		// Before a burst, the usernames are kept per minute like the counts, so the burst's message
+		// lists every name tried in its window, not only the ones after the threshold.
+		if ( null === $state['burst'] && '' !== $username ) {
+			$here = isset( $state['recent'][ $minute ] ) ? $state['recent'][ $minute ] : array();
+			if ( count( $here ) < 50 ) {
+				$here[ $username ] = 1;
+			}
+			$state['recent'][ $minute ] = $here;
+		}
 
 		$started_now = false;
 		if ( null === $state['burst'] && $window >= $threshold ) {
-			$state['burst'] = array(
+			$users = array();
+			foreach ( $state['recent'] as $names ) {
+				$users = array_merge( $users, $names );
+			}
+			$state['burst']  = array(
 				'start' => $now,
 				'total' => $window - 1,
 				'ips'   => array(),
-				'users' => array(),
+				'users' => array_slice( $users, 0, 50, true ),
 			);
-			$started_now    = true;
+			$state['recent'] = array();
+			$started_now     = true;
 		}
 		if ( null !== $state['burst'] ) {
 			++$state['burst']['total'];
@@ -357,7 +379,6 @@ final class Honk_Module_Security {
 			if ( '' !== $ip && count( $state['burst']['ips'] ) < 500 ) {
 				$state['burst']['ips'][ substr( wp_hash( 'honk-ip|' . $ip ), 0, 16 ) ] = 1;
 			}
-			$username = sanitize_user( $username, true );
 			if ( '' !== $username && count( $state['burst']['users'] ) < 50 ) {
 				$state['burst']['users'][ $username ] = 1;
 			}
@@ -1148,7 +1169,7 @@ final class Honk_Module_Security {
 		);
 		if ( ! empty( $d['usernames'] ) ) {
 			/* translators: %s: comma-separated usernames */
-			$lines[] = Honk_Details::text( sprintf( __( 'Usernames tried: %s', 'honk-honk' ), implode( ', ', $d['usernames'] ) ), 'usernames' );
+			$lines[] = Honk_Details::text( sprintf( __( 'Usernames tried: %s.', 'honk-honk' ), implode( ', ', $d['usernames'] ) ), 'usernames' );
 		}
 		$lines[] = Honk_Details::text( __( 'You’ll get an all-clear once they stop.', 'honk-honk' ) );
 		return array(

@@ -894,7 +894,7 @@ final class Honk_Admin {
 				array(
 					'message' => sprintf(
 						/* translators: 1: message id, 2: duration in milliseconds */
-						__( 'It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms).', 'honk-honk' ),
+						__( 'It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms).', 'honk-honk' ),
 						$result['id'],
 						$result['ms']
 					),

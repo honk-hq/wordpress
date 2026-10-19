@@ -86,8 +86,8 @@ What is sent, and when:
 * **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk! Honk! server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed). If you choose buttons in an event's Details, it also contains them: a title and a link, such as a link to approve a comment in your dashboard, or an email address or phone number to write to or call, which is sent only when the notification already includes it.
 * **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24). A customer's phone number, billing city and country and order note are sent only if you also tick them in an event's Details, and Details let you leave out any of the others.
 * **When you click "Send test notification"**, one test message is sent.
-* **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. This request contains no data about your site.
-* **The heartbeat** (once Honk! Honk! supports it, and only if you turn it on) checks in every 5 minutes with your site's address and environment.
+* **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. While the heartbeat is on, it reads it in the background too: every 12 hours, or every 15 minutes while the server can't be reached. This request contains no data about your site.
+* **The heartbeat**, only if you turn it on, checks in every 5 minutes (`POST /v1/heartbeats/check-in`). A check-in contains your site's address, written as a short name such as `wp-shop-example-com`. The first one also sends the address as it is, to name the heartbeat in Honk! Honk!, and how often to expect a check-in.
 
 Honk! Honk! privacy policy: [https://honk-honk.app/privacy](https://honk-honk.app/privacy). Terms and support: [https://honk-honk.app/support](https://honk-honk.app/support).
 
@@ -149,9 +149,15 @@ Yes. In Settings → Honk! Honk!, open Details under an event. It lists what tha
 
 Most changes don't need code: use an event's Details. Developers can also use the `honk_message` filter. It receives the message fields and the event ID; return an empty array to drop the message.
 
-= Where's the heartbeat? =
+= What does the heartbeat do? =
 
-The heartbeat ("tell me when my site stops checking in") needs support on the Honk! Honk! server, which is on its way. The option shows up in Settings → Honk! Honk! as soon as your server supports it.
+Turn on "Tell me when this site stops checking in" under Heartbeat in Settings → Honk! Honk!, and your site checks in with Honk! Honk! every 5 minutes. When no check-in arrives for 15 minutes, because the site is down or too broken to send anything, Honk! Honk! lets you know, and sends an all-clear once the site checks in again.
+
+The heartbeat shows up in your Honk! Honk! project under your site's address, where you can rename it, give it more time or pause it. If you turn the option off or deactivate the plugin, also pause or delete the heartbeat in Honk! Honk!, or it will tell you the site went quiet.
+
+WordPress runs its scheduled tasks when someone visits the site, so on a site with few visitors check-ins can be late. Run WP-Cron from a real cron job on your server, or give the heartbeat more time in Honk! Honk!
+
+The option appears once your API key is saved, if your Honk! Honk! server supports heartbeats. Until then it says "Coming soon".
 
 == Screenshots ==
 
@@ -166,7 +172,7 @@ The heartbeat ("tell me when my site stops checking in") needs support on the Ho
 == Changelog ==
 
 = 0.1.0 =
-* First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview, and optional buttons (email or call the customer, reply, approve); background sending with automatic retries; notifications in your site's language.
+* First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview, and optional buttons (email or call the customer, reply, approve); background sending with automatic retries; notifications in your site's language; an optional heartbeat that tells you when the site stops checking in.
 
 == Upgrade Notice ==
 

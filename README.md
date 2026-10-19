@@ -136,10 +136,23 @@ normal priority.
 ### Heartbeat
 
 `Honk_Heartbeat` checks in every 5 minutes (Action Scheduler recurring action, or a 5-minute
-WP-Cron schedule) once the server reports `"heartbeats": true` in `GET /v1/config` and the
-option is on. Until then the option shows "Coming soon". `Honk_Heartbeat::check_in()` is the
-only function that talks to the (provisional) endpoint `POST /v1/heartbeats/check-in`: change
-`Honk_Heartbeat::ENDPOINT` and the body there when the server ships heartbeats.
+WP-Cron schedule) while the option is on. The option shows once a key is saved and the server
+reports `"heartbeats": true` in `GET /v1/config`, "Coming soon" otherwise.
+`Honk_Heartbeat::check_in()` is the only function that talks to the endpoint:
+
+- `POST /v1/heartbeats/check-in` (`contracts/API.md` §11) with the ingestion key and
+  `{ "slug": "wp-shop-example-com", "status": "ok" }`. The slug is `wp-` and the site's address
+  (`Honk_Settings::source()`: host, port, path) in `[a-z0-9-]`; a longer one is cut to 64
+  characters, ending with a hash of the whole address.
+- A `404 not_found` (the first check-in, or the heartbeat was deleted in Honk! Honk!) is
+  followed by one request that creates it in the key's project: the slug, `name` (the address,
+  at most 100 characters), `interval_seconds: 300`, `grace_seconds: 600`. Later check-ins send
+  only the slug, so a name, interval or grace changed in Honk! Honk! stays. The outcome of the
+  last check-in is kept in the option `honk_heartbeat_last` (`time`, `ok`, `code`, e.g.
+  `plan_limit` when the workspace has no heartbeat left).
+- The cached `GET /v1/config` (12 hours) is the only thing a page load reads. When it has
+  expired, the schedule stays and the next check-in, in the background, asks the server again;
+  only a config without `"heartbeats": true` (another server URL) stops the schedule.
 
 ### Filters
 

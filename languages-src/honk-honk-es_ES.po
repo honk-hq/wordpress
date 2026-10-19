@@ -1048,7 +1048,7 @@ msgstr "Resumen diario de ventas"
 msgid "Yesterday’s orders and revenue, every morning at 8:00 site time."
 msgstr "Los pedidos y los ingresos del día anterior, cada mañana a las 8:00 (hora del sitio)."
 
-#: includes/class-honk-heartbeat.php:50
+#: includes/class-honk-heartbeat.php:56
 msgid "Every 5 minutes (Honk! Honk! heartbeat)"
 msgstr "Cada 5 minutos (señal de vida de Honk! Honk!)"
 

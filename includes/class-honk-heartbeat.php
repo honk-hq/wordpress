@@ -8,9 +8,10 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Heartbeats need server support that Honk does not have yet. The module stays off until
- * GET /v1/config reports "heartbeats": true; the check-in is one function (check_in()), so wiring
- * it to the final endpoint is a one-line change.
+ * Checks in with POST /v1/heartbeats/check-in (contracts/API.md §11) under a slug made from the
+ * site's address. The first check-in creates the heartbeat in the key's project; later ones send
+ * only the slug, so what is changed in Honk! Honk! (name, interval, grace) stays. The option shows
+ * once GET /v1/config reports "heartbeats": true.
  */
 final class Honk_Heartbeat {
 
@@ -21,7 +22,12 @@ final class Honk_Heartbeat {
 	const INTERVAL = 300;
 
 	/**
-	 * Path of the check-in endpoint (provisional until the server ships heartbeats).
+	 * Seconds a check-in may be late before Honk! Honk! opens a problem.
+	 */
+	const GRACE = 600;
+
+	/**
+	 * Path of the check-in endpoint (authenticated with the ingestion key).
 	 */
 	const ENDPOINT = '/v1/heartbeats/check-in';
 
@@ -53,15 +59,17 @@ final class Honk_Heartbeat {
 	}
 
 	/**
-	 * Whether the heartbeat should run: switched on, a key saved, and the server supports it
-	 * (cached GET /v1/config; never fetched on a page load).
+	 * Whether the heartbeat should run: switched on, a key saved, and the server not known to
+	 * lack heartbeats. The cached GET /v1/config lasts 12 hours; while nothing is cached the
+	 * heartbeat keeps running, and the next check-in (in the background) asks the server again.
 	 *
+	 * @param bool $fetch Ask the server when nothing is cached (never on a page load).
 	 * @return bool
 	 */
-	public static function is_active() {
+	public static function is_active( $fetch = false ) {
 		return Honk_Settings::is_configured()
 			&& (bool) Honk_Settings::get( 'heartbeat' )
-			&& self::server_supports( false );
+			&& false !== Honk_Client::server_capability( Honk_Settings::server_url(), 'heartbeats', $fetch );
 	}
 
 	/**
@@ -100,38 +108,34 @@ final class Honk_Heartbeat {
 	}
 
 	/**
-	 * Checks in with Honk. This is the one place that talks to the heartbeat endpoint.
+	 * Checks in with Honk. This is the one place that talks to the heartbeat endpoint: the slug
+	 * alone, and when Honk! Honk! doesn't know it (the first check-in, or the heartbeat was
+	 * deleted there), once more with the name, interval and grace that create it.
 	 *
 	 * @return array|null Client result, or null when the heartbeat is not active.
 	 */
 	public static function check_in() {
-		if ( ! self::is_active() ) {
+		if ( ! self::is_active( true ) ) {
 			return null;
 		}
-		$body     = Honk_Payload::encode(
+		$slug   = self::slug();
+		$result = self::post(
 			array(
-				'name'             => 'wordpress',
-				'source'           => Honk_Settings::source(),
-				'environment'      => Honk_Settings::environment(),
-				'interval_seconds' => self::INTERVAL,
-				'grace_seconds'    => 2 * self::INTERVAL,
+				'slug'   => $slug,
+				'status' => 'ok',
 			)
 		);
-		$response = wp_remote_post(
-			Honk_Settings::server_url() . self::ENDPOINT,
-			array(
-				'timeout'     => Honk_Client::TIMEOUT,
-				'redirection' => 0,
-				'user-agent'  => Honk_Client::user_agent(),
-				'headers'     => array(
-					'Authorization' => 'Bearer ' . Honk_Settings::api_key(),
-					'Content-Type'  => 'application/json',
-				),
-				'body'        => $body,
-				'data_format' => 'body',
-			)
-		);
-		$result   = Honk_Client::interpret( $response );
+		if ( 404 === $result['status'] && 'not_found' === $result['code'] ) {
+			$result = self::post(
+				array(
+					'slug'             => $slug,
+					'name'             => self::name(),
+					'interval_seconds' => self::INTERVAL,
+					'grace_seconds'    => self::GRACE,
+					'status'           => 'ok',
+				)
+			);
+		}
 		update_option(
 			'honk_heartbeat_last',
 			array(
@@ -142,5 +146,55 @@ final class Honk_Heartbeat {
 			false
 		);
 		return $result;
+	}
+
+	/**
+	 * The heartbeat's slug: "wp-" and the site's address (host, port, path) in [a-z0-9-], the
+	 * same on every check-in. An address too long for 64 characters is cut and ends with a hash
+	 * of the whole address.
+	 *
+	 * @return string
+	 */
+	public static function slug() {
+		$source = strtolower( Honk_Settings::source() );
+		$slug   = trim( (string) preg_replace( '/[^a-z0-9]+/', '-', $source ), '-' );
+		if ( strlen( $slug ) > 61 ) {
+			$slug = rtrim( substr( $slug, 0, 52 ), '-' ) . '-' . substr( md5( $source ), 0, 8 );
+		}
+		return 'wp-' . ( '' !== $slug ? $slug : 'site' );
+	}
+
+	/**
+	 * The heartbeat's name when it is created: the site's address (at most 100 characters).
+	 *
+	 * @return string
+	 */
+	public static function name() {
+		return Honk_Payload::truncate_chars( Honk_Settings::source(), 100 );
+	}
+
+	/**
+	 * One check-in request.
+	 *
+	 * @param array $fields JSON body.
+	 * @return array Client result.
+	 */
+	private static function post( array $fields ) {
+		$response = wp_remote_post(
+			Honk_Settings::server_url() . self::ENDPOINT,
+			array(
+				'timeout'     => Honk_Client::TIMEOUT,
+				'redirection' => 0,
+				'user-agent'  => Honk_Client::user_agent(),
+				'headers'     => array(
+					'Authorization' => 'Bearer ' . Honk_Settings::api_key(),
+					'Content-Type'  => 'application/json',
+					'Accept'        => 'application/json',
+				),
+				'body'        => Honk_Payload::encode( $fields ),
+				'data_format' => 'body',
+			)
+		);
+		return Honk_Client::interpret( $response );
 	}
 }

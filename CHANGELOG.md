@@ -52,7 +52,9 @@ each entry in short.
 - Background delivery with Action Scheduler or WP-Cron, retries with backoff and `Retry-After`,
   idempotency keys, the 16 KiB body limit, a delivery log of the last 50 sends.
 - "Send test notification" in Settings → Honk! Honk!; a Honk! Honk! tab in WooCommerce → Settings.
-- Heartbeat module, shown once the server reports `heartbeats: true` in `GET /v1/config`.
+- Heartbeat: a check-in every 5 minutes (`POST /v1/heartbeats/check-in`) under a slug made from
+  the site's address; the first one creates the heartbeat in the key's project, later ones send
+  only the slug. Shown once the server reports `heartbeats: true` in `GET /v1/config`.
 - Name "Honk! Honk! – Notifications for Sites, Shops and Forms", slug and text domain `honk-honk`.
 - No bundled translation files: translations come from translate.wordpress.org; the notification
   language works with any language installed on the site. The Romanian, Spanish, French and

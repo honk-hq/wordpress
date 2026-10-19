@@ -219,11 +219,27 @@ final class Honk_Client {
 	 * @return bool
 	 */
 	public static function server_supports( $server, $capability, $fetch = true ) {
+		return true === self::server_capability( $server, $capability, $fetch );
+	}
+
+	/**
+	 * What the server reports for a capability: true or false, or null when that isn't known
+	 * (nothing cached and $fetch false, or the server couldn't be reached).
+	 *
+	 * @param string $server     Server URL.
+	 * @param string $capability Key in /v1/config.
+	 * @param bool   $fetch      Ask the server when nothing is cached.
+	 * @return bool|null
+	 */
+	public static function server_capability( $server, $capability, $fetch = true ) {
 		if ( $fetch ) {
 			$config = self::server_config( $server );
 		} else {
 			$config = get_transient( self::CONFIG_TRANSIENT . md5( $server ) );
 		}
-		return is_array( $config ) && isset( $config[ $capability ] ) && true === $config[ $capability ];
+		if ( ! is_array( $config ) || array() === $config ) {
+			return null;
+		}
+		return isset( $config[ $capability ] ) && true === $config[ $capability ];
 	}
 }

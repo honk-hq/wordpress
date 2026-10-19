@@ -1049,7 +1049,7 @@ msgstr "Rezumat zilnic al vânzărilor"
 msgid "Yesterday’s orders and revenue, every morning at 8:00 site time."
 msgstr "Comenzile și veniturile de ieri, în fiecare dimineață la 8:00, după ora site-ului."
 
-#: includes/class-honk-heartbeat.php:50
+#: includes/class-honk-heartbeat.php:56
 msgid "Every 5 minutes (Honk! Honk! heartbeat)"
 msgstr "La fiecare 5 minute (semn de viață Honk! Honk!)"
 

@@ -114,7 +114,7 @@ class I18nTest extends Honk_Test_Case {
 		$this->assertStringContainsString( '/languages-src', file_get_contents( HONK_DIR . '.distignore' ) );
 		$readme = file_get_contents( HONK_DIR . 'readme.txt' );
 		$this->assertStringStartsWith( '=== Honk! Honk! – Notifications for Sites, Shops and Forms ===', $readme );
-		$this->assertMatchesRegularExpression( '/^Contributors: honkme$/m', $readme );
+		$this->assertMatchesRegularExpression( '/^Contributors: honkhonk, honkme$/m', $readme );
 
 		// Every translatable string uses the honk-honk text domain.
 		$files = array_merge( array( HONK_DIR . 'honk-honk.php' ), glob( HONK_DIR . 'includes/*.php' ), glob( HONK_DIR . 'includes/modules/*.php' ) );

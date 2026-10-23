@@ -7,8 +7,8 @@ inbox: orders, payments, stock, sign-ins, site health and form submissions from 
 WooCommerce and the popular form plugins, in your Honk! Honk! inbox, on iPhone, Apple Watch and
 the web.
 
-- WordPress.org slug: **`honk-honk`**, name "Honk! Honk! – Notifications for Sites, Shops and Forms",
-  main file `honk-honk.php`, text domain `honk-honk`. Options and code keep the `honk_` / `Honk_`
+- WordPress.org slug: **`honk-me`**, name "Honk! Honk! – Notifications for Sites, Shops and Forms",
+  main file `honk-me.php`, text domain `honk-me`. Options and code keep the `honk_` / `Honk_`
   prefix.
 - PHP 7.4+, WordPress 6.4+ (tested up to 7.1), WooCommerce optional (HPOS and block checkout
   compatible). No Composer runtime dependencies: requests go through the WordPress HTTP API.
@@ -167,15 +167,15 @@ reports `"heartbeats": true` in `GET /v1/config`, "Coming soon" otherwise.
 composer install            # PHPUnit 9.6, Brain Monkey, WPCS 3, PHPCompatibilityWP (dev only)
 composer test               # unit tests (Brain Monkey + an in-memory WordPress)
 composer lint               # PHPCS: WordPress-Extra, WordPress-Docs, PHP 7.4 compatibility
-bin/build.sh                # build/honk-honk/ and build/honk-honk-<version>.zip, as published (.distignore)
+bin/build.sh                # build/honk-me/ and build/honk-me-<version>.zip, as published (.distignore)
 ```
 
 The plugin ships no translation files: WordPress downloads its translations from
 translate.wordpress.org (language packs) for the languages installed on a site and loads them by
 itself, and the notification language switches with `switch_to_locale()` (`Honk_I18n`). The
-reviewed translations live outside the zip, in `languages-src/`: `honk-honk.pot` (WP-CLI
-`wp i18n make-pot . languages-src/honk-honk.pot --slug=honk-honk --domain=honk-honk`) and
-`honk-honk-<locale>.po` for `ro_RO`, `es_ES`, `fr_FR` and `de_DE`, to import into
+reviewed translations live outside the zip, in `languages-src/`: `honk-me.pot` (WP-CLI
+`wp i18n make-pot . languages-src/honk-me.pot --slug=honk-me --domain=honk-me`) and
+`honk-me-<locale>.po` for `ro_RO`, `es_ES`, `fr_FR` and `de_DE`, to import into
 translate.wordpress.org. Terminology follows the Honk! Honk! glossary
 (the Honk scale names…) and, for WordPress and WooCommerce screens, the words WordPress uses in
 each language. Copy that site and shop owners see avoids developer jargon: the settings screen
@@ -189,12 +189,12 @@ A throwaway WordPress 7.1 + WooCommerce 11.1 (HPOS on) + Contact Form 7 in Docke
 mode, the plugin pointed at it through `host.docker.internal`. Triggered with WP-CLI, the Store
 API (block checkout), `wp-login.php` and the dashboard editor; every message was checked in the
 Honk! Honk! inbox (titles, levels, group keys, problem/recovery episodes) and duplicate hooks did not
-duplicate. Plugin Check (`wp plugin check honk-honk`, the plugin installed from the zip) reports no
+duplicate. Plugin Check (`wp plugin check honk-me`, the plugin installed from the zip) reports no
 errors or warnings.
 
 ## Releasing
 
-The version lives in `honk-honk.php` (header `Version` and `HONK_VERSION`) and in `readme.txt`
+The version lives in `honk-me.php` (header `Version` and `HONK_VERSION`) and in `readme.txt`
 (`Stable tag`); `release.yml` checks that they, `CHANGELOG.md` and the tag agree.
 
 1. Bump the three, add `## [x.y.z] - YYYY-MM-DD` to `CHANGELOG.md` and `= x.y.z =` to the

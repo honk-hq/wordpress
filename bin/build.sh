@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Builds the plugin as it is published on WordPress.org (slug honk-honk): <out>/honk-honk/ (the
-# repository minus the paths in .distignore) and <out>/honk-honk-<version>.zip. The version comes
-# from honk-honk.php.
+# Builds the plugin as it is published on WordPress.org (slug honk-me): <out>/honk-me/ (the
+# repository minus the paths in .distignore) and <out>/honk-me-<version>.zip. The version comes
+# from honk-me.php.
 #
 #   bin/build.sh [<out-dir>]      default: build/
 set -euo pipefail
 cd "$(dirname "$0")/.."
-slug=honk-honk
+slug=honk-me
 version="$(sed -nE "s/^define\( 'HONK_VERSION', '([^']+)' \);$/\1/p" "$slug.php")"
 [ -n "$version" ] || { echo "build.sh: no HONK_VERSION in $slug.php" >&2; exit 1; }
 out="${1:-build}"

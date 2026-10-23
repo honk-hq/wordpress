@@ -95,7 +95,7 @@ The plugin doesn't track you or your visitors, and it loads no external scripts,
 
 == Installation ==
 
-1. In your dashboard, go to Plugins → Add Plugin, search for "Honk! Honk!" and click Install Now. Or upload the `honk-honk` folder to `/wp-content/plugins/`.
+1. In your dashboard, go to Plugins → Add Plugin, search for "Honk! Honk!" and click Install Now. Or upload the `honk-me` folder to `/wp-content/plugins/`.
 2. Activate the plugin.
 3. In Honk! Honk! (https://honk-honk.app), open your project, go to Keys and create a new key. Copy it.
 4. In WordPress, go to Settings → Honk! Honk!, paste the key into "API key" and click "Send test notification". The test should reach your Honk! Honk! inbox within seconds.

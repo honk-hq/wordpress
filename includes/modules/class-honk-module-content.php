@@ -212,13 +212,13 @@ final class Honk_Module_Content {
 	 */
 	public static function registration_spec( array $d ) {
 		return array(
-			'title'    => array( Honk_Details::part( __( 'New user registration', 'honk-honk' ) ) ),
+			'title'    => array( Honk_Details::part( __( 'New user registration', 'honk-me' ) ) ),
 			'lines'    => array(
 				Honk_Notifier::user_line( $d ),
 				/* translators: %s: role names */
-				Honk_Details::text( '' !== $d['roles'] ? sprintf( __( 'Role: %s', 'honk-honk' ), $d['roles'] ) : '', 'role' ),
+				Honk_Details::text( '' !== $d['roles'] ? sprintf( __( 'Role: %s', 'honk-me' ), $d['roles'] ) : '', 'role' ),
 			),
-			'fallback' => __( 'A new user account was created.', 'honk-honk' ),
+			'fallback' => __( 'A new user account was created.', 'honk-me' ),
 			'actions'  => Honk_Details::buttons( 'user_registered', array( 'action_email' => Honk_Payload::mailto_url( $d['email'] ) ) ),
 		);
 	}
@@ -231,10 +231,10 @@ final class Honk_Module_Content {
 	 */
 	public static function comment_spec( array $d ) {
 		return array(
-			'title'   => array( Honk_Details::part( __( 'Comment awaiting moderation', 'honk-honk' ) ) ),
+			'title'   => array( Honk_Details::part( __( 'Comment awaiting moderation', 'honk-me' ) ) ),
 			'lines'   => array(
 				/* translators: %s: post title */
-				Honk_Details::text( sprintf( __( 'On “%s”', 'honk-honk' ), $d['post'] ), 'post' ),
+				Honk_Details::text( sprintf( __( 'On “%s”', 'honk-me' ), $d['post'] ), 'post' ),
 				Honk_Details::line(
 					array(
 						Honk_Details::part( $d['name'], 'name' ),
@@ -243,7 +243,7 @@ final class Honk_Module_Content {
 					' · ',
 					array(
 						'any'   => array( 'name', 'email' ),
-						'empty' => __( 'Anonymous', 'honk-honk' ),
+						'empty' => __( 'Anonymous', 'honk-me' ),
 					)
 				),
 				Honk_Details::text( $d['text'], 'text' ),
@@ -253,7 +253,7 @@ final class Honk_Module_Content {
 				array(
 					'action_approve' => $d['approve'],
 					/* translators: %s: what the email replies to: a product, a post or a form */
-					'action_reply'   => Honk_Payload::mailto_url( $d['email'], sprintf( __( 'Re: %s', 'honk-honk' ), $d['post'] ) ),
+					'action_reply'   => Honk_Payload::mailto_url( $d['email'], sprintf( __( 'Re: %s', 'honk-me' ), $d['post'] ) ),
 				)
 			),
 		);
@@ -269,16 +269,16 @@ final class Honk_Module_Content {
 	public static function post_spec( array $d, $pending ) {
 		if ( $pending ) {
 			/* translators: %s: post title */
-			$title = sprintf( __( 'Pending review: %s', 'honk-honk' ), $d['title'] );
+			$title = sprintf( __( 'Pending review: %s', 'honk-me' ), $d['title'] );
 			/* translators: 1: post type name (e.g. Post), 2: author */
-			$by = sprintf( __( '%1$s by %2$s is waiting for review.', 'honk-honk' ), $d['type'], $d['author'] );
+			$by = sprintf( __( '%1$s by %2$s is waiting for review.', 'honk-me' ), $d['type'], $d['author'] );
 			/* translators: %s: post type name (e.g. Post) */
-			$plain = sprintf( __( '%s is waiting for review.', 'honk-honk' ), $d['type'] );
+			$plain = sprintf( __( '%s is waiting for review.', 'honk-me' ), $d['type'] );
 		} else {
 			/* translators: %s: post title */
-			$title = sprintf( __( 'Published: %s', 'honk-honk' ), $d['title'] );
+			$title = sprintf( __( 'Published: %s', 'honk-me' ), $d['title'] );
 			/* translators: 1: post type name (e.g. Post), 2: author */
-			$by    = sprintf( __( '%1$s by %2$s.', 'honk-honk' ), $d['type'], $d['author'] );
+			$by    = sprintf( __( '%1$s by %2$s.', 'honk-me' ), $d['type'], $d['author'] );
 			$plain = $d['type'];
 		}
 		return array(
@@ -298,6 +298,6 @@ final class Honk_Module_Content {
 	 */
 	public static function post_title( $post ) {
 		$title = Honk_Payload::plain( get_the_title( $post ), true );
-		return '' !== $title ? $title : __( '(no title)', 'honk-honk' );
+		return '' !== $title ? $title : __( '(no title)', 'honk-me' );
 	}
 }

@@ -47,8 +47,8 @@ class TranslationsTest extends Honk_Test_Case {
 	 * @dataProvider locales
 	 */
 	public function test_every_string_is_translated_with_the_same_placeholders( $locale, $forms ) {
-		$pot = $this->parse( HONK_DIR . 'languages-src/honk-honk.pot' );
-		$po  = $this->parse( HONK_DIR . 'languages-src/honk-honk-' . $locale . '.po' );
+		$pot = $this->parse( HONK_DIR . 'languages-src/honk-me.pot' );
+		$po  = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
 		foreach ( $pot as $msgid => $entry ) {
 			if ( 'https://honk-honk.app' === $msgid ) {
 				continue;
@@ -77,7 +77,7 @@ class TranslationsTest extends Honk_Test_Case {
 		);
 		$english = array( 'Light honk', 'Beep-beep', 'Loud honk', 'Long honk', 'Blast' );
 		foreach ( $scale as $locale => $names ) {
-			$po = $this->parse( HONK_DIR . 'languages-src/honk-honk-' . $locale . '.po' );
+			$po = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
 			foreach ( $english as $i => $msgid ) {
 				$this->assertSame( $names[ $i ], $po[ $msgid ][1][0], $locale . ' ' . $msgid );
 			}
@@ -85,7 +85,7 @@ class TranslationsTest extends Honk_Test_Case {
 	}
 
 	public function test_french_uses_non_breaking_spaces_before_colons() {
-		$po = $this->parse( HONK_DIR . 'languages-src/honk-honk-fr_FR.po' );
+		$po = $this->parse( HONK_DIR . 'languages-src/honk-me-fr_FR.po' );
 		$this->assertSame( "Rôle\u{00a0}: %s", $po['Role: %s'][1][0] );
 		$this->assertStringNotContainsString( ' :', implode( "\n", array_merge( ...array_column( $po, 1 ) ) ) );
 	}

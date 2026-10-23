@@ -53,7 +53,7 @@ final class Honk_Heartbeat {
 		$schedules[ self::SCHEDULE ] = array(
 			'interval' => self::INTERVAL,
 			// Translated only once translations may load (some plugins read schedules very early).
-			'display'  => did_action( 'init' ) ? __( 'Every 5 minutes (Honk! Honk! heartbeat)', 'honk-honk' ) : 'Every 5 minutes (Honk! Honk! heartbeat)',
+			'display'  => did_action( 'init' ) ? __( 'Every 5 minutes (Honk! Honk! heartbeat)', 'honk-me' ) : 'Every 5 minutes (Honk! Honk! heartbeat)',
 		);
 		return $schedules;
 	}

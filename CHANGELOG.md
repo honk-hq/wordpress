@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Honk! Honk! WordPress plugin (slug `honk-honk`) are documented here. The
+All notable changes to the Honk! Honk! WordPress plugin (slug `honk-me`) are documented here. The
 format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/). The WordPress.org changelog in `readme.txt` repeats
 each entry in short.
@@ -55,7 +55,7 @@ each entry in short.
 - Heartbeat: a check-in every 5 minutes (`POST /v1/heartbeats/check-in`) under a slug made from
   the site's address; the first one creates the heartbeat in the key's project, later ones send
   only the slug. Shown once the server reports `heartbeats: true` in `GET /v1/config`.
-- Name "Honk! Honk! – Notifications for Sites, Shops and Forms", slug and text domain `honk-honk`.
+- Name "Honk! Honk! – Notifications for Sites, Shops and Forms", slug and text domain `honk-me`.
 - No bundled translation files: translations come from translate.wordpress.org; the notification
   language works with any language installed on the site. The Romanian, Spanish, French and
   German translations are ready to import (`languages-src/`).

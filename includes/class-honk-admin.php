@@ -54,7 +54,7 @@ final class Honk_Admin {
 	 * @return void
 	 */
 	public static function menu() {
-		add_options_page( __( 'Honk! Honk!', 'honk-honk' ), __( 'Honk! Honk!', 'honk-honk' ), self::CAPABILITY, self::PAGE, array( __CLASS__, 'render' ) );
+		add_options_page( __( 'Honk! Honk!', 'honk-me' ), __( 'Honk! Honk!', 'honk-me' ), self::CAPABILITY, self::PAGE, array( __CLASS__, 'render' ) );
 	}
 
 	/**
@@ -79,8 +79,8 @@ final class Honk_Admin {
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'honk_test' ),
-				'sending' => __( 'Sending…', 'honk-honk' ),
-				'failed'  => __( 'The test couldn’t run. Reload the page and try again.', 'honk-honk' ),
+				'sending' => __( 'Sending…', 'honk-me' ),
+				'failed'  => __( 'The test couldn’t run. Reload the page and try again.', 'honk-me' ),
 			)
 		);
 	}
@@ -92,7 +92,7 @@ final class Honk_Admin {
 	 * @return string[]
 	 */
 	public static function action_links( $links ) {
-		array_unshift( $links, '<a href="' . esc_url( self::url() ) . '">' . esc_html__( 'Settings', 'honk-honk' ) . '</a>' );
+		array_unshift( $links, '<a href="' . esc_url( self::url() ) . '">' . esc_html__( 'Settings', 'honk-me' ) . '</a>' );
 		return $links;
 	}
 
@@ -108,9 +108,9 @@ final class Honk_Admin {
 		}
 		printf(
 			'<div class="notice notice-info"><p>%s <a href="%s">%s</a></p></div>',
-			esc_html__( 'Honk! Honk! is almost set up. Add your API key to start getting notifications.', 'honk-honk' ),
+			esc_html__( 'Honk! Honk! is almost set up. Add your API key to start getting notifications.', 'honk-me' ),
 			esc_url( self::url() ),
-			esc_html__( 'Open Honk! Honk! settings', 'honk-honk' )
+			esc_html__( 'Open Honk! Honk! settings', 'honk-me' )
 		);
 	}
 
@@ -143,11 +143,11 @@ final class Honk_Admin {
 		if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
 			return;
 		}
-		$text = '<p>' . esc_html__( 'This site uses Honk! Honk! to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk! Honk! service (honk-honk.app) or to another Honk! Honk! server the site owner chose.', 'honk-honk' ) . '</p>'
-			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device.', 'honk-honk' ) . '</p>'
+		$text = '<p>' . esc_html__( 'This site uses Honk! Honk! to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk! Honk! service (honk-honk.app) or to another Honk! Honk! server the site owner chose.', 'honk-me' ) . '</p>'
+			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device.', 'honk-me' ) . '</p>'
 			. '<p>' . sprintf(
 				/* translators: %s: link to the Honk! Honk! privacy policy */
-				esc_html__( 'Honk! Honk! privacy policy: %s', 'honk-honk' ),
+				esc_html__( 'Honk! Honk! privacy policy: %s', 'honk-me' ),
 				'<a href="https://honk-honk.app/privacy">https://honk-honk.app/privacy</a>'
 			) . '</p>';
 		wp_add_privacy_policy_content( 'Honk! Honk!', wp_kses_post( $text ) );
@@ -175,11 +175,11 @@ final class Honk_Admin {
 		$tab = self::current_tab();
 		?>
 		<div class="wrap honk-settings">
-			<h1><?php esc_html_e( 'Honk! Honk!', 'honk-honk' ); ?></h1>
-			<p class="honk-intro"><?php esc_html_e( 'Get this site’s orders, form entries and alerts in Honk! Honk!, on your iPhone, Apple Watch and the web.', 'honk-honk' ); ?></p>
-			<nav class="nav-tab-wrapper wp-clearfix" aria-label="<?php esc_attr_e( 'Secondary menu', 'honk-honk' ); ?>">
-				<a href="<?php echo esc_url( self::url() ); ?>" class="nav-tab<?php echo 'settings' === $tab ? ' nav-tab-active' : ''; ?>"<?php echo 'settings' === $tab ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'Settings', 'honk-honk' ); ?></a>
-				<a href="<?php echo esc_url( self::url( 'log' ) ); ?>" class="nav-tab<?php echo 'log' === $tab ? ' nav-tab-active' : ''; ?>"<?php echo 'log' === $tab ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'Delivery log', 'honk-honk' ); ?></a>
+			<h1><?php esc_html_e( 'Honk! Honk!', 'honk-me' ); ?></h1>
+			<p class="honk-intro"><?php esc_html_e( 'Get this site’s orders, form entries and alerts in Honk! Honk!, on your iPhone, Apple Watch and the web.', 'honk-me' ); ?></p>
+			<nav class="nav-tab-wrapper wp-clearfix" aria-label="<?php esc_attr_e( 'Secondary menu', 'honk-me' ); ?>">
+				<a href="<?php echo esc_url( self::url() ); ?>" class="nav-tab<?php echo 'settings' === $tab ? ' nav-tab-active' : ''; ?>"<?php echo 'settings' === $tab ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'Settings', 'honk-me' ); ?></a>
+				<a href="<?php echo esc_url( self::url( 'log' ) ); ?>" class="nav-tab<?php echo 'log' === $tab ? ' nav-tab-active' : ''; ?>"<?php echo 'log' === $tab ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'Delivery log', 'honk-me' ); ?></a>
 			</nav>
 			<?php
 			if ( 'log' === $tab ) {
@@ -207,17 +207,17 @@ final class Honk_Admin {
 			<?php settings_fields( 'honk' ); ?>
 			<input type="hidden" name="<?php echo esc_attr( $opt ); ?>[_form]" value="1">
 
-			<h2><?php esc_html_e( 'Connection', 'honk-honk' ); ?></h2>
+			<h2><?php esc_html_e( 'Connection', 'honk-me' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
-					<th scope="row"><label for="honk-server-url"><?php esc_html_e( 'Server URL', 'honk-honk' ); ?></label></th>
+					<th scope="row"><label for="honk-server-url"><?php esc_html_e( 'Server URL', 'honk-me' ); ?></label></th>
 					<td>
 						<input type="url" id="honk-server-url" class="regular-text code" name="<?php echo esc_attr( $opt ); ?>[server_url]" value="<?php echo esc_attr( $s['server_url'] ); ?>" placeholder="<?php echo esc_attr( Honk_Settings::DEFAULT_SERVER ); ?>">
-						<p class="description"><?php esc_html_e( 'Leave this as https://honk-honk.app unless you run your own Honk! Honk! server.', 'honk-honk' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Leave this as https://honk-honk.app unless you run your own Honk! Honk! server.', 'honk-me' ); ?></p>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="honk-api-key"><?php esc_html_e( 'API key', 'honk-honk' ); ?></label></th>
+					<th scope="row"><label for="honk-api-key"><?php esc_html_e( 'API key', 'honk-me' ); ?></label></th>
 					<td>
 						<input type="password" id="honk-api-key" class="regular-text code" name="<?php echo esc_attr( $opt ); ?>[api_key]" value="" autocomplete="new-password" spellcheck="false" placeholder="<?php echo esc_attr( '' !== $key ? Honk_Settings::mask_key( $key ) : 'honk_…' ); ?>" aria-describedby="honk-api-key-description">
 						<p class="description" id="honk-api-key-description">
@@ -225,58 +225,58 @@ final class Honk_Admin {
 							if ( '' !== $key ) {
 								printf(
 									/* translators: %s: masked key, e.g. honk_ab12cd34_•••••••• */
-									esc_html__( 'Saved key: %s. Leave the field empty to keep it.', 'honk-honk' ),
+									esc_html__( 'Saved key: %s. Leave the field empty to keep it.', 'honk-me' ),
 									'<code>' . esc_html( Honk_Settings::mask_key( $key ) ) . '</code>'
 								);
 							} else {
-								esc_html_e( 'In Honk! Honk!, open your project, go to Keys and create a new key. Nothing is sent until you save one here.', 'honk-honk' );
+								esc_html_e( 'In Honk! Honk!, open your project, go to Keys and create a new key. Nothing is sent until you save one here.', 'honk-me' );
 							}
 							?>
 						</p>
 						<?php if ( '' !== $key ) : ?>
-							<p><label><input type="checkbox" name="<?php echo esc_attr( $opt ); ?>[remove_key]" value="1"> <?php esc_html_e( 'Remove the saved key (stops all notifications)', 'honk-honk' ); ?></label></p>
+							<p><label><input type="checkbox" name="<?php echo esc_attr( $opt ); ?>[remove_key]" value="1"> <?php esc_html_e( 'Remove the saved key (stops all notifications)', 'honk-me' ); ?></label></p>
 						<?php endif; ?>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Test', 'honk-honk' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Test', 'honk-me' ); ?></th>
 					<td>
-						<button type="button" class="button" id="honk-test"><?php esc_html_e( 'Send test notification', 'honk-honk' ); ?></button>
+						<button type="button" class="button" id="honk-test"><?php esc_html_e( 'Send test notification', 'honk-me' ); ?></button>
 						<span class="spinner" id="honk-test-spinner"></span>
 						<div id="honk-test-result" class="honk-test-result" aria-live="polite"></div>
-						<p class="description"><?php esc_html_e( 'Uses the server URL and key above, so you can try them before saving.', 'honk-honk' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Uses the server URL and key above, so you can try them before saving.', 'honk-me' ); ?></p>
 					</td>
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Privacy and language', 'honk-honk' ); ?></h2>
+			<h2><?php esc_html_e( 'Privacy and language', 'honk-me' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Personal data', 'honk-honk' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Personal data', 'honk-me' ); ?></th>
 					<td>
 						<fieldset>
-							<legend class="screen-reader-text"><?php esc_html_e( 'Personal data', 'honk-honk' ); ?></legend>
-							<label><input type="checkbox" id="honk-include-pii" name="<?php echo esc_attr( $opt ); ?>[include_pii]" value="1" <?php checked( ! empty( $s['include_pii'] ) ); ?>> <?php esc_html_e( 'Include customer names and emails', 'honk-honk' ); ?></label>
-							<p class="description"><?php esc_html_e( 'Off: no names or email addresses. An order reads “Order #1234 · €84.00 · 2 items” and a form entry only says which form was used. On: names, email addresses, comments and form fields are included.', 'honk-honk' ); ?></p>
-							<p class="description"><?php esc_html_e( 'Under Events, each event’s Details show which personal data it can include, and let you leave out what you don’t need.', 'honk-honk' ); ?></p>
+							<legend class="screen-reader-text"><?php esc_html_e( 'Personal data', 'honk-me' ); ?></legend>
+							<label><input type="checkbox" id="honk-include-pii" name="<?php echo esc_attr( $opt ); ?>[include_pii]" value="1" <?php checked( ! empty( $s['include_pii'] ) ); ?>> <?php esc_html_e( 'Include customer names and emails', 'honk-me' ); ?></label>
+							<p class="description"><?php esc_html_e( 'Off: no names or email addresses. An order reads “Order #1234 · €84.00 · 2 items” and a form entry only says which form was used. On: names, email addresses, comments and form fields are included.', 'honk-me' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Under Events, each event’s Details show which personal data it can include, and let you leave out what you don’t need.', 'honk-me' ); ?></p>
 						</fieldset>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="honk-environment"><?php esc_html_e( 'Environment', 'honk-honk' ); ?></label></th>
+					<th scope="row"><label for="honk-environment"><?php esc_html_e( 'Environment', 'honk-me' ); ?></label></th>
 					<td>
 						<select id="honk-environment" name="<?php echo esc_attr( $opt ); ?>[environment]">
 							<option value="auto" <?php selected( $s['environment'], 'auto' ); ?>>
 								<?php
 								/* translators: %s: detected environment, e.g. production */
-								echo esc_html( sprintf( __( 'Automatic (%s)', 'honk-honk' ), Honk_Settings::detected_environment() ) );
+								echo esc_html( sprintf( __( 'Automatic (%s)', 'honk-me' ), Honk_Settings::detected_environment() ) );
 								?>
 							</option>
 							<?php foreach ( array( 'production', 'staging', 'development' ) as $env ) : ?>
 								<option value="<?php echo esc_attr( $env ); ?>" <?php selected( $s['environment'], $env ); ?>><?php echo esc_html( $env ); ?></option>
 							<?php endforeach; ?>
 						</select>
-						<p class="description"><?php esc_html_e( 'Tells Honk! Honk! whether this is your live site or a test copy. Automatic uses the environment type set in WordPress.', 'honk-honk' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Tells Honk! Honk! whether this is your live site or a test copy. Automatic uses the environment type set in WordPress.', 'honk-me' ); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -286,22 +286,22 @@ final class Honk_Admin {
 						$languages[ $s['language'] ] = $s['language']; // Saved, but no longer installed.
 					}
 					?>
-					<th scope="row"><label for="honk-language"><?php esc_html_e( 'Notification language', 'honk-honk' ); ?></label></th>
+					<th scope="row"><label for="honk-language"><?php esc_html_e( 'Notification language', 'honk-me' ); ?></label></th>
 					<td>
 						<select id="honk-language" name="<?php echo esc_attr( $opt ); ?>[language]">
-							<option value="" <?php selected( $s['language'], '' ); ?>><?php esc_html_e( 'Site language', 'honk-honk' ); ?></option>
+							<option value="" <?php selected( $s['language'], '' ); ?>><?php esc_html_e( 'Site language', 'honk-me' ); ?></option>
 							<?php foreach ( $languages as $locale => $name ) : ?>
 								<option value="<?php echo esc_attr( $locale ); ?>" lang="<?php echo esc_attr( str_replace( '_', '-', $locale ) ); ?>" <?php selected( $s['language'], $locale ); ?>><?php echo esc_html( $name ); ?></option>
 							<?php endforeach; ?>
 						</select>
-						<p class="description"><?php esc_html_e( 'Notifications use the WordPress translations of the Honk! Honk! plugin. Every language installed on this site is listed here; where a language has no translation yet, notifications are in English.', 'honk-honk' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Notifications use the WordPress translations of the Honk! Honk! plugin. Every language installed on this site is listed here; where a language has no translation yet, notifications are in English.', 'honk-me' ); ?></p>
 					</td>
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Events', 'honk-honk' ); ?></h2>
-			<p><?php esc_html_e( 'Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you.', 'honk-honk' ); ?></p>
-			<p><?php esc_html_e( 'Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!', 'honk-honk' ); ?></p>
+			<h2><?php esc_html_e( 'Events', 'honk-me' ); ?></h2>
+			<p><?php esc_html_e( 'Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you.', 'honk-me' ); ?></p>
+			<p><?php esc_html_e( 'Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!', 'honk-me' ); ?></p>
 			<?php
 			foreach ( Honk_Events::sections() as $section => $title ) {
 				self::render_section( $section, $title, $s );
@@ -331,16 +331,16 @@ final class Honk_Admin {
 		echo '<h3>' . esc_html( $title ) . '</h3>';
 
 		if ( 'woocommerce' === $section && ! class_exists( 'WooCommerce' ) ) {
-			echo '<p class="description">' . esc_html__( 'WooCommerce isn’t active. Its events show up here once it is.', 'honk-honk' ) . '</p>';
+			echo '<p class="description">' . esc_html__( 'WooCommerce isn’t active. Its events show up here once it is.', 'honk-me' ) . '</p>';
 			return;
 		}
 		if ( 'forms' === $section ) {
 			$ids = array_values( array_filter( $ids, array( 'Honk_Events', 'is_available' ) ) );
 			if ( empty( $ids ) ) {
-				echo '<p class="description">' . esc_html__( 'No supported form plugin is active. Honk! Honk! works with Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms.', 'honk-honk' ) . '</p>';
+				echo '<p class="description">' . esc_html__( 'No supported form plugin is active. Honk! Honk! works with Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ninja Forms.', 'honk-me' ) . '</p>';
 				return;
 			}
-			echo '<p class="description">' . esc_html__( 'Found automatically. Each notification is titled with the form’s name. What people entered is included only if you allow personal data above.', 'honk-honk' ) . '</p>';
+			echo '<p class="description">' . esc_html__( 'Found automatically. Each notification is titled with the form’s name. What people entered is included only if you allow personal data above.', 'honk-me' ) . '</p>';
 		}
 		if ( 'woocommerce' === $section ) {
 			$ids = array_values( array_filter( $ids, array( 'Honk_Events', 'is_available' ) ) );
@@ -349,10 +349,10 @@ final class Honk_Admin {
 		<table class="widefat honk-events">
 			<thead>
 				<tr>
-					<th scope="col" class="honk-col-event"><?php esc_html_e( 'Event', 'honk-honk' ); ?></th>
-					<th scope="col" class="honk-col-send"><?php esc_html_e( 'Send', 'honk-honk' ); ?></th>
-					<th scope="col" class="honk-col-level"><?php esc_html_e( 'Level', 'honk-honk' ); ?></th>
-					<th scope="col" class="honk-col-priority"><?php esc_html_e( 'Priority', 'honk-honk' ); ?></th>
+					<th scope="col" class="honk-col-event"><?php esc_html_e( 'Event', 'honk-me' ); ?></th>
+					<th scope="col" class="honk-col-send"><?php esc_html_e( 'Send', 'honk-me' ); ?></th>
+					<th scope="col" class="honk-col-level"><?php esc_html_e( 'Level', 'honk-me' ); ?></th>
+					<th scope="col" class="honk-col-priority"><?php esc_html_e( 'Priority', 'honk-me' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -389,16 +389,16 @@ final class Honk_Admin {
 					<p class="description"><?php echo esc_html( $label[1] ); ?></p>
 				<?php endif; ?>
 				<p class="honk-details-toggle-wrap">
-					<button type="button" class="button-link honk-details-toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $dom . '-details' ); ?>"><?php esc_html_e( 'Details', 'honk-honk' ); ?><span class="screen-reader-text">: <?php echo esc_html( $label[0] ); ?></span><span class="honk-details-indicator" aria-hidden="true"></span></button>
+					<button type="button" class="button-link honk-details-toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $dom . '-details' ); ?>"><?php esc_html_e( 'Details', 'honk-me' ); ?><span class="screen-reader-text">: <?php echo esc_html( $label[0] ); ?></span><span class="honk-details-indicator" aria-hidden="true"></span></button>
 				</p>
 				<?php if ( 'login_failures_burst' === $id ) : ?>
 					<p class="description honk-burst">
 						<?php
 						printf(
 							/* translators: 1: number input (failures), 2: number input (minutes) */
-							esc_html__( 'Notify me after %1$s or more failed sign-ins within %2$s minutes.', 'honk-honk' ),
-							'<input type="number" min="3" max="1000" step="1" class="small-text" name="' . esc_attr( Honk_Settings::OPTION ) . '[burst_threshold]" value="' . esc_attr( (string) (int) $settings['burst_threshold'] ) . '" aria-label="' . esc_attr__( 'Failed sign-ins', 'honk-honk' ) . '">',
-							'<input type="number" min="1" max="120" step="1" class="small-text" name="' . esc_attr( Honk_Settings::OPTION ) . '[burst_minutes]" value="' . esc_attr( (string) (int) $settings['burst_minutes'] ) . '" aria-label="' . esc_attr__( 'Minutes', 'honk-honk' ) . '">'
+							esc_html__( 'Notify me after %1$s or more failed sign-ins within %2$s minutes.', 'honk-me' ),
+							'<input type="number" min="3" max="1000" step="1" class="small-text" name="' . esc_attr( Honk_Settings::OPTION ) . '[burst_threshold]" value="' . esc_attr( (string) (int) $settings['burst_threshold'] ) . '" aria-label="' . esc_attr__( 'Failed sign-ins', 'honk-me' ) . '">',
+							'<input type="number" min="1" max="120" step="1" class="small-text" name="' . esc_attr( Honk_Settings::OPTION ) . '[burst_minutes]" value="' . esc_attr( (string) (int) $settings['burst_minutes'] ) . '" aria-label="' . esc_attr__( 'Minutes', 'honk-me' ) . '">'
 						);
 						?>
 					</p>
@@ -408,14 +408,14 @@ final class Honk_Admin {
 				<input type="checkbox" id="<?php echo esc_attr( $dom ); ?>" name="<?php echo esc_attr( $name ); ?>[enabled]" value="1" <?php checked( $event['enabled'] ); ?>>
 			</td>
 			<td class="honk-col-level">
-				<select name="<?php echo esc_attr( $name ); ?>[severity]" data-honk-level="<?php echo esc_attr( $id ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: event name */ __( 'Level for %s', 'honk-honk' ), $label[0] ) ); ?>">
+				<select name="<?php echo esc_attr( $name ); ?>[severity]" data-honk-level="<?php echo esc_attr( $id ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: event name */ __( 'Level for %s', 'honk-me' ), $label[0] ) ); ?>">
 					<?php foreach ( Honk_Settings::SEVERITIES as $severity ) : ?>
 						<option value="<?php echo esc_attr( $severity ); ?>" <?php selected( $event['severity'], $severity ); ?> title="<?php echo esc_attr( $severity ); ?>"><?php echo esc_html( Honk_Settings::severity_label( $severity ) ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</td>
 			<td class="honk-col-priority">
-				<select name="<?php echo esc_attr( $name ); ?>[priority]" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: event name */ __( 'Priority for %s', 'honk-honk' ), $label[0] ) ); ?>">
+				<select name="<?php echo esc_attr( $name ); ?>[priority]" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: event name */ __( 'Priority for %s', 'honk-me' ), $label[0] ) ); ?>">
 					<?php foreach ( Honk_Settings::PRIORITIES as $priority ) : ?>
 						<option value="<?php echo esc_attr( $priority ); ?>" <?php selected( $event['priority'], $priority ); ?>><?php echo esc_html( Honk_Settings::priority_label( $priority ) ); ?></option>
 					<?php endforeach; ?>
@@ -463,19 +463,19 @@ final class Honk_Admin {
 						<legend class="honk-details-heading">
 							<?php
 							/* translators: %s: event name, e.g. "New order" */
-							echo esc_html( sprintf( __( 'What “%s” includes', 'honk-honk' ), $label[0] ) );
+							echo esc_html( sprintf( __( 'What “%s” includes', 'honk-me' ), $label[0] ) );
 							?>
 						</legend>
 						<?php if ( $always ) : ?>
 							<p class="description">
 								<?php
 								/* translators: %s: a list, e.g. "the order number and a link to the order" */
-								echo esc_html( sprintf( __( 'Always included: %s.', 'honk-honk' ), wp_sprintf( '%l', $always ) ) );
+								echo esc_html( sprintf( __( 'Always included: %s.', 'honk-me' ), wp_sprintf( '%l', $always ) ) );
 								?>
 							</p>
 						<?php endif; ?>
 						<?php if ( empty( $facts ) ) : ?>
-							<p class="description"><?php esc_html_e( 'There’s nothing else to choose for this one.', 'honk-honk' ); ?></p>
+							<p class="description"><?php esc_html_e( 'There’s nothing else to choose for this one.', 'honk-me' ); ?></p>
 						<?php endif; ?>
 						<?php if ( $general ) : ?>
 							<ul class="honk-choices">
@@ -488,7 +488,7 @@ final class Honk_Admin {
 						<?php endif; ?>
 						<?php if ( $personal ) : ?>
 							<fieldset class="honk-facts-personal">
-								<legend><?php esc_html_e( 'Personal data', 'honk-honk' ); ?></legend>
+								<legend><?php esc_html_e( 'Personal data', 'honk-me' ); ?></legend>
 								<ul class="honk-choices">
 									<?php
 									foreach ( $personal as $fact ) {
@@ -508,7 +508,7 @@ final class Honk_Admin {
 									?>
 								</ul>
 								<?php self::render_form_fields( $id, $name, $dom, $pii ); ?>
-								<p class="description honk-pii-note" id="<?php echo esc_attr( $dom . '-pii-note' ); ?>"<?php echo $pii ? ' hidden' : ''; ?>><?php esc_html_e( 'Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above.', 'honk-honk' ); ?></p>
+								<p class="description honk-pii-note" id="<?php echo esc_attr( $dom . '-pii-note' ); ?>"<?php echo $pii ? ' hidden' : ''; ?>><?php esc_html_e( 'Personal data is off for this site, so these are left out. To choose them, turn on “Include customer names and emails” above.', 'honk-me' ); ?></p>
 							</fieldset>
 						<?php endif; ?>
 						<?php self::render_actions( $id, $name, $dom, $pii ); ?>
@@ -565,8 +565,8 @@ final class Honk_Admin {
 		}
 		?>
 		<fieldset class="honk-actions">
-			<legend><?php esc_html_e( 'Buttons', 'honk-honk' ); ?></legend>
-			<p class="description"><?php esc_html_e( 'Shown in Honk! Honk! with the notification. A button that emails or calls someone is only added while the notification includes their email address or phone number.', 'honk-honk' ); ?></p>
+			<legend><?php esc_html_e( 'Buttons', 'honk-me' ); ?></legend>
+			<p class="description"><?php esc_html_e( 'Shown in Honk! Honk! with the notification. A button that emails or calls someone is only added while the notification includes their email address or phone number.', 'honk-me' ); ?></p>
 			<ul class="honk-choices">
 				<?php
 				foreach ( $actions as $action => $need ) {
@@ -608,7 +608,7 @@ final class Honk_Admin {
 		$label = Honk_Events::label( $id );
 		if ( ! in_array( $id, Honk_Details::FORM_FIELD_EVENTS, true ) ) {
 			/* translators: %s: form plugin name, e.g. Fluent Forms */
-			echo '<p class="description">' . esc_html( sprintf( __( '%s doesn’t share a form’s list of fields with other plugins, so Honk! Honk! includes every field or none.', 'honk-honk' ), $label[0] ) ) . '</p>';
+			echo '<p class="description">' . esc_html( sprintf( __( '%s doesn’t share a form’s list of fields with other plugins, so Honk! Honk! includes every field or none.', 'honk-me' ), $label[0] ) ) . '</p>';
 			return;
 		}
 		$all   = Honk_Module_Forms::forms( $id );
@@ -624,10 +624,10 @@ final class Honk_Admin {
 		$values = Honk_Details::chosen( $id, 'values' );
 		?>
 		<fieldset class="honk-form-fields">
-			<legend><?php esc_html_e( 'Fields to include', 'honk-honk' ); ?></legend>
+			<legend><?php esc_html_e( 'Fields to include', 'honk-me' ); ?></legend>
 			<?php foreach ( $forms as $form_id => $form ) : ?>
 				<?php $skip = Honk_Details::skipped_fields( $id, (string) $form_id ); ?>
-				<p class="honk-form-name"><?php echo esc_html( '' !== $form['title'] ? $form['title'] : __( '(no title)', 'honk-honk' ) ); ?></p>
+				<p class="honk-form-name"><?php echo esc_html( '' !== $form['title'] ? $form['title'] : __( '(no title)', 'honk-me' ) ); ?></p>
 				<ul class="honk-choices">
 					<?php
 					foreach ( $form['fields'] as $key => $field ) {
@@ -652,7 +652,7 @@ final class Honk_Admin {
 				<p class="description">
 					<?php
 					/* translators: %d: number of forms */
-					echo esc_html( sprintf( __( 'Only the first %d forms are listed here. The others include every field.', 'honk-honk' ), Honk_Module_Forms::MAX_LISTED_FORMS ) );
+					echo esc_html( sprintf( __( 'Only the first %d forms are listed here. The others include every field.', 'honk-me' ), Honk_Module_Forms::MAX_LISTED_FORMS ) );
 					?>
 				</p>
 			<?php endif; ?>
@@ -674,7 +674,7 @@ final class Honk_Admin {
 		$event    = Honk_Settings::event( $id );
 		?>
 		<div class="honk-preview">
-			<h4 class="honk-details-heading" id="<?php echo esc_attr( $dom . '-preview-heading' ); ?>"><?php esc_html_e( 'Preview', 'honk-honk' ); ?></h4>
+			<h4 class="honk-details-heading" id="<?php echo esc_attr( $dom . '-preview-heading' ); ?>"><?php esc_html_e( 'Preview', 'honk-me' ); ?></h4>
 			<div class="honk-preview-card" role="group" aria-labelledby="<?php echo esc_attr( $dom . '-preview-heading' ); ?>" aria-live="polite">
 				<p class="honk-preview-meta"><span class="honk-preview-level"><?php echo esc_html( Honk_Settings::severity_label( $event['severity'] ) ); ?></span> · <?php echo esc_html( Honk_Settings::source() ); ?></p>
 				<p class="honk-preview-title"><?php echo esc_html( $composed['title'] ); ?></p>
@@ -687,7 +687,7 @@ final class Honk_Admin {
 					</p>
 				<?php endif; ?>
 			</div>
-			<p class="description"><?php esc_html_e( 'With sample data, in the notification language.', 'honk-honk' ); ?></p>
+			<p class="description"><?php esc_html_e( 'With sample data, in the notification language.', 'honk-me' ); ?></p>
 		</div>
 		<?php
 	}
@@ -701,18 +701,18 @@ final class Honk_Admin {
 	private static function render_heartbeat( array $settings ) {
 		$supported = Honk_Settings::is_configured() && Honk_Heartbeat::server_supports( true );
 		?>
-		<h2><?php esc_html_e( 'Heartbeat', 'honk-honk' ); ?></h2>
+		<h2><?php esc_html_e( 'Heartbeat', 'honk-me' ); ?></h2>
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Check in every 5 minutes', 'honk-honk' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Check in every 5 minutes', 'honk-me' ); ?></th>
 				<td>
 					<?php if ( $supported ) : ?>
-						<label><input type="checkbox" name="<?php echo esc_attr( Honk_Settings::OPTION ); ?>[heartbeat]" value="1" <?php checked( ! empty( $settings['heartbeat'] ) ); ?>> <?php esc_html_e( 'Tell me when this site stops checking in', 'honk-honk' ); ?></label>
+						<label><input type="checkbox" name="<?php echo esc_attr( Honk_Settings::OPTION ); ?>[heartbeat]" value="1" <?php checked( ! empty( $settings['heartbeat'] ) ); ?>> <?php esc_html_e( 'Tell me when this site stops checking in', 'honk-me' ); ?></label>
 					<?php else : ?>
 						<?php if ( ! empty( $settings['heartbeat'] ) ) : ?>
 							<input type="hidden" name="<?php echo esc_attr( Honk_Settings::OPTION ); ?>[heartbeat]" value="1">
 						<?php endif; ?>
-						<p class="description"><strong><?php esc_html_e( 'Coming soon.', 'honk-honk' ); ?></strong> <?php esc_html_e( 'Honk! Honk! will let you know when this site goes quiet, even if it’s too broken to say so itself. The option appears here once your Honk! Honk! server supports it.', 'honk-honk' ); ?></p>
+						<p class="description"><strong><?php esc_html_e( 'Coming soon.', 'honk-me' ); ?></strong> <?php esc_html_e( 'Honk! Honk! will let you know when this site goes quiet, even if it’s too broken to say so itself. The option appears here once your Honk! Honk! server supports it.', 'honk-me' ); ?></p>
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -730,28 +730,28 @@ final class Honk_Admin {
 		$private = ! Honk_Settings::include_pii();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 		if ( isset( $_GET['cleared'] ) ) {
-			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Delivery log cleared.', 'honk-honk' ) . '</p></div>';
+			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Delivery log cleared.', 'honk-me' ) . '</p></div>';
 		}
 		?>
-		<p><?php esc_html_e( 'The last 50 notifications this site sent to Honk! Honk!, newest first. They’re sent in the background and retried if Honk! Honk! is busy or can’t be reached.', 'honk-honk' ); ?></p>
+		<p><?php esc_html_e( 'The last 50 notifications this site sent to Honk! Honk!, newest first. They’re sent in the background and retried if Honk! Honk! is busy or can’t be reached.', 'honk-me' ); ?></p>
 		<table class="widefat striped honk-log">
 			<thead>
 				<tr>
-					<th scope="col"><?php esc_html_e( 'Time', 'honk-honk' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Event', 'honk-honk' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Title', 'honk-honk' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Status', 'honk-honk' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Details', 'honk-honk' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Time', 'honk-me' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Event', 'honk-me' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Title', 'honk-me' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Status', 'honk-me' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Details', 'honk-me' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if ( empty( $rows ) ) : ?>
-					<tr><td colspan="5"><?php esc_html_e( 'Nothing sent yet.', 'honk-honk' ); ?></td></tr>
+					<tr><td colspan="5"><?php esc_html_e( 'Nothing sent yet.', 'honk-me' ); ?></td></tr>
 				<?php endif; ?>
 				<?php foreach ( $rows as $row ) : ?>
 					<?php
 					$label = Honk_Events::exists( (string) $row['event'] ) ? Honk_Events::label( (string) $row['event'] ) : array( (string) $row['event'] );
-					$title = ( $private && ! empty( $row['pii'] ) ) ? __( '(hidden: may contain personal data)', 'honk-honk' ) : (string) $row['title'];
+					$title = ( $private && ! empty( $row['pii'] ) ) ? __( '(hidden: may contain personal data)', 'honk-me' ) : (string) $row['title'];
 					?>
 					<tr>
 						<td><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) $row['time'] ) ); ?></td>
@@ -767,7 +767,7 @@ final class Honk_Admin {
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="honk_clear_log">
 				<?php wp_nonce_field( 'honk_clear_log' ); ?>
-				<?php submit_button( __( 'Clear log', 'honk-honk' ), 'secondary', 'submit', false ); ?>
+				<?php submit_button( __( 'Clear log', 'honk-me' ), 'secondary', 'submit', false ); ?>
 			</form>
 		<?php endif; ?>
 		<?php
@@ -782,15 +782,15 @@ final class Honk_Admin {
 	private static function status_label( $status ) {
 		switch ( $status ) {
 			case 'queued':
-				return __( 'Queued', 'honk-honk' );
+				return __( 'Queued', 'honk-me' );
 			case 'sent':
-				return __( 'Sent', 'honk-honk' );
+				return __( 'Sent', 'honk-me' );
 			case 'duplicate':
-				return __( 'Already sent', 'honk-honk' );
+				return __( 'Already sent', 'honk-me' );
 			case 'retry':
-				return __( 'Will retry', 'honk-honk' );
+				return __( 'Will retry', 'honk-me' );
 			case 'failed':
-				return __( 'Failed', 'honk-honk' );
+				return __( 'Failed', 'honk-me' );
 		}
 		return $status;
 	}
@@ -817,11 +817,11 @@ final class Honk_Admin {
 		}
 		if ( ! empty( $row['attempts'] ) && (int) $row['attempts'] > 1 ) {
 			/* translators: %d: number of attempts */
-			$parts[] = sprintf( _n( '%d attempt', '%d attempts', (int) $row['attempts'], 'honk-honk' ), (int) $row['attempts'] );
+			$parts[] = sprintf( _n( '%d attempt', '%d attempts', (int) $row['attempts'], 'honk-me' ), (int) $row['attempts'] );
 		}
 		if ( 'retry' === $row['status'] && ! empty( $row['next'] ) ) {
 			/* translators: %s: time of the next attempt */
-			$parts[] = sprintf( __( 'next try at %s', 'honk-honk' ), wp_date( get_option( 'time_format' ), (int) $row['next'] ) );
+			$parts[] = sprintf( __( 'next try at %s', 'honk-me' ), wp_date( get_option( 'time_format' ), (int) $row['next'] ) );
 		}
 		return implode( ' · ', $parts );
 	}
@@ -833,7 +833,7 @@ final class Honk_Admin {
 	 */
 	public static function clear_log() {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_die( esc_html__( 'Sorry, you are not allowed to do that.', 'honk-honk' ), 403 );
+			wp_die( esc_html__( 'Sorry, you are not allowed to do that.', 'honk-me' ), 403 );
 		}
 		check_admin_referer( 'honk_clear_log' );
 		Honk_Log::clear();
@@ -849,7 +849,7 @@ final class Honk_Admin {
 	public static function ajax_test() {
 		check_ajax_referer( 'honk_test', 'nonce' );
 		if ( ! current_user_can( self::CAPABILITY ) ) {
-			wp_send_json_error( array( 'message' => __( 'Sorry, you are not allowed to do that.', 'honk-honk' ) ), 403 );
+			wp_send_json_error( array( 'message' => __( 'Sorry, you are not allowed to do that.', 'honk-me' ) ), 403 );
 		}
 		$server = isset( $_POST['server_url'] ) ? untrailingslashit( esc_url_raw( trim( sanitize_text_field( wp_unslash( $_POST['server_url'] ) ) ), array( 'https', 'http' ) ) ) : '';
 		$key    = isset( $_POST['api_key'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) ) : '';
@@ -857,18 +857,18 @@ final class Honk_Admin {
 		$key    = '' !== $key ? $key : Honk_Settings::api_key();
 
 		if ( ! Honk_Settings::is_valid_server_url( $server ) ) {
-			wp_send_json_error( array( 'message' => __( 'The server URL must start with https:// (http:// works only for local addresses).', 'honk-honk' ) ) );
+			wp_send_json_error( array( 'message' => __( 'The server URL must start with https:// (http:// works only for local addresses).', 'honk-me' ) ) );
 		}
 		if ( '' === $key ) {
-			wp_send_json_error( array( 'message' => __( 'Enter your API key first.', 'honk-honk' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Enter your API key first.', 'honk-me' ) ) );
 		}
 
 		$fields  = Honk_I18n::with_locale(
 			function () {
 				return array(
 					/* translators: %s: site name */
-					'title'   => sprintf( __( 'Test from %s', 'honk-honk' ), wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) ),
-					'message' => __( 'If you can read this, your site is connected. Sent from Settings → Honk! Honk!', 'honk-honk' ),
+					'title'   => sprintf( __( 'Test from %s', 'honk-me' ), wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) ),
+					'message' => __( 'If you can read this, your site is connected. Sent from Settings → Honk! Honk!', 'honk-me' ),
 				);
 			}
 		);
@@ -894,7 +894,7 @@ final class Honk_Admin {
 				array(
 					'message' => sprintf(
 						/* translators: 1: message id, 2: duration in milliseconds */
-						__( 'It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms).', 'honk-honk' ),
+						__( 'It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms).', 'honk-me' ),
 						$result['id'],
 						$result['ms']
 					),
@@ -903,12 +903,12 @@ final class Honk_Admin {
 		}
 		if ( 0 === $result['status'] ) {
 			/* translators: 1: server URL, 2: error message */
-			$message = sprintf( __( 'Couldn’t reach %1$s: %2$s', 'honk-honk' ), $server, $result['message'] );
+			$message = sprintf( __( 'Couldn’t reach %1$s: %2$s', 'honk-me' ), $server, $result['message'] );
 		} elseif ( 401 === $result['status'] ) {
-			$message = __( 'Honk! Honk! didn’t accept this key. Check that you copied all of it and that it hasn’t been revoked in Honk! Honk!', 'honk-honk' );
+			$message = __( 'Honk! Honk! didn’t accept this key. Check that you copied all of it and that it hasn’t been revoked in Honk! Honk!', 'honk-me' );
 		} else {
 			/* translators: 1: HTTP status, 2: error code, 3: error message */
-			$message = trim( sprintf( __( 'Honk! Honk! returned an error (%1$d %2$s): %3$s', 'honk-honk' ), $result['status'], $result['code'], $result['message'] ), ' :' );
+			$message = trim( sprintf( __( 'Honk! Honk! returned an error (%1$d %2$s): %3$s', 'honk-me' ), $result['status'], $result['code'], $result['message'] ), ' :' );
 		}
 		wp_send_json_error( array( 'message' => $message ) );
 	}
@@ -920,7 +920,7 @@ final class Honk_Admin {
 	 * @return array
 	 */
 	public static function woocommerce_tab( $tabs ) {
-		$tabs['honk'] = __( 'Honk! Honk!', 'honk-honk' );
+		$tabs['honk'] = __( 'Honk! Honk!', 'honk-me' );
 		return $tabs;
 	}
 
@@ -932,9 +932,9 @@ final class Honk_Admin {
 	public static function woocommerce_tab_content() {
 		$GLOBALS['hide_save_button'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- WooCommerce's own flag that hides the Save button on a settings tab.
 		?>
-		<h2><?php esc_html_e( 'Honk! Honk!', 'honk-honk' ); ?></h2>
-		<p><?php esc_html_e( 'Order, payment, stock, customer and review notifications are set up under Settings → Honk! Honk!, with the rest of the site’s notifications.', 'honk-honk' ); ?></p>
-		<p><a class="button button-primary" href="<?php echo esc_url( self::url() ); ?>"><?php esc_html_e( 'Open Honk! Honk! settings', 'honk-honk' ); ?></a></p>
+		<h2><?php esc_html_e( 'Honk! Honk!', 'honk-me' ); ?></h2>
+		<p><?php esc_html_e( 'Order, payment, stock, customer and review notifications are set up under Settings → Honk! Honk!, with the rest of the site’s notifications.', 'honk-me' ); ?></p>
+		<p><a class="button button-primary" href="<?php echo esc_url( self::url() ); ?>"><?php esc_html_e( 'Open Honk! Honk! settings', 'honk-me' ); ?></a></p>
 		<?php
 	}
 }

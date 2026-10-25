@@ -68,18 +68,26 @@ class TranslationsTest extends Honk_Test_Case {
 		}
 	}
 
-	public function test_the_honk_scale_follows_the_glossary() {
+	public function test_level_names_are_the_standard_name_with_the_honk_name_in_parentheses() {
 		$scale = array(
-			'ro_RO' => array( 'Discret', 'Scurt', 'Puternic', 'Lung', 'Maxim' ),
-			'es_ES' => array( 'Suave', 'Breve', 'Fuerte', 'Largo', 'Máximo' ),
-			'fr_FR' => array( 'Discret', 'Bref', 'Fort', 'Long', 'Maximum' ),
-			'de_DE' => array( 'Leise', 'Kurz', 'Laut', 'Lang', 'Maximal' ),
+			'ro_RO' => array( 'Info (Bip)', 'Succes (Bip-bip)', 'Avertisment (Tit-tit)', 'Eroare (Tuuut)', 'Critic (TUUUUT)' ),
+			'es_ES' => array( 'Info (Bip)', 'Éxito (Bip-bip)', 'Advertencia (Pi-pi)', 'Error (Piii)', 'Crítico (¡PIIIII!)' ),
+			'fr_FR' => array( 'Info (Bip)', 'Succès (Bip-bip)', 'Avertissement (Tût-tût)', 'Erreur (Tûûût)', 'Critique (TÛÛÛÛT)' ),
+			'de_DE' => array( 'Info (Piep)', 'Erfolg (Piep-piep)', 'Warnung (Tüt-tüt)', 'Fehler (Tüüüt)', 'Kritisch (TRÖÖÖT)' ),
 		);
-		$english = array( 'Light', 'Beep', 'Loud', 'Long', 'Blast' );
+		$english = array( 'Info (Light)', 'Success (Beep)', 'Warning (Loud)', 'Error (Long)', 'Critical (Blast)' );
+		foreach ( $english as $i => $msgid ) {
+			$this->assertSame( $msgid, Honk_Settings::severity_label( Honk_Settings::SEVERITIES[ $i ] ) );
+		}
 		foreach ( $scale as $locale => $names ) {
-			$po = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
+			$po  = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
+			$all = implode( "\n", array_merge( ...array_column( $po, 1 ) ) );
 			foreach ( $english as $i => $msgid ) {
 				$this->assertSame( $names[ $i ], $po[ $msgid ][1][0], $locale . ' ' . $msgid );
+			}
+			// The names the levels had before the standard and Honk sets.
+			foreach ( array( 'Discret', 'Puternic', 'Maxim', 'Suave', 'Fuerte', 'Máximo', 'Leise', 'Maximal' ) as $old ) {
+				$this->assertStringNotContainsString( $old, $all, $locale . ': ' . $old );
 			}
 		}
 	}

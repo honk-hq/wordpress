@@ -16,7 +16,7 @@ Honk! Honk! (honk-honk.app) is a calm notification inbox, and this is its offici
 
 Honk! Honk! groups repeats instead of sending each one: the first failed payment is a push, the tenth in a row just adds to a counter.
 
-You decide what you hear about. Every event has its own on/off switch, a priority, and a level on the Honk scale: Light, Beep, Loud, Long or Blast.
+You decide what you hear about. Every event has its own on/off switch, a priority, and a level: Info (Light), Success (Beep), Warning (Loud), Error (Long) or Critical (Blast).
 
 You also decide what each notification says, without code. Open Details under an event to see what it can include, from the order total, the payment method and the products to the customer's name, phone and billing city, and tick what you want. A preview next to the choices shows how the notification will read in Honk! Honk!
 

@@ -591,7 +591,7 @@ final class Honk_Module_Security {
 	}
 
 	/**
-	 * Reports a new administrator (Blast by default).
+	 * Reports a new administrator (Critical by default).
 	 *
 	 * @param WP_User $user    User.
 	 * @param bool    $created Created as administrator (true) or promoted (false).
@@ -923,7 +923,7 @@ final class Honk_Module_Security {
 	}
 
 	/**
-	 * Reports installed updates (Light by default).
+	 * Reports installed updates (Info by default).
 	 *
 	 * @param string   $type  core, plugin or theme.
 	 * @param string[] $items Names with versions.

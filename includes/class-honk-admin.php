@@ -300,7 +300,7 @@ final class Honk_Admin {
 			</table>
 
 			<h2><?php esc_html_e( 'Events', 'honk-me' ); ?></h2>
-			<p><?php esc_html_e( 'Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you.', 'honk-me' ); ?></p>
+			<p><?php esc_html_e( 'Choose what you want to hear about and how loud each one should be, from Info (Light) to Critical (Blast). Honk! Honk! groups repeats, so you only get a push when something needs you.', 'honk-me' ); ?></p>
 			<p><?php esc_html_e( 'Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!', 'honk-me' ); ?></p>
 			<?php
 			foreach ( Honk_Events::sections() as $section => $title ) {

@@ -438,7 +438,7 @@ final class Honk_Settings {
 	}
 
 	/**
-	 * Translated name of a severity on the Honk scale.
+	 * Translated level name: the standard name, then the Honk name in parentheses ("Error (Long)").
 	 *
 	 * @param string $severity Canonical severity.
 	 * @return string
@@ -446,15 +446,15 @@ final class Honk_Settings {
 	public static function severity_label( $severity ) {
 		switch ( $severity ) {
 			case 'info':
-				return __( 'Light', 'honk-me' );
+				return /* translators: Level name: the standard name, then the Honk name in parentheses. */ __( 'Info (Light)', 'honk-me' );
 			case 'success':
-				return __( 'Beep', 'honk-me' );
+				return /* translators: Level name: the standard name, then the Honk name in parentheses. */ __( 'Success (Beep)', 'honk-me' );
 			case 'warning':
-				return __( 'Loud', 'honk-me' );
+				return /* translators: Level name: the standard name, then the Honk name in parentheses. */ __( 'Warning (Loud)', 'honk-me' );
 			case 'error':
-				return __( 'Long', 'honk-me' );
+				return /* translators: Level name: the standard name, then the Honk name in parentheses. */ __( 'Error (Long)', 'honk-me' );
 			case 'critical':
-				return __( 'Blast', 'honk-me' );
+				return /* translators: Level name: the standard name, then the Honk name in parentheses. */ __( 'Critical (Blast)', 'honk-me' );
 		}
 		return $severity;
 	}

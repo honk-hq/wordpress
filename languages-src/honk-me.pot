@@ -181,7 +181,7 @@ msgid "Events"
 msgstr ""
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
+msgid "Choose what you want to hear about and how loud each one should be, from Info (Light) to Critical (Blast). Honk! Honk! groups repeats, so you only get a push when something needs you."
 msgstr ""
 
 #: includes/class-honk-admin.php:304
@@ -1177,24 +1177,29 @@ msgstr ""
 msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept."
 msgstr ""
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:449
-msgid "Light"
+msgid "Info (Light)"
 msgstr ""
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:451
-msgid "Beep"
+msgid "Success (Beep)"
 msgstr ""
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:453
-msgid "Loud"
+msgid "Warning (Loud)"
 msgstr ""
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:455
-msgid "Long"
+msgid "Error (Long)"
 msgstr ""
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:457
-msgid "Blast"
+msgid "Critical (Blast)"
 msgstr ""
 
 #: includes/class-honk-settings.php:471

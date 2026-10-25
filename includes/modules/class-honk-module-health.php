@@ -340,7 +340,7 @@ final class Honk_Module_Health {
 
 	/**
 	 * Automatic updates finished: failures are reported (Long), successes as installed
-	 * updates (Light).
+	 * updates (Info).
 	 *
 	 * @param array $results Results by type: core, plugin, theme, translation.
 	 * @return void

@@ -7,6 +7,12 @@ each entry in short.
 
 ## [Unreleased]
 
+### Changed
+- Level names: the level menus and the preview show the standard name with the Honk name in
+  parentheses, from Info (Light) to Critical (Blast), in every language (RO „Eroare (Tuuut)”,
+  ES "Error (Piii)", FR « Erreur (Tûûût) », DE „Fehler (Tüüüt)“). They replace the earlier
+  localized names (RO Discret … Maxim and the like). The values sent are unchanged.
+
 ## [0.1.0] - 2026-10-18
 
 ### Added

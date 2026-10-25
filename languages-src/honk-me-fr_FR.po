@@ -182,8 +182,8 @@ msgid "Events"
 msgstr "Événements"
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
-msgstr "Choisissez ce que vous voulez suivre et le volume de chaque alerte, du niveau « Discret » au niveau « Maximum ». Honk! Honk! regroupe les répétitions et ne vous envoie une notification que lorsque quelque chose demande votre attention."
+msgid "Choose what you want to hear about and how loud each one should be, from Info (Light) to Critical (Blast). Honk! Honk! groups repeats, so you only get a push when something needs you."
+msgstr "Choisissez ce que vous voulez suivre et le volume de chaque alerte, du niveau « Info (Bip) » au niveau « Critique (TÛÛÛÛT) ». Honk! Honk! regroupe les répétitions et ne vous envoie une notification que lorsque quelque chose demande votre attention."
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!"
@@ -1178,25 +1178,30 @@ msgstr "L’URL du serveur doit commencer par https:// (http:// ne fonctionne qu
 msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept."
 msgstr "Cette clé ne ressemble pas à une clé API Honk! Honk! (elles commencent par honk_). La clé précédente a été conservée."
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:449
-msgid "Light"
-msgstr "Discret"
+msgid "Info (Light)"
+msgstr "Info (Bip)"
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:451
-msgid "Beep"
-msgstr "Bref"
+msgid "Success (Beep)"
+msgstr "Succès (Bip-bip)"
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:453
-msgid "Loud"
-msgstr "Fort"
+msgid "Warning (Loud)"
+msgstr "Avertissement (Tût-tût)"
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:455
-msgid "Long"
-msgstr "Long"
+msgid "Error (Long)"
+msgstr "Erreur (Tûûût)"
 
+#. translators: Level name: the standard name, then the Honk name in parentheses.
 #: includes/class-honk-settings.php:457
-msgid "Blast"
-msgstr "Maximum"
+msgid "Critical (Blast)"
+msgstr "Critique (TÛÛÛÛT)"
 
 #: includes/class-honk-settings.php:471
 msgid "Low"

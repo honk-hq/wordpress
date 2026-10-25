@@ -70,12 +70,12 @@ class TranslationsTest extends Honk_Test_Case {
 
 	public function test_the_honk_scale_follows_the_glossary() {
 		$scale = array(
-			'ro_RO' => array( 'Claxon ușor', 'Bip-bip', 'Claxon puternic', 'Claxon lung', 'Claxon continuu' ),
-			'es_ES' => array( 'Bocinazo suave', 'Bip-bip', 'Bocinazo fuerte', 'Bocinazo largo', 'Bocina sin parar' ),
-			'fr_FR' => array( 'Petit coup de klaxon', 'Bip-bip', 'Coup de klaxon appuyé', 'Klaxon long', 'Klaxon continu' ),
-			'de_DE' => array( 'Leichtes Hupen', 'Tüt-tüt', 'Lautes Hupen', 'Langes Hupen', 'Dauerhupen' ),
+			'ro_RO' => array( 'Discret', 'Scurt', 'Puternic', 'Lung', 'Maxim' ),
+			'es_ES' => array( 'Suave', 'Breve', 'Fuerte', 'Largo', 'Máximo' ),
+			'fr_FR' => array( 'Discret', 'Bref', 'Fort', 'Long', 'Maximum' ),
+			'de_DE' => array( 'Leise', 'Kurz', 'Laut', 'Lang', 'Maximal' ),
 		);
-		$english = array( 'Light honk', 'Beep-beep', 'Loud honk', 'Long honk', 'Blast' );
+		$english = array( 'Light', 'Beep', 'Loud', 'Long', 'Blast' );
 		foreach ( $scale as $locale => $names ) {
 			$po = $this->parse( HONK_DIR . 'languages-src/honk-me-' . $locale . '.po' );
 			foreach ( $english as $i => $msgid ) {

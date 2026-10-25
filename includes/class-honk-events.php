@@ -18,8 +18,8 @@ final class Honk_Events {
 	/**
 	 * Event id => [ section, enabled, severity, priority, category ].
 	 *
-	 * Severity is the canonical Honk value (contract §2.1): info = Light honk, success =
-	 * Beep-beep, warning = Loud honk, error = Long honk, critical = Blast.
+	 * Severity is the canonical Honk value (contract §2.1): info = Light, success =
+	 * Beep, warning = Loud, error = Long, critical = Blast.
 	 */
 	const DEFAULTS = array(
 		// Security.

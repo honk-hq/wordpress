@@ -182,8 +182,8 @@ msgid "Events"
 msgstr "Evenimente"
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
-msgstr "Alege despre ce vrei să afli și cât de tare să claxoneze fiecare, de la „Claxon ușor” la „Claxon continuu”. Honk! Honk! grupează mesajele care se repetă, așa că primești o notificare doar când chiar e nevoie de tine."
+msgid "Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
+msgstr "Alege despre ce vrei să afli și cât de tare să claxoneze fiecare, de la „Discret” la „Maxim”. Honk! Honk! grupează mesajele care se repetă, așa că primești o notificare doar când chiar e nevoie de tine."
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!"
@@ -1180,24 +1180,24 @@ msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Y
 msgstr "Nu pare a fi o cheie API Honk! Honk! (cheile încep cu honk_). Am păstrat cheia anterioară."
 
 #: includes/class-honk-settings.php:449
-msgid "Light honk"
-msgstr "Claxon ușor"
+msgid "Light"
+msgstr "Discret"
 
 #: includes/class-honk-settings.php:451
-msgid "Beep-beep"
-msgstr "Bip-bip"
+msgid "Beep"
+msgstr "Scurt"
 
 #: includes/class-honk-settings.php:453
-msgid "Loud honk"
-msgstr "Claxon puternic"
+msgid "Loud"
+msgstr "Puternic"
 
 #: includes/class-honk-settings.php:455
-msgid "Long honk"
-msgstr "Claxon lung"
+msgid "Long"
+msgstr "Lung"
 
 #: includes/class-honk-settings.php:457
 msgid "Blast"
-msgstr "Claxon continuu"
+msgstr "Maxim"
 
 #: includes/class-honk-settings.php:471
 msgid "Low"

@@ -181,7 +181,7 @@ msgid "Events"
 msgstr ""
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
+msgid "Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
 msgstr ""
 
 #: includes/class-honk-admin.php:304
@@ -1178,19 +1178,19 @@ msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Y
 msgstr ""
 
 #: includes/class-honk-settings.php:449
-msgid "Light honk"
+msgid "Light"
 msgstr ""
 
 #: includes/class-honk-settings.php:451
-msgid "Beep-beep"
+msgid "Beep"
 msgstr ""
 
 #: includes/class-honk-settings.php:453
-msgid "Loud honk"
+msgid "Loud"
 msgstr ""
 
 #: includes/class-honk-settings.php:455
-msgid "Long honk"
+msgid "Long"
 msgstr ""
 
 #: includes/class-honk-settings.php:457

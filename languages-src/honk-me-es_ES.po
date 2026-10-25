@@ -182,8 +182,8 @@ msgid "Events"
 msgstr "Eventos"
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
-msgstr "Elige de qué quieres enterarte y con qué fuerza, desde «Bocinazo suave» hasta «Bocina sin parar». Honk! Honk! agrupa las repeticiones y solo te avisa cuando algo requiere tu atención."
+msgid "Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
+msgstr "Elige de qué quieres enterarte y con qué fuerza, desde «Suave» hasta «Máximo». Honk! Honk! agrupa las repeticiones y solo te avisa cuando algo requiere tu atención."
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!"
@@ -1179,24 +1179,24 @@ msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Y
 msgstr "Eso no parece una clave API de Honk! Honk! (las claves empiezan por honk_). Se ha mantenido la clave anterior."
 
 #: includes/class-honk-settings.php:449
-msgid "Light honk"
-msgstr "Bocinazo suave"
+msgid "Light"
+msgstr "Suave"
 
 #: includes/class-honk-settings.php:451
-msgid "Beep-beep"
-msgstr "Bip-bip"
+msgid "Beep"
+msgstr "Breve"
 
 #: includes/class-honk-settings.php:453
-msgid "Loud honk"
-msgstr "Bocinazo fuerte"
+msgid "Loud"
+msgstr "Fuerte"
 
 #: includes/class-honk-settings.php:455
-msgid "Long honk"
-msgstr "Bocinazo largo"
+msgid "Long"
+msgstr "Largo"
 
 #: includes/class-honk-settings.php:457
 msgid "Blast"
-msgstr "Bocina sin parar"
+msgstr "Máximo"
 
 #: includes/class-honk-settings.php:471
 msgid "Low"

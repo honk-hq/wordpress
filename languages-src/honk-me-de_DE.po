@@ -182,8 +182,8 @@ msgid "Events"
 msgstr "Ereignisse"
 
 #: includes/class-honk-admin.php:303
-msgid "Choose what you want to hear about and how loud each one should be, from Light honk to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
-msgstr "Wähle, worüber Honk! Honk! dich informieren soll und wie laut: von „Leichtes Hupen“ bis „Dauerhupen“. Honk! Honk! fasst Wiederholungen zusammen, du bekommst also nur dann einen Push, wenn wirklich etwas zu tun ist."
+msgid "Choose what you want to hear about and how loud each one should be, from Light to Blast. Honk! Honk! groups repeats, so you only get a push when something needs you."
+msgstr "Wähle, worüber Honk! Honk! dich informieren soll und wie laut: von „Leise“ bis „Maximal“. Honk! Honk! fasst Wiederholungen zusammen, du bekommst also nur dann einen Push, wenn wirklich etwas zu tun ist."
 
 #: includes/class-honk-admin.php:304
 msgid "Open Details under an event to choose what its notification says. The preview next to the choices shows how it will read in Honk! Honk!"
@@ -1179,24 +1179,24 @@ msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Y
 msgstr "Das sieht nicht nach einem API-Schlüssel von Honk! Honk! aus (diese beginnen mit honk_). Der bisherige Schlüssel wurde beibehalten."
 
 #: includes/class-honk-settings.php:449
-msgid "Light honk"
-msgstr "Leichtes Hupen"
+msgid "Light"
+msgstr "Leise"
 
 #: includes/class-honk-settings.php:451
-msgid "Beep-beep"
-msgstr "Tüt-tüt"
+msgid "Beep"
+msgstr "Kurz"
 
 #: includes/class-honk-settings.php:453
-msgid "Loud honk"
-msgstr "Lautes Hupen"
+msgid "Loud"
+msgstr "Laut"
 
 #: includes/class-honk-settings.php:455
-msgid "Long honk"
-msgstr "Langes Hupen"
+msgid "Long"
+msgstr "Lang"
 
 #: includes/class-honk-settings.php:457
 msgid "Blast"
-msgstr "Dauerhupen"
+msgstr "Maximal"
 
 #: includes/class-honk-settings.php:471
 msgid "Low"

@@ -82,45 +82,45 @@ always includes, and a preview.
 
 ## Events
 
-Defaults follow the plan: new order Beep-beep, failed payment Loud honk, fatal error Long honk,
+Defaults follow the plan: new order Beep, failed payment Loud, fatal error Long,
 new administrator Blast. Every event has its own switch, level and priority in Settings → Honk! Honk!
 
 | Event | Hooks | `group_key` | Idempotency key | Default |
 |---|---|---|---|---|
 | **WooCommerce** | | | | |
-| New order | `woocommerce_checkout_order_processed`, `woocommerce_store_api_checkout_order_processed`, `woocommerce_new_order`, `woocommerce_order_status_changed` (unpaid → processing/on-hold/completed); reported at shutdown once paid or on hold, flagged with order meta `_honk_new_order_sent` | `woo/orders` | `order-<id>-new` | Beep-beep, normal |
-| Order status changed | `woocommerce_order_status_changed` (not placing, failed, refunded, pending → cancelled) | `woo/orders/status` | `order-<id>-<from>-<to>-<modified>` | Light honk, low |
-| Failed payment | `woocommerce_order_status_failed` | `woo/payments/failed` | `order-<id>-failed-<modified>` | Loud honk, normal |
-| Refund | `woocommerce_order_refunded` | `woo/refunds` | `refund-<refund id>` | Loud honk, normal |
-| Low / out of stock, back in stock | `woocommerce_low_stock`, `woocommerce_no_stock`, `woocommerce_product_set_stock`, `woocommerce_variation_set_stock` (state kept per product: problem, problem, recovery) | `woo/stock/<product id>` | `stock-<id>-<state>-<seq>` | Loud honk / Long honk |
-| New customer | `woocommerce_created_customer` | `woo/customers` | `customer-<id>` | Beep-beep, low |
-| New product review | `wp_insert_comment` (product, type review) | `woo/reviews` | `review-<comment id>` | Light honk, low |
-| Subscription renewal failed | `woocommerce_subscription_renewal_payment_failed` (only with WooCommerce Subscriptions) | `woo/subscriptions/renewal-failed` | `subscription-<id>-renewal-<order>-failed` | Long honk, high |
-| Daily sales summary (off) | WP-Cron `honk_daily_summary`, 08:00 site time | `woo/summary` | `summary-<Y-m-d>` | Light honk, low |
+| New order | `woocommerce_checkout_order_processed`, `woocommerce_store_api_checkout_order_processed`, `woocommerce_new_order`, `woocommerce_order_status_changed` (unpaid → processing/on-hold/completed); reported at shutdown once paid or on hold, flagged with order meta `_honk_new_order_sent` | `woo/orders` | `order-<id>-new` | Beep, normal |
+| Order status changed | `woocommerce_order_status_changed` (not placing, failed, refunded, pending → cancelled) | `woo/orders/status` | `order-<id>-<from>-<to>-<modified>` | Light, low |
+| Failed payment | `woocommerce_order_status_failed` | `woo/payments/failed` | `order-<id>-failed-<modified>` | Loud, normal |
+| Refund | `woocommerce_order_refunded` | `woo/refunds` | `refund-<refund id>` | Loud, normal |
+| Low / out of stock, back in stock | `woocommerce_low_stock`, `woocommerce_no_stock`, `woocommerce_product_set_stock`, `woocommerce_variation_set_stock` (state kept per product: problem, problem, recovery) | `woo/stock/<product id>` | `stock-<id>-<state>-<seq>` | Loud / Long |
+| New customer | `woocommerce_created_customer` | `woo/customers` | `customer-<id>` | Beep, low |
+| New product review | `wp_insert_comment` (product, type review) | `woo/reviews` | `review-<comment id>` | Light, low |
+| Subscription renewal failed | `woocommerce_subscription_renewal_payment_failed` (only with WooCommerce Subscriptions) | `woo/subscriptions/renewal-failed` | `subscription-<id>-renewal-<order>-failed` | Long, high |
+| Daily sales summary (off) | WP-Cron `honk_daily_summary`, 08:00 site time | `woo/summary` | `summary-<Y-m-d>` | Light, low |
 | **Security** | | | | |
-| Admin sign-in from a new device | `wp_login` (users with `manage_options`; browser + OS and IP network, hashed, last 20 for 180 days in user meta `honk_known_devices`; the first sign-in only learns) | `wp/security/admin-login` | `login-<user>-<fingerprint>` | Loud honk, normal |
-| Burst of failed sign-ins | `wp_login_failed` (≥ 10 in 5 min by default) → problem; WP-Cron `honk_login_burst_check` → recovery after a calm window | `wp/security/login-burst` | `login-burst-<start>`, `…-recovered` | Long honk, high |
+| Admin sign-in from a new device | `wp_login` (users with `manage_options`; browser + OS and IP network, hashed, last 20 for 180 days in user meta `honk_known_devices`; the first sign-in only learns) | `wp/security/admin-login` | `login-<user>-<fingerprint>` | Loud, normal |
+| Burst of failed sign-ins | `wp_login_failed` (≥ 10 in 5 min by default) → problem; WP-Cron `honk_login_burst_check` → recovery after a calm window | `wp/security/login-burst` | `login-burst-<start>`, `…-recovered` | Long, high |
 | New administrator | `user_register`, `set_user_role`, `add_user_role` (at shutdown), `granted_super_admin` | `wp/security/admins` | `admin-<user>-<YmdH>` | Blast, high |
-| Role changed | `set_user_role`, `add_user_role` / `remove_user_role` (at shutdown, outside `set_role()`) | `wp/security/roles` | `role-<user>-<hash>-<YmdH>` | Loud honk, normal |
-| Admin email / site address changed | `update_option_admin_email`, `update_option_siteurl`, `update_option_home` | `wp/security/site-identity` | `identity-<option>-<hash>` | Long honk, high |
-| Plugin installed / activated / deactivated / deleted | `upgrader_process_complete`, `activated_plugin`, `deactivated_plugin` (Honk! Honk! itself: sent before the request ends), `delete_plugin` + `deleted_plugin` | `wp/security/plugins` | `plugin-<action>-<hash>-<YmdHi>` | Loud honk, normal |
-| Theme installed / switched / deleted | `upgrader_process_complete`, `switch_theme`, `delete_theme` + `deleted_theme` | `wp/security/themes` | `theme-<action>-<hash>-<YmdHi>` | Loud honk, normal |
-| File edited in the dashboard | `wp_ajax_edit-theme-plugin-file` (nonce checked, checksum before and at shutdown) | `wp/security/file-edits` | `edit-<path hash>-<md5>` | Long honk, high |
-| Updates installed | `upgrader_process_complete` (update), `_core_updated_successfully`, `automatic_updates_complete` | `wp/security/updates` | `updated-<type>-<hash>` | Light honk, low |
+| Role changed | `set_user_role`, `add_user_role` / `remove_user_role` (at shutdown, outside `set_role()`) | `wp/security/roles` | `role-<user>-<hash>-<YmdH>` | Loud, normal |
+| Admin email / site address changed | `update_option_admin_email`, `update_option_siteurl`, `update_option_home` | `wp/security/site-identity` | `identity-<option>-<hash>` | Long, high |
+| Plugin installed / activated / deactivated / deleted | `upgrader_process_complete`, `activated_plugin`, `deactivated_plugin` (Honk! Honk! itself: sent before the request ends), `delete_plugin` + `deleted_plugin` | `wp/security/plugins` | `plugin-<action>-<hash>-<YmdHi>` | Loud, normal |
+| Theme installed / switched / deleted | `upgrader_process_complete`, `switch_theme`, `delete_theme` + `deleted_theme` | `wp/security/themes` | `theme-<action>-<hash>-<YmdHi>` | Loud, normal |
+| File edited in the dashboard | `wp_ajax_edit-theme-plugin-file` (nonce checked, checksum before and at shutdown) | `wp/security/file-edits` | `edit-<path hash>-<md5>` | Long, high |
+| Updates installed | `upgrader_process_complete` (update), `_core_updated_successfully`, `automatic_updates_complete` | `wp/security/updates` | `updated-<type>-<hash>` | Light, low |
 | **Site health** | | | | |
-| Fatal error | `recovery_mode_email` (dashboard and sign-in page; the email is returned unchanged) and `wp_php_error_message` (the "critical error" page, front end included) | `wp/health/fatal` | `fatal-<hash>-<Ymd>` | Long honk, high |
-| Site Health critical issues | daily `honk_daily`: the direct and `async_direct_test` Site Health tests, as WordPress's own scheduled check; problem when new issues appear, recovery when none are left | `wp/health/site-health` | `site-health-<hash>-<Ymd>` | Long honk, normal |
-| Automatic update failed | `automatic_updates_complete` | `wp/health/updates-failed` | `autoupdate-failed-<hash>` | Long honk, high |
-| Updates available | daily: one message when the list of core, plugin and theme updates changes | `wp/health/updates-available` | `updates-<hash>` | Light honk, low |
-| WP-Cron overdue | hourly `honk_hourly` and every 10 min in the dashboard: the same task > 30 min late in two checks ≥ 15 min apart → problem (delivered through a loopback request, since WP-Cron may be dead); recovery when on time | `wp/health/cron` | `cron-overdue-<ts>`, `cron-recovered-<ts>` | Loud honk, normal |
-| Disk almost full | hourly: < 5 % or < 1 GB free → problem, > 10 % and > 2 GB → recovery (only where `disk_free_space()` works) | `wp/health/disk` | `disk-low-<Ymd>`, `disk-ok-<ts>` | Loud honk, normal |
+| Fatal error | `recovery_mode_email` (dashboard and sign-in page; the email is returned unchanged) and `wp_php_error_message` (the "critical error" page, front end included) | `wp/health/fatal` | `fatal-<hash>-<Ymd>` | Long, high |
+| Site Health critical issues | daily `honk_daily`: the direct and `async_direct_test` Site Health tests, as WordPress's own scheduled check; problem when new issues appear, recovery when none are left | `wp/health/site-health` | `site-health-<hash>-<Ymd>` | Long, normal |
+| Automatic update failed | `automatic_updates_complete` | `wp/health/updates-failed` | `autoupdate-failed-<hash>` | Long, high |
+| Updates available | daily: one message when the list of core, plugin and theme updates changes | `wp/health/updates-available` | `updates-<hash>` | Light, low |
+| WP-Cron overdue | hourly `honk_hourly` and every 10 min in the dashboard: the same task > 30 min late in two checks ≥ 15 min apart → problem (delivered through a loopback request, since WP-Cron may be dead); recovery when on time | `wp/health/cron` | `cron-overdue-<ts>`, `cron-recovered-<ts>` | Loud, normal |
+| Disk almost full | hourly: < 5 % or < 1 GB free → problem, > 10 % and > 2 GB → recovery (only where `disk_free_space()` works) | `wp/health/disk` | `disk-low-<Ymd>`, `disk-ok-<ts>` | Loud, normal |
 | **Content and users** | | | | |
-| New registration | `user_register` (not administrators; not WooCommerce customers while that event is on) | `wp/users/registrations` | `user-<id>-registered` | Light honk, low |
-| Comment awaiting moderation | `wp_insert_comment` (approved = 0) | `wp/comments/moderation` | `comment-<id>-pending` | Light honk, low |
-| Post pending review | `transition_post_status` → pending | `wp/posts/pending` | `post-<id>-pending-<modified>` | Light honk, normal |
-| Post published (off) | `transition_post_status` → publish | `wp/posts/published` | `post-<id>-published` | Beep-beep, low |
+| New registration | `user_register` (not administrators; not WooCommerce customers while that event is on) | `wp/users/registrations` | `user-<id>-registered` | Light, low |
+| Comment awaiting moderation | `wp_insert_comment` (approved = 0) | `wp/comments/moderation` | `comment-<id>-pending` | Light, low |
+| Post pending review | `transition_post_status` → pending | `wp/posts/pending` | `post-<id>-pending-<modified>` | Light, normal |
+| Post published (off) | `transition_post_status` → publish | `wp/posts/published` | `post-<id>-published` | Beep, low |
 | **Forms** (title = form name; what people entered only with personal data on, per form plugin in Details) | | | | |
-| Contact Form 7 | `wpcf7_submit` (mail sent or mail failed) | `wp/forms/cf7/<form>` | `form-cf7-<form>-<hash>` | Light honk, normal |
+| Contact Form 7 | `wpcf7_submit` (mail sent or mail failed) | `wp/forms/cf7/<form>` | `form-cf7-<form>-<hash>` | Light, normal |
 | WPForms | `wpforms_process_complete` | `wp/forms/wpforms/<form>` | `form-wpforms-<form>-entry-<id>` | 〃 |
 | Gravity Forms | `gform_after_submission` | `wp/forms/gravityforms/<form>` | `form-gravityforms-<form>-entry-<id>` | 〃 |
 | Elementor Pro Forms | `elementor_pro/forms/new_record` | `wp/forms/elementor/<form>` | `form-elementor-<form>-<request>` | 〃 |
@@ -130,7 +130,7 @@ new administrator Blast. Every event has its own switch, level and priority in S
 Every message also carries `source` (the site's host), `environment` (Settings, or
 `wp_get_environment_type()`: production, staging, development), `channel` (the section:
 `woocommerce`, `security`, `health`, `content`, `forms`), a `category` (taxonomy v1) and a
-link to the related wp-admin screen. Recoveries are sent as Beep-beep and never louder than
+link to the related wp-admin screen. Recoveries are sent as Beep and never louder than
 normal priority.
 
 ### Heartbeat

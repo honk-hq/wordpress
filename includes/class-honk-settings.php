@@ -446,13 +446,13 @@ final class Honk_Settings {
 	public static function severity_label( $severity ) {
 		switch ( $severity ) {
 			case 'info':
-				return __( 'Light honk', 'honk-me' );
+				return __( 'Light', 'honk-me' );
 			case 'success':
-				return __( 'Beep-beep', 'honk-me' );
+				return __( 'Beep', 'honk-me' );
 			case 'warning':
-				return __( 'Loud honk', 'honk-me' );
+				return __( 'Loud', 'honk-me' );
 			case 'error':
-				return __( 'Long honk', 'honk-me' );
+				return __( 'Long', 'honk-me' );
 			case 'critical':
 				return __( 'Blast', 'honk-me' );
 		}

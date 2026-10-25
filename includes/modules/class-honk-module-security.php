@@ -923,7 +923,7 @@ final class Honk_Module_Security {
 	}
 
 	/**
-	 * Reports installed updates (Light honk by default).
+	 * Reports installed updates (Light by default).
 	 *
 	 * @param string   $type  core, plugin or theme.
 	 * @param string[] $items Names with versions.

@@ -183,71 +183,6 @@ class ActionsTest extends Honk_Test_Case {
 		$this->assertSame( array( 'email' => null, 'phone' => null ), Honk_Module_Forms::contact( array() ) );
 	}
 
-	public function test_links_the_api_accepts() {
-		foreach ( array(
-			'https://shop.example.com/wp-admin/post.php?post=1&action=edit',
-			'HTTPS://Shop.example.com',
-			'mailto:jane@example.com',
-			'mailto:jane+shop@example.co.uk?subject=Order%20%231234&body=Hi',
-			'mailto:jane%40example.com?body=a+b&subject=',
-			'mailto:jürgen@exämple.de',
-			'mailto:o.brien@[192.0.2.1]',
-			'MAILTO:jane@example.com',
-			'tel:+15035550142',
-			'tel:+1-503-(555).0142',
-			'tel://+15035550142',
-			'sms:+15035550142',
-			'sms:+15035550142?body=On%20my%20way',
-		) as $url ) {
-			$this->assertSame( $url, Honk_Payload::action_url( $url ), $url );
-		}
-		foreach ( array(
-			'',
-			'http://shop.example.com',
-			'https://user:pw@shop.example.com',
-			'https://shop.example.com/a b',
-			"https://shop.example.com/\u{0085}",
-			'javascript:alert(1)',
-			'data:text/html,hi',
-			'file:///etc/passwd',
-			'whatsapp://send?phone=1',
-			'mailto:',
-			'mailto:jane',
-			'mailto:jane@localhost',
-			'mailto:@example.com',
-			'mailto:.jane@example.com',
-			'mailto:jane..doe@example.com',
-			'https:shop.example.com',
-			'https:///shop.example.com',
-			'https://shop.example.com/%zz',
-			'https://shop.example.com:0',
-			'mailto:jane@example.com,ana@example.com',
-			'mailto:Jane%20<jane@example.com>',
-			'mailto:%22jane%22@example.com',
-			'mailto:jane@example.com?cc=ana@example.com',
-			'mailto:jane@example.com?bcc=ana@example.com',
-			'mailto:jane@example.com?attach=/etc/passwd',
-			'mailto:jane@example.com?to=a@example.com&subject=Hi',
-			'mailto:jane@example.com?subject=100%',
-			'mailto:jane@example.com?subject=a;b',
-			"mailto:jane@example.com?subject=a\u{2003}b",
-			'tel:',
-			'tel:call me',
-			'tel:abc',
-			'tel:1+555',
-			'tel:+1555;ext=12',
-			'tel:%2B1555',
-			'sms:+1555?subject=x',
-			'sms:+1555?Body=x',
-			'sms://+1555',
-			'https://' . str_repeat( 'a', 2048 ) . '.example',
-		) as $url ) {
-			$this->assertSame( '', Honk_Payload::action_url( $url ), $url );
-		}
-		$this->assertSame( '', Honk_Payload::action_url( array( 'https://x.example' ) ) );
-		$this->assertSame( 'tel:+1555', Honk_Payload::action_url( " tel:+1555\n" ), 'trimmed, as the server does' );
-	}
-
 	public function test_email_addresses_and_phone_numbers_become_links_only_when_valid() {
 		$this->assertSame( 'mailto:jane@example.com', Honk_Payload::mailto_url( ' jane@example.com ' ) );
 		$this->assertSame( 'mailto:jane@example.com?subject=R%C3%A9%3A%20%E2%80%9CDevis%E2%80%9D%20%26%20more', Honk_Payload::mailto_url( 'jane@example.com', 'Ré: “Devis” &amp; more' ) );
@@ -270,7 +205,7 @@ class ActionsTest extends Honk_Test_Case {
 		}
 	}
 
-	public function test_buttons_are_normalized_to_the_contract() {
+	public function test_buttons_are_plain_text_in_order_and_the_server_judges_the_links() {
 		$out = Honk_Payload::normalize(
 			array(
 				'message' => 'm',
@@ -279,19 +214,16 @@ class ActionsTest extends Honk_Test_Case {
 					array( 'title' => 'Open', 'url' => 'https://shop.example.com/order/1' ),
 					array( 'title' => '<b>Reply</b> to ' . str_repeat( 'é', 60 ), 'url' => 'mailto:jane@example.com' ),
 					'nope',
-					array( 'title' => 'Run', 'url' => 'javascript:alert(1)' ),
-					array( 'title' => "Bell\u{0007}", 'url' => 'tel:+1555' ),
+					array( 'title' => 'Run', 'url' => ' javascript:alert(1) ' ),
 					array( 'title' => '   ', 'url' => 'tel:+1555' ),
 					array( 'url' => 'tel:+1555' ),
 					array( 'title' => 'Call', 'url' => 'tel:+1555' ),
 					array( 'title' => 'Text', 'url' => 'sms:+1555' ),
-					array( 'title' => 'Fourth', 'url' => 'tel:+1666' ),
 				),
 			)
 		);
-		$this->assertSame( array( 'Reply to ' . str_repeat( 'é', 30 ) . '…', 'Call', 'Text' ), array_column( $out['actions'], 'title' ) );
-		$this->assertSame( 40, mb_strlen( $out['actions'][0]['title'], 'UTF-8' ) );
-		$this->assertSame( array( 'mailto:jane@example.com', 'tel:+1555', 'sms:+1555' ), array_column( $out['actions'], 'url' ) );
+		$this->assertSame( array( 'Reply to ' . str_repeat( 'é', 60 ), 'Run', 'Call', 'Text' ), array_column( $out['actions'], 'title' ), 'the server shortens titles and keeps the first 3 valid buttons' );
+		$this->assertSame( array( 'mailto:jane@example.com', 'javascript:alert(1)', 'tel:+1555', 'sms:+1555' ), array_column( $out['actions'], 'url' ), 'the server leaves out an invalid link with a warning' );
 
 		$this->assertArrayNotHasKey( 'actions', Honk_Payload::normalize( array( 'message' => 'm', 'actions' => array() ) ) );
 		$this->assertArrayNotHasKey( 'actions', Honk_Payload::normalize( array( 'message' => 'm', 'actions' => 'tel:+1555' ) ) );

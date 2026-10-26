@@ -1,6 +1,6 @@
 <?php
 /**
- * Builds the JSON body of POST /v1/messages within the contract's limits.
+ * Builds the JSON body of POST /v1/messages from an event's fields.
  *
  * @package Honk
  */
@@ -8,18 +8,21 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Message normalization: field limits (contracts/openapi.yaml), the 16 KiB body, idempotency keys.
+ * Message building: WordPress text to plain text, the 16 KiB body, idempotency keys, and the
+ * links the modules put on buttons. Field limits are the server's: it delivers first, shortens or
+ * leaves out what doesn't fit, and lists each correction in the 202's warnings, which the
+ * delivery log shows (contracts/API.md §5.1).
  */
 final class Honk_Payload {
 
 	const MAX_BODY_BYTES = 16384;
 
-	const MAX_MESSAGE_BYTES = 8192;
-
-	const MAX_TITLE_CHARS = 160;
-
 	const MAX_KEY_LENGTH = 128;
 
+	/**
+	 * Buttons per message and characters per button title: the plugin's own buttons stay within
+	 * them (Honk_Details).
+	 */
 	const MAX_ACTIONS = 3;
 
 	const MAX_ACTION_TITLE_CHARS = 40;
@@ -29,82 +32,62 @@ final class Honk_Payload {
 	const ELLIPSIS = '…';
 
 	/**
-	 * Character limits (Unicode code points) of the short string fields.
+	 * Short text fields, made one line.
 	 */
-	const LIMITS = array(
-		'source'      => 64,
-		'environment' => 32,
-		'channel'     => 64,
-		'group_key'   => 128,
-	);
-
-	const EVENT_TYPES = array( 'event', 'problem', 'recovery' );
+	const SHORT_FIELDS = array( 'source', 'environment', 'channel', 'group_key' );
 
 	const CATEGORIES = array( 'infrastructure', 'security', 'backups', 'deployments', 'payments', 'customers', 'sales', 'automation', 'personal', 'other' );
 
 	/**
-	 * Normalizes a message: drops unknown or empty fields, trims, truncates and makes sure the
-	 * encoded body fits in 16 KiB.
+	 * Turns an event's fields into a message: WordPress text (tags, entities) becomes plain text,
+	 * empty fields are left out, and the encoded body fits in 16 KiB. Lengths, links and levels are
+	 * left to the server, which corrects them and says so in its warnings.
 	 *
 	 * @param array $fields Message fields (contract names).
-	 * @return array
+	 * @return array Empty when there is neither a message nor a title.
 	 */
 	public static function normalize( array $fields ) {
 		$out = array();
 
 		$title = isset( $fields['title'] ) ? self::plain( $fields['title'], true ) : '';
 		if ( '' !== $title ) {
-			$out['title'] = self::truncate_chars( $title, self::MAX_TITLE_CHARS );
+			$out['title'] = $title;
 		}
 
 		$message = isset( $fields['message'] ) ? self::plain( $fields['message'], false ) : '';
-		if ( '' === $message ) {
-			$message = '' !== $title ? $title : '-';
+		if ( '' === $message && '' === $title ) {
+			return array();
 		}
-		$out['message'] = self::truncate_bytes( $message, self::MAX_MESSAGE_BYTES );
+		// Without text the message repeats its title: servers before deliver-first (2026-10-25)
+		// refuse a message without one.
+		$out['message'] = '' !== $message ? $message : $title;
 
-		$severity = isset( $fields['severity'] ) ? strtolower( (string) $fields['severity'] ) : 'info';
-		$aliases  = array(
-			'light' => 'info',
-			'beep'  => 'success',
-			'loud'  => 'warning',
-			'long'  => 'error',
-			'blast' => 'critical',
-		);
-		if ( isset( $aliases[ $severity ] ) ) {
-			$severity = $aliases[ $severity ];
+		foreach ( array( 'severity', 'priority' ) as $name ) {
+			if ( isset( $fields[ $name ] ) && is_scalar( $fields[ $name ] ) && '' !== (string) $fields[ $name ] ) {
+				$out[ $name ] = (string) $fields[ $name ];
+			}
 		}
-		$out['severity'] = in_array( $severity, Honk_Settings::SEVERITIES, true ) ? $severity : 'info';
 
-		$priority        = isset( $fields['priority'] ) ? strtolower( (string) $fields['priority'] ) : 'normal';
-		$out['priority'] = in_array( $priority, Honk_Settings::PRIORITIES, true ) ? $priority : 'normal';
-
-		foreach ( self::LIMITS as $name => $max ) {
+		foreach ( self::SHORT_FIELDS as $name ) {
 			if ( isset( $fields[ $name ] ) ) {
 				$value = self::plain( $fields[ $name ], true );
 				if ( '' !== $value ) {
-					$out[ $name ] = self::truncate_chars( $value, $max, '' );
+					$out[ $name ] = $value;
 				}
 			}
 		}
 
-		$event_type = isset( $fields['event_type'] ) ? (string) $fields['event_type'] : 'event';
-		if ( in_array( $event_type, self::EVENT_TYPES, true ) && 'event' !== $event_type ) {
-			// Problem and recovery need a group key (contract §7.1).
-			if ( isset( $out['group_key'] ) ) {
-				$out['event_type'] = $event_type;
-			}
+		// "event" is the default; problem and recovery open and close an incident.
+		if ( isset( $fields['event_type'] ) && is_string( $fields['event_type'] ) && '' !== $fields['event_type'] && 'event' !== $fields['event_type'] ) {
+			$out['event_type'] = $fields['event_type'];
 		}
 
-		if ( isset( $fields['category'] ) && in_array( $fields['category'], self::CATEGORIES, true ) ) {
+		if ( isset( $fields['category'] ) && is_string( $fields['category'] ) && '' !== $fields['category'] ) {
 			$out['category'] = $fields['category'];
 		}
 
-		if ( isset( $fields['url'] ) ) {
-			$url = self::https_url( $fields['url'] );
-			if ( '' !== $url ) {
-				$out['url'] = $url;
-			}
+		if ( isset( $fields['url'] ) && is_string( $fields['url'] ) && '' !== trim( $fields['url'] ) ) {
+			$out['url'] = trim( $fields['url'] );
 		}
 
 		if ( isset( $fields['occurred_at'] ) && is_int( $fields['occurred_at'] ) && $fields['occurred_at'] > 0 ) {
@@ -129,8 +112,8 @@ final class Honk_Payload {
 	}
 
 	/**
-	 * Shrinks a message until its JSON body fits in 16 KiB: first the message text, then the
-	 * metadata, then the buttons.
+	 * Shrinks a message until its JSON body fits in 16 KiB, the one limit the server refuses
+	 * instead of correcting: first the message text, then the metadata, then the buttons.
 	 *
 	 * @param array $payload Normalized payload.
 	 * @return array
@@ -140,16 +123,18 @@ final class Honk_Payload {
 		if ( $size <= self::MAX_BODY_BYTES ) {
 			return $payload;
 		}
-		$over = $size - self::MAX_BODY_BYTES;
-		// JSON escaping can make the text longer than its bytes, so shrink with some margin.
-		$target             = max( 64, strlen( $payload['message'] ) - ( $over * 2 ) - 64 );
-		$payload['message'] = self::truncate_bytes( $payload['message'], $target );
-		$size               = strlen( self::encode( $payload ) );
-		$length             = strlen( $payload['message'] );
-		while ( $size > self::MAX_BODY_BYTES && $length > 64 ) {
-			$payload['message'] = self::truncate_bytes( $payload['message'], (int) ( $length * 0.8 ) );
+		if ( isset( $payload['message'] ) ) {
+			$over = $size - self::MAX_BODY_BYTES;
+			// JSON escaping can make the text longer than its bytes, so shrink with some margin.
+			$target             = max( 64, strlen( $payload['message'] ) - ( $over * 2 ) - 64 );
+			$payload['message'] = self::truncate_bytes( $payload['message'], $target );
 			$size               = strlen( self::encode( $payload ) );
 			$length             = strlen( $payload['message'] );
+			while ( $size > self::MAX_BODY_BYTES && $length > 64 ) {
+				$payload['message'] = self::truncate_bytes( $payload['message'], (int) ( $length * 0.8 ) );
+				$size               = strlen( self::encode( $payload ) );
+				$length             = strlen( $payload['message'] );
+			}
 		}
 		if ( $size > self::MAX_BODY_BYTES ) {
 			unset( $payload['metadata'] );
@@ -252,8 +237,9 @@ final class Honk_Payload {
 	}
 
 	/**
-	 * Metadata within the contract: at most 16 keys matching [A-Za-z0-9_.-]{1,64}, scalar values,
-	 * strings of at most 512 characters.
+	 * Metadata as JSON values: keys made of the characters the API accepts ([A-Za-z0-9_.-], others
+	 * become "_", at most 64), plain-text strings, and only scalar values. How many keys and how
+	 * long a value may be is the server's to correct.
 	 *
 	 * @param array $meta Metadata.
 	 * @return array
@@ -261,9 +247,6 @@ final class Honk_Payload {
 	public static function metadata( array $meta ) {
 		$out = array();
 		foreach ( $meta as $key => $value ) {
-			if ( count( $out ) >= 16 ) {
-				break;
-			}
 			$key = preg_replace( '/[^A-Za-z0-9_.-]/', '_', (string) $key );
 			$key = substr( $key, 0, 64 );
 			if ( '' === $key || null === $value ) {
@@ -276,7 +259,7 @@ final class Honk_Payload {
 			} elseif ( is_scalar( $value ) ) {
 				$text = self::plain( $value, true );
 				if ( '' !== $text ) {
-					$out[ $key ] = self::truncate_chars( $text, 512 );
+					$out[ $key ] = $text;
 				}
 			}
 		}
@@ -284,10 +267,10 @@ final class Honk_Payload {
 	}
 
 	/**
-	 * Buttons within the contract (contracts/API.md §13): at most three, each a one-line title of
-	 * at most 40 characters and a link the API accepts (action_url()). Invalid buttons are left
-	 * out, so one can never get the whole message refused, and so is an https button that only
-	 * repeats the message's own link.
+	 * Buttons as the API takes them: a plain-text title and a link, in order. Rows without a title
+	 * or a link are left out, and so is an https button that only repeats the message's own link.
+	 * Which links and how many buttons the API accepts is the server's to correct: it leaves out
+	 * an invalid button with a warning and keeps the others.
 	 *
 	 * @param array  $actions Buttons: title, url.
 	 * @param string $url     The message's link.
@@ -296,15 +279,12 @@ final class Honk_Payload {
 	public static function actions( array $actions, $url = '' ) {
 		$out = array();
 		foreach ( $actions as $action ) {
-			if ( count( $out ) >= self::MAX_ACTIONS ) {
-				break;
-			}
-			if ( ! is_array( $action ) || ! isset( $action['title'], $action['url'] ) ) {
+			if ( ! is_array( $action ) || ! isset( $action['title'], $action['url'] ) || ! is_string( $action['url'] ) ) {
 				continue;
 			}
-			$title = self::truncate_chars( self::plain( $action['title'], true ), self::MAX_ACTION_TITLE_CHARS );
-			$link  = self::action_url( $action['url'] );
-			if ( '' === $title || 1 !== preg_match( '/^[^\p{Cc}\x{2028}\x{2029}]+$/u', $title ) || '' === $link || $link === $url ) {
+			$title = self::plain( $action['title'], true );
+			$link  = trim( $action['url'] );
+			if ( '' === $title || '' === $link || $link === $url ) {
 				continue;
 			}
 			$out[] = array(
@@ -313,98 +293,6 @@ final class Honk_Payload {
 			);
 		}
 		return $out;
-	}
-
-	/**
-	 * A button's link if the API accepts it, else '' (trimmed, at most 2048 bytes, no spaces or
-	 * control characters):
-	 * - https:// as https_url();
-	 * - mailto: exactly one address with a dotted domain, and only subject= and body= after "?";
-	 * - tel: or tel:// a number: + only first, then digits and - . ( ), at least one digit;
-	 * - sms: a number as for tel:, and only body= after "?".
-	 * Every other scheme is refused.
-	 *
-	 * @param mixed $url Link.
-	 * @return string
-	 */
-	public static function action_url( $url ) {
-		$url = is_string( $url ) ? trim( $url ) : '';
-		if ( '' === $url || strlen( $url ) > self::MAX_URL_BYTES || 1 !== preg_match( '/^[^\s\p{Z}\p{Cc}]+$/u', $url ) ) {
-			return '';
-		}
-		$parts = explode( ':', $url, 2 );
-		$rest  = isset( $parts[1] ) ? $parts[1] : '';
-		$split = explode( '?', $rest, 2 );
-		$query = isset( $split[1] ) ? $split[1] : '';
-		switch ( strtolower( $parts[0] ) ) {
-			case 'https':
-				// Valid percent-encoding and no port 0, as the server parses it.
-				$port = wp_parse_url( $url, PHP_URL_PORT );
-				return preg_match( '/%(?![0-9A-Fa-f]{2})/', $url ) || 0 === $port ? '' : self::https_url( $url );
-			case 'mailto':
-				return self::mail_address( $split[0] ) && self::link_query( $query, array( 'subject', 'body' ) ) ? $url : '';
-			case 'tel':
-				return self::phone_number( (string) preg_replace( '#^//#', '', $rest ) ) ? $url : '';
-			case 'sms':
-				return self::phone_number( $split[0] ) && self::link_query( $query, array( 'body' ) ) ? $url : '';
-		}
-		return '';
-	}
-
-	/**
-	 * Whether the (percent-encoded) address of a mailto: link is one plain address with a dotted
-	 * domain, as the server reads it.
-	 *
-	 * @param string $encoded Address.
-	 * @return bool
-	 */
-	private static function mail_address( $encoded ) {
-		if ( preg_match( '/%(?![0-9A-Fa-f]{2})/', $encoded ) ) {
-			return false;
-		}
-		$address = rawurldecode( $encoded );
-		$at      = strrpos( $address, '@' );
-		if ( '' === $address || preg_match( '/[,<>" ]/', $address ) || ! $at ) {
-			return false;
-		}
-		$atext = '[^\s\p{Cc}()<>\[\]:;@\\\\,".]';
-		return 1 === preg_match( '/^' . $atext . '+(?:\.' . $atext . '+)*$/u', substr( $address, 0, $at ) )
-			&& 1 === preg_match( '/^(?:' . $atext . '+(?:\.' . $atext . '+)+|\[[!-Z^-~]*\.[!-Z^-~]*\])$/u', substr( $address, $at + 1 ) );
-	}
-
-	/**
-	 * Whether a tel: or sms: number is one: + only first, then digits and - . ( ), at least one
-	 * digit.
-	 *
-	 * @param string $number Number.
-	 * @return bool
-	 */
-	private static function phone_number( $number ) {
-		return 1 === preg_match( '/^\+?[0-9().-]*[0-9][0-9().-]*$/', $number );
-	}
-
-	/**
-	 * Whether the query of a mailto: or sms: link is valid percent-encoding with only the allowed
-	 * keys ('' is no query).
-	 *
-	 * @param string   $query   Query, without "?".
-	 * @param string[] $allowed Keys.
-	 * @return bool
-	 */
-	private static function link_query( $query, array $allowed ) {
-		if ( preg_match( '/%(?![0-9A-Fa-f]{2})/', $query ) ) {
-			return false;
-		}
-		foreach ( explode( '&', $query ) as $pair ) {
-			if ( '' === $pair ) {
-				continue;
-			}
-			$key = explode( '=', $pair, 2 );
-			if ( false !== strpos( $pair, ';' ) || ! in_array( urldecode( $key[0] ), $allowed, true ) ) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	/**

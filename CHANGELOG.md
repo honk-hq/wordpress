@@ -7,7 +7,22 @@ each entry in short.
 
 ## [Unreleased]
 
+### Added
+- The delivery log shows what Honk! Honk! corrected in an accepted message (the `warnings` of
+  its answer, e.g. `title: truncated, actions[1].url: ignored`), and the test button does too.
+- A refused message's log row names the server's error code and message, every field and the
+  request id (`(request req_…)`).
+
 ### Changed
+- The message builder no longer cuts or checks what the server now corrects itself ("deliver
+  first", contracts/API.md §5.1): title, message, source, environment, channel and group key
+  lengths, the number of metadata keys and their value lengths, button titles, links and count, level and priority
+  values, and the rule that a problem or recovery needs a group key. It still turns WordPress
+  text into plain text, leaves out empty fields, repeats the title when a message has no text,
+  keeps only https links as the message link and keeps the body within 16 KiB.
+- `Honk_Payload::action_url()` is removed; the server leaves out an invalid button with a
+  warning and keeps the others. The plugin's own buttons (`mailto_url()`, `tel_url()`) are
+  unchanged.
 - Level names: the level menus and the preview show the standard name with the Honk name in
   parentheses, from Info (Light) to Critical (Blast), in every language (RO „Eroare (Tuuut)”,
   ES "Error (Piii)", FR « Erreur (Tûûût) », DE „Fehler (Tüüüt)“). They replace the earlier

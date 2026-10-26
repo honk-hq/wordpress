@@ -76,6 +76,47 @@ class ClientTest extends Honk_Test_Case {
 		$this->assertFalse( $r401['retryable'] );
 	}
 
+	public function test_an_accepted_message_carries_the_server_warnings() {
+		$warnings = array(
+			array( 'field' => 'title', 'code' => 'truncated', 'message' => 'longer than 160 characters; shortened' ),
+			array( 'field' => 'actions[1].url', 'code' => 'ignored', 'message' => 'not an https, mailto, tel or sms link; left out' ),
+		);
+		$r        = Honk_Client::interpret( $this->response( 202, array( 'id' => 'msg_01', 'duplicate' => false, 'warnings' => $warnings ) ) );
+		$this->assertTrue( $r['ok'] );
+		$this->assertSame( $warnings, $r['warnings'] );
+		$this->assertSame( 'title: truncated, actions[1].url: ignored', Honk_Client::describe( $r['warnings'] ) );
+
+		$this->assertSame( array(), Honk_Client::interpret( $this->response( 202, array( 'id' => 'msg_02' ) ) )['warnings'], 'an older server sends none' );
+		$this->assertSame( array(), Honk_Client::interpret( $this->response( 202, array( 'id' => 'msg_03', 'warnings' => 'junk' ) ) )['warnings'] );
+		$odd = Honk_Client::interpret( $this->response( 202, array( 'id' => 'msg_04', 'warnings' => array( array( 'field' => 'ttl_seconds', 'code' => 'clamped' ), 'junk' ) ) ) );
+		$this->assertSame( array( array( 'field' => 'ttl_seconds', 'code' => 'clamped', 'message' => '' ) ), $odd['warnings'] );
+	}
+
+	public function test_errors_name_the_code_every_field_and_the_request_id() {
+		$fields = array( array( 'field' => 'event_type', 'code' => 'invalid_enum', 'message' => 'must be one of event, problem, recovery' ) );
+		$r      = Honk_Client::interpret(
+			$this->response(
+				422,
+				array(
+					'error' => array(
+						'code'       => 'validation_failed',
+						'message'    => 'The message is invalid',
+						'fields'     => $fields,
+						'request_id' => 'req_01k6',
+					),
+				)
+			)
+		);
+		$this->assertSame( 'validation_failed', $r['code'] );
+		$this->assertSame( 'The message is invalid (event_type: invalid_enum) (request req_01k6)', $r['message'] );
+		$this->assertSame( $fields, $r['fields'] );
+		$this->assertSame( 'req_01k6', $r['request_id'] );
+
+		$header = Honk_Client::interpret( $this->response( 401, array( 'error' => array( 'code' => 'invalid_key', 'message' => 'Invalid key' ) ), array( 'x-request-id' => 'req_hdr' ) ) );
+		$this->assertSame( 'req_hdr', $header['request_id'] );
+		$this->assertSame( 'Invalid key (request req_hdr)', $header['message'] );
+	}
+
 	public function test_network_errors_are_retryable() {
 		$r = Honk_Client::interpret( new WP_Error( 'http_request_failed', 'cURL error 7: Failed to connect' ) );
 		$this->assertFalse( $r['ok'] );

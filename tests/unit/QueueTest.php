@@ -50,6 +50,37 @@ class QueueTest extends Honk_Test_Case {
 		$this->assertSame( 'k-1', $this->requests[0]['args']['headers']['Idempotency-Key'] );
 	}
 
+	public function test_what_the_server_corrected_is_in_the_delivery_log() {
+		$job               = $this->push();
+		$warnings          = array( array( 'field' => 'title', 'code' => 'truncated', 'message' => 'longer than 160 characters; shortened' ) );
+		$this->responses[] = $this->response( 202, array( 'id' => 'msg_43', 'duplicate' => false, 'warnings' => $warnings ) );
+		Honk_Queue::deliver( $job );
+		$this->assertSame( 'sent', $this->options['honk_log'][0]['status'] );
+		$this->assertSame( $warnings, $this->options['honk_log'][0]['warnings'] );
+	}
+
+	public function test_a_refused_message_logs_the_server_error_with_its_fields_and_request_id() {
+		$job               = $this->push();
+		$this->responses[] = $this->response(
+			422,
+			array(
+				'error' => array(
+					'code'       => 'unknown_field',
+					'message'    => 'unknown field',
+					'fields'     => array( array( 'field' => 'colour', 'code' => 'not_allowed' ) ),
+					'request_id' => 'req_9',
+				),
+			)
+		);
+		Honk_Queue::deliver( $job );
+		$row = $this->options['honk_log'][0];
+		$this->assertSame( 'failed', $row['status'] );
+		$this->assertSame( 422, $row['http'] );
+		$this->assertSame( 'unknown_field', $row['code'] );
+		$this->assertSame( 'unknown field (colour: not_allowed) (request req_9)', $row['detail'] );
+		$this->assertCount( 1, $this->cron, 'not retried' );
+	}
+
 	public function test_retries_reuse_the_same_body_and_key_and_respect_retry_after() {
 		$job               = $this->push();
 		$this->responses[] = $this->response( 429, array( 'error' => array( 'code' => 'overloaded' ) ), array( 'retry-after' => '900' ) );

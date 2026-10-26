@@ -204,6 +204,8 @@ final class Honk_Queue {
 
 		if ( $result['ok'] ) {
 			$fields['message_id'] = $result['id'];
+			// What the server corrected (shortened, left out…): shown in the delivery log.
+			$fields['warnings'] = $result['warnings'];
 			self::finish( $job_id, $job, $result['duplicate'] ? 'duplicate' : 'sent', $fields );
 			return;
 		}

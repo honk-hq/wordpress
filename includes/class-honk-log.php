@@ -21,7 +21,7 @@ final class Honk_Log {
 	 *
 	 * @param string $job_id Job id.
 	 * @param array  $fields Fields to set: time, event, title, status, http, code, detail,
-	 *                       attempts, message_id, pii.
+	 *                       attempts, message_id, warnings (what the server corrected), pii.
 	 * @return void
 	 */
 	public static function record( $job_id, array $fields ) {
@@ -50,6 +50,7 @@ final class Honk_Log {
 						'detail'     => '',
 						'attempts'   => 0,
 						'message_id' => '',
+						'warnings'   => array(),
 						'pii'        => false,
 					),
 					$fields

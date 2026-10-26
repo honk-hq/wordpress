@@ -38,11 +38,18 @@ WordPress hook ─▶ module (an outline of the message, in the notification lan
 - **Idempotency:** every event has a stable key, sent as `Idempotency-Key: wp-<site id>-<key>`
   (e.g. `wp-3f9a1c2e-order-1234-new`), reused on every retry. The same key is also remembered
   locally for 24 h, so a hook that fires twice never queues twice.
-- **Limits** (`contracts/openapi.yaml`): title ≤ 160 code points, message ≤ 8 192 bytes,
-  metadata ≤ 16 keys, the whole body ≤ 16 KiB (the message is shortened first), `url` only when
-  https (otherwise the link goes to `metadata.link`), at most 3 `actions` with titles ≤ 40 code
-  points and links the server accepts (`Honk_Payload::action_url()`; an invalid button is left
-  out, never the message).
+- **The message** (`Honk_Payload::normalize()`): WordPress text becomes plain text (tags
+  stripped, entities decoded; title, source, environment, channel and group key on one line),
+  empty fields are left out, a message without text repeats its title, `url` only when https
+  (`Honk_Notifier::with_link()`; otherwise the link goes to `metadata.link`), and the whole body
+  stays within 16 KiB (the message is shortened first). Field limits are the server's: it
+  **delivers first**, shortening what is too long and leaving out an invalid button or value
+  instead of refusing the message (`contracts/API.md` §5.1).
+- **Delivery log** (Settings → Honk! Honk! → Delivery log): each row shows the HTTP status, the
+  server's error code and message with every field and the request id (`… (event_type:
+  invalid_enum) (request req_…)`), and for an accepted message what the server corrected, from
+  the `202`'s `warnings` (`title: truncated, actions[1].url: ignored`). The test button shows
+  the same.
 - **User-Agent** `honk-wordpress/<version> (+https://honk-honk.app)`.
 
 ## What each notification says (Details)

@@ -39,7 +39,7 @@ final class Honk_Client {
 	 * @param string $body            JSON body.
 	 * @param string $idempotency_key Idempotency-Key header.
 	 * @param array  $options         Optional: timeout (seconds), blocking (bool).
-	 * @return array{ok: bool, status: int, code: string, message: string, id: string, duplicate: bool, retryable: bool, retry_after: int, ms: int}
+	 * @return array{ok: bool, status: int, code: string, message: string, id: string, duplicate: bool, retryable: bool, retry_after: int, ms: int, warnings: array, fields: array, request_id: string}
 	 */
 	public static function send( $server, $key, $body, $idempotency_key, array $options = array() ) {
 		$started  = microtime( true );
@@ -92,29 +92,29 @@ final class Honk_Client {
 			$result              = self::result( true, $status, 'accepted', '', $ms );
 			$result['id']        = isset( $data['id'] ) ? (string) $data['id'] : '';
 			$result['duplicate'] = ! empty( $data['duplicate'] );
+			$result['warnings']  = self::problems( isset( $data['warnings'] ) ? $data['warnings'] : array() );
 			return $result;
 		}
 
-		$error   = isset( $data['error'] ) && is_array( $data['error'] ) ? $data['error'] : array();
-		$code    = isset( $error['code'] ) ? (string) $error['code'] : 'http_' . $status;
-		$message = isset( $error['message'] ) ? (string) $error['message'] : '';
-		if ( ! empty( $error['fields'] ) && is_array( $error['fields'] ) ) {
-			$fields = array();
-			foreach ( $error['fields'] as $field ) {
-				if ( is_array( $field ) && isset( $field['field'], $field['code'] ) ) {
-					$fields[] = $field['field'] . ': ' . $field['code'];
-				}
-			}
-			if ( $fields ) {
-				$message .= ' (' . implode( ', ', $fields ) . ')';
-			}
+		$error      = isset( $data['error'] ) && is_array( $data['error'] ) ? $data['error'] : array();
+		$code       = isset( $error['code'] ) ? (string) $error['code'] : 'http_' . $status;
+		$message    = isset( $error['message'] ) ? (string) $error['message'] : '';
+		$fields     = self::problems( isset( $error['fields'] ) ? $error['fields'] : array() );
+		$request_id = isset( $error['request_id'] ) ? (string) $error['request_id'] : (string) wp_remote_retrieve_header( $response, 'x-request-id' );
+		if ( $fields ) {
+			$message .= ' (' . self::describe( $fields ) . ')';
 		}
 		if ( '' === $message && $status >= 300 && $status < 400 ) {
 			$code    = 'redirect';
 			$message = 'The server replied with a redirect, which isn’t followed. Check the server URL.';
 		}
+		if ( '' !== $request_id ) {
+			$message = trim( $message . ' (request ' . $request_id . ')' );
+		}
 
-		$result = self::result( false, $status, $code, $message, $ms );
+		$result               = self::result( false, $status, $code, $message, $ms );
+		$result['fields']     = $fields;
+		$result['request_id'] = $request_id;
 
 		// A replay with a different body: the event was accepted before, so nothing is lost.
 		if ( 409 === $status && 'idempotency_conflict' === $code ) {
@@ -128,6 +128,43 @@ final class Honk_Client {
 			$result['retry_after'] = self::retry_after( wp_remote_retrieve_header( $response, 'retry-after' ) );
 		}
 		return $result;
+	}
+
+	/**
+	 * The server's field list of an error (error.fields) or of an accepted message (warnings):
+	 * field, code and message of each, as strings.
+	 *
+	 * @param mixed $items List from the response.
+	 * @return array<int, array{field: string, code: string, message: string}>
+	 */
+	public static function problems( $items ) {
+		$out = array();
+		foreach ( is_array( $items ) ? $items : array() as $item ) {
+			if ( is_array( $item ) && isset( $item['field'], $item['code'] ) ) {
+				$out[] = array(
+					'field'   => (string) $item['field'],
+					'code'    => (string) $item['code'],
+					'message' => isset( $item['message'] ) ? (string) $item['message'] : '',
+				);
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * A field list for the delivery log: "title: truncated, actions[1].url: ignored".
+	 *
+	 * @param array $items problems().
+	 * @return string
+	 */
+	public static function describe( array $items ) {
+		$parts = array();
+		foreach ( $items as $item ) {
+			if ( is_array( $item ) && isset( $item['field'], $item['code'] ) ) {
+				$parts[] = $item['field'] . ': ' . $item['code'];
+			}
+		}
+		return implode( ', ', $parts );
 	}
 
 	/**
@@ -172,6 +209,9 @@ final class Honk_Client {
 			'retryable'   => false,
 			'retry_after' => 0,
 			'ms'          => $ms,
+			'warnings'    => array(),
+			'fields'      => array(),
+			'request_id'  => '',
 		);
 	}
 

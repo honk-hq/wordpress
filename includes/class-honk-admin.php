@@ -796,7 +796,8 @@ final class Honk_Admin {
 	}
 
 	/**
-	 * The details column: HTTP status, error, attempts, message id.
+	 * The details column: HTTP status, error (with the request id), attempts, message id, and what
+	 * the server corrected in an accepted message.
 	 *
 	 * @param array $row Log row.
 	 * @return string
@@ -814,6 +815,9 @@ final class Honk_Admin {
 		}
 		if ( ! empty( $row['message_id'] ) ) {
 			$parts[] = (string) $row['message_id'];
+		}
+		if ( ! empty( $row['warnings'] ) && is_array( $row['warnings'] ) ) {
+			$parts[] = Honk_Client::describe( $row['warnings'] );
 		}
 		if ( ! empty( $row['attempts'] ) && (int) $row['attempts'] > 1 ) {
 			/* translators: %d: number of attempts */
@@ -890,16 +894,17 @@ final class Honk_Admin {
 		Honk_Client::server_config( $server, true );
 
 		if ( $result['ok'] ) {
-			wp_send_json_success(
-				array(
-					'message' => sprintf(
-						/* translators: 1: message id, 2: duration in milliseconds */
-						__( 'It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms).', 'honk-me' ),
-						$result['id'],
-						$result['ms']
-					),
-				)
+			$message = sprintf(
+				/* translators: 1: message id, 2: duration in milliseconds */
+				__( 'It works. The test notification should be in your Honk! Honk! inbox now (ID %1$s, %2$d ms).', 'honk-me' ),
+				$result['id'],
+				$result['ms']
 			);
+			if ( ! empty( $result['warnings'] ) ) {
+				// What the server corrected, as the delivery log shows it.
+				$message .= ' ' . Honk_Client::describe( $result['warnings'] );
+			}
+			wp_send_json_success( array( 'message' => $message ) );
 		}
 		if ( 0 === $result['status'] ) {
 			/* translators: 1: server URL, 2: error message */

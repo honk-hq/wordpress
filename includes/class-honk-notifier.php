@@ -69,7 +69,7 @@ final class Honk_Notifier {
 		 * @param string $event_id Event id.
 		 */
 		$payload = apply_filters( 'honk_message', $payload, $event_id );
-		if ( ! is_array( $payload ) || empty( $payload['message'] ) ) {
+		if ( ! is_array( $payload ) || ( empty( $payload['message'] ) && empty( $payload['title'] ) ) ) {
 			return false;
 		}
 

@@ -643,29 +643,6 @@ final class Honk_Module_Woocommerce {
 	 */
 
 	/**
-	 * "Order #1234 · €84.00 · 2 items" (no personal data).
-	 *
-	 * @param WC_Order $order Order.
-	 * @return string
-	 */
-	public static function order_summary( $order ) {
-		$data     = array(
-			'number' => (string) $order->get_order_number(),
-			'total'  => Honk_Notifier::money( (float) $order->get_total(), $order->get_currency() ),
-			'count'  => (int) $order->get_item_count(),
-		);
-		$composed = Honk_Details::compose(
-			'',
-			array( 'lines' => array( self::summary_line( $data ) ) ),
-			array(
-				'total' => true,
-				'count' => true,
-			)
-		);
-		return $composed['message'];
-	}
-
-	/**
 	 * What a message can say about an order, as plain text. Products, the billing city and the
 	 * customer's note are read only when the event shows them.
 	 *

@@ -252,18 +252,4 @@ class EventsFlowTest extends Honk_Test_Case {
 		$this->assertSame( array( 'warning', 'error', 'success' ), array_column( $payloads, 'severity' ) );
 		$this->assertSame( array( 'woo/stock/12' ), array_values( array_unique( array_column( $payloads, 'group_key' ) ) ) );
 	}
-
-	public function test_order_summary_has_no_personal_data() {
-		Functions\when( 'wc_price' )->alias(
-			function ( $amount ) {
-				return '<span class="amount"><bdi><span>&euro;</span>' . number_format( $amount, 2 ) . '</bdi></span>';
-			}
-		);
-		$order = Mockery::mock( 'WC_Order' );
-		$order->shouldReceive( 'get_item_count' )->andReturn( 2 );
-		$order->shouldReceive( 'get_order_number' )->andReturn( '1234' );
-		$order->shouldReceive( 'get_total' )->andReturn( '84.00' );
-		$order->shouldReceive( 'get_currency' )->andReturn( 'EUR' );
-		$this->assertSame( 'Order #1234 · €84.00 · 2 items', Honk_Module_Woocommerce::order_summary( $order ) );
-	}
 }

@@ -159,17 +159,6 @@ final class Honk_Notifier {
 	}
 
 	/**
-	 * Admin URL for a message link (only https links are sent as the message URL; others go into
-	 * the metadata).
-	 *
-	 * @param string $path Path relative to wp-admin.
-	 * @return string
-	 */
-	public static function admin_link( $path ) {
-		return admin_url( $path );
-	}
-
-	/**
 	 * The link that approves a comment or review: WordPress's own from its moderation email, which
 	 * asks to confirm in the dashboard. '' unless the dashboard is on https (buttons need https).
 	 *

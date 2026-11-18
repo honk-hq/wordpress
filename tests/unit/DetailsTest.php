@@ -226,7 +226,7 @@ class DetailsTest extends Honk_Test_Case {
 				$posted[ $event ][ $action ] = '0';
 			}
 		}
-		$golden = json_decode( file_get_contents( __DIR__ . '/../fixtures/messages-0.1.0.json' ), true );
+		$golden = $this->golden();
 		foreach ( array( 'off' => false, 'on' => true ) as $k => $pii ) {
 			$this->options['honk_settings'] = array( 'include_pii' => $pii );
 			Honk_Settings::flush();

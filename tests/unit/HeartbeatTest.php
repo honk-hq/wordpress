@@ -220,4 +220,18 @@ class HeartbeatTest extends Honk_Test_Case {
 		$this->assertCount( 0, $this->cron );
 		$this->assertFalse( $this->options['honk_heartbeat_scheduled'] );
 	}
+
+	public function test_a_deactivation_then_a_reactivation_schedules_it_again() {
+		Honk_Heartbeat::sync_schedule();
+		$this->assertCount( 1, $this->cron );
+
+		Honk_Plugin::deactivate();
+		$this->assertCount( 0, $this->cron, 'deactivation unschedules the check-in' );
+		$this->assertArrayNotHasKey( 'honk_heartbeat_scheduled', $this->options, 'and forgets that it was scheduled' );
+
+		// The first request after the reactivation (init) schedules it again.
+		Honk_Heartbeat::sync_schedule();
+		$this->assertSame( array( 'honk_heartbeat' ), array_column( $this->cron, 'hook' ) );
+		$this->assertTrue( $this->options['honk_heartbeat_scheduled'] );
+	}
 }

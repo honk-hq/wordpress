@@ -586,6 +586,24 @@ trait Honk_Scenarios {
 	}
 
 	/**
+	 * What the default messages must be: tests/fixtures/messages-0.1.0.json, recorded from the 0.1.0
+	 * modules, with the one deliberate change since then: in 0.3.0 an administrator's username is
+	 * personal data, so with personal data off these events no longer name who did it, and with it
+	 * on a message that names them is flagged as personal in the delivery log
+	 * (tests/fixtures/messages-0.3.0-privacy.json, recorded from 0.3.0 for those events only).
+	 *
+	 * @return array
+	 */
+	protected function golden() {
+		$golden  = json_decode( file_get_contents( __DIR__ . '/fixtures/messages-0.1.0.json' ), true );
+		$privacy = json_decode( file_get_contents( __DIR__ . '/fixtures/messages-0.3.0-privacy.json' ), true );
+		foreach ( $privacy as $event => $runs ) {
+			$golden[ $event ] = $runs + $golden[ $event ];
+		}
+		return $golden;
+	}
+
+	/**
 	 * Runs one scenario with personal data off or on and returns what was queued: the payloads
 	 * and whether each job was flagged as containing personal data.
 	 *
@@ -599,7 +617,11 @@ trait Honk_Scenarios {
 		$this->configure( array_merge( array( 'include_pii' => $pii ), $extra ) );
 		$this->reset_modules();
 		$scenarios = $this->scenarios();
+		// A message sent during the request (a fatal error) meets a busy server, so it stays queued
+		// for a retry and is read back like the others.
+		$this->responses = array_fill( 0, 4, $this->response( 503, array( 'error' => array( 'code' => 'unavailable' ) ) ) );
 		call_user_func( $scenarios[ $name ], $this );
+		$this->responses = array();
 		$out = array();
 		foreach ( $this->jobs() as $job ) {
 			$out[] = array(

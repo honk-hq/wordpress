@@ -180,7 +180,7 @@ final class Honk_Heartbeat {
 	 * @return array Client result.
 	 */
 	private static function post( array $fields ) {
-		$response = wp_remote_post(
+		$response = Honk_Client::remote_post(
 			Honk_Settings::server_url() . self::ENDPOINT,
 			array(
 				'timeout'     => Honk_Client::TIMEOUT,

@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Honk! Honk! 0.1.0\n"
+"Project-Id-Version: Honk! Honk! 0.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/honk-hq/wordpress/issues\n"
 "Last-Translator: Honk! Honk! <sdk@honk-honk.app>\n"
 "Language-Team: Honk! Honk! <sdk@honk-honk.app>\n"
@@ -66,8 +66,8 @@ msgid "This site uses Honk! Honk! to notify the site owner about activity on the
 msgstr "Este sitio usa Honk! Honk! para avisar a su propietario de lo que ocurre en él, como pedidos, formularios enviados o alertas de seguridad. Estas notificaciones se envían al servicio Honk! Honk! (honk-honk.app) o a otro servidor de Honk! Honk! que haya elegido el propietario del sitio."
 
 #: includes/class-honk-admin.php:147
-msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device."
-msgstr "De forma predeterminada, estas notificaciones no contienen datos personales: de cada pedido solo se indican el número, el total y la cantidad de artículos. Si el propietario del sitio activa «Incluir nombres y correos electrónicos de los clientes», las notificaciones también pueden incluir, según lo que haya elegido para cada evento, el nombre, la dirección de correo electrónico y el número de teléfono de un cliente, de un usuario o de quien comenta, la ciudad y el país de facturación de un cliente, el texto de los comentarios, las valoraciones y las notas de los pedidos, lo que se haya escrito en los formularios y la dirección IP de un administrador que accede desde un dispositivo nuevo."
+msgid "By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, the username of an administrator who signs in or makes a change, and the IP address of an administrator who signs in from a new device."
+msgstr "De forma predeterminada, estas notificaciones no contienen datos personales: de cada pedido solo se indican el número, el total y la cantidad de artículos. Si el propietario del sitio activa «Incluir nombres y correos electrónicos de los clientes», las notificaciones también pueden incluir, según lo que haya elegido para cada evento, el nombre, la dirección de correo electrónico y el número de teléfono de un cliente, de un usuario o de quien comenta, la ciudad y el país de facturación de un cliente, el texto de los comentarios, las valoraciones y las notas de los pedidos, lo que se haya escrito en los formularios, el nombre de usuario de un administrador que accede o hace un cambio y la dirección IP de un administrador que accede desde un dispositivo nuevo."
 
 #. translators: %s: link to the Honk! Honk! privacy policy
 #: includes/class-honk-admin.php:150
@@ -398,8 +398,8 @@ msgid "Sorry, you are not allowed to do that."
 msgstr "Lo siento, no tienes permisos para hacer eso."
 
 #: includes/class-honk-admin.php:860
-msgid "The server URL must start with https:// (http:// works only for local addresses)."
-msgstr "La URL del servidor debe empezar por https:// (http:// solo funciona con direcciones locales)."
+msgid "The server URL must start with https://. A local or private address works only with HONK_ALLOW_LOCAL_SERVER in wp-config.php."
+msgstr "La URL del servidor debe empezar por https://. Una dirección local o privada solo funciona con HONK_ALLOW_LOCAL_SERVER en wp-config.php."
 
 #: includes/class-honk-admin.php:863
 msgid "Enter your API key first."
@@ -1171,8 +1171,8 @@ msgid "Example Plugin"
 msgstr "Plugin de ejemplo"
 
 #: includes/class-honk-settings.php:340
-msgid "The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept."
-msgstr "La URL del servidor debe empezar por https:// (http:// solo funciona con direcciones locales). Se ha mantenido la URL anterior."
+msgid "The server URL must start with https://. A local or private address works only with HONK_ALLOW_LOCAL_SERVER in wp-config.php. Your previous URL was kept."
+msgstr "La URL del servidor debe empezar por https://. Una dirección local o privada solo funciona con HONK_ALLOW_LOCAL_SERVER en wp-config.php. Se ha mantenido la URL anterior."
 
 #: includes/class-honk-settings.php:351
 msgid "That doesn’t look like a Honk! Honk! API key (they start with honk_). Your previous key was kept."
@@ -1860,3 +1860,9 @@ msgstr "Ingresos: %s"
 #, php-format
 msgid "Refunded: %s"
 msgstr "Reembolsado: %s"
+
+msgid "Only a network administrator can change the server."
+msgstr "Solo un administrador de la red puede cambiar el servidor."
+
+msgid "an administrator"
+msgstr "un administrador"

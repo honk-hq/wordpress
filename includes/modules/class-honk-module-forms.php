@@ -18,6 +18,12 @@ final class Honk_Module_Forms {
 	const SKIP_TYPES = array( 'password', 'hidden', 'captcha', 'recaptcha', 'hcaptcha', 'turnstile', 'cloudflare_turnstile', 'honeypot', 'submit', 'html', 'divider', 'pagebreak', 'page-break', 'section', 'step', 'quiz', 'acceptance', 'gdpr', 'gdpr-checkbox', 'gdpr_agreement', 'consent', 'signature', 'spam', 'akismet', 'internal_information', 'custom_html', 'shortcode' );
 
 	/**
+	 * Posted names that are spam protection, never a visitor's answer: captcha tokens and the
+	 * like, which some form plugins post next to the form's own fields.
+	 */
+	const SKIP_NAMES = array( 'g-recaptcha-response', 'h-captcha-response', 'cf-turnstile-response', 'frc-captcha-solution', '_wpcf7_recaptcha_response', 'wpcf7_recaptcha_response', 'cf7sr-recaptcha', 'cf7sr_recaptcha', 'akismet_comment_nonce' );
+
+	/**
 	 * Characters per field value in a message.
 	 */
 	const MAX_VALUE_CHARS = 500;
@@ -81,6 +87,10 @@ final class Honk_Module_Forms {
 		}
 		$fields = array();
 		foreach ( (array) $submission->get_posted_data() as $name => $value ) {
+			// Only the form's own fields: other plugins post their tokens here too (a captcha's).
+			if ( ! empty( $types ) && ! isset( $types[ $name ] ) ) {
+				continue;
+			}
 			$fields[] = array(
 				'key'   => (string) $name,
 				'label' => self::humanize( (string) $name ),
@@ -245,6 +255,14 @@ final class Honk_Module_Forms {
 	public static function report( $event_id, $plugin, $form_id, $title, array $rows, $entry ) {
 		$form_id = preg_replace( '/[^A-Za-z0-9_-]/', '', $form_id );
 		$form_id = '' !== $form_id ? $form_id : '0';
+		$rows    = array_values(
+			array_filter(
+				$rows,
+				function ( $row ) {
+					return ! isset( $row['key'] ) || ! in_array( strtolower( (string) $row['key'] ), self::SKIP_NAMES, true );
+				}
+			)
+		);
 		if ( '' === $entry ) {
 			$entry = self::request_id();
 		}

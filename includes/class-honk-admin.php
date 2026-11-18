@@ -144,7 +144,7 @@ final class Honk_Admin {
 			return;
 		}
 		$text = '<p>' . esc_html__( 'This site uses Honk! Honk! to notify the site owner about activity on the site, such as orders, form submissions and security alerts. These notifications are sent to the Honk! Honk! service (honk-honk.app) or to another Honk! Honk! server the site owner chose.', 'honk-me' ) . '</p>'
-			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, and the IP address of an administrator who signs in from a new device.', 'honk-me' ) . '</p>'
+			. '<p>' . esc_html__( 'By default, these notifications contain no personal data: an order is described only by its number, total and number of items. If the site owner turns on “Include customer names and emails,” notifications can also include, depending on what the site owner chose for each event, the name, email address and phone number of a customer, user or commenter, a customer’s billing city and country, the text of comments, reviews and order notes, what was entered in forms, the username of an administrator who signs in or makes a change, and the IP address of an administrator who signs in from a new device.', 'honk-me' ) . '</p>'
 			. '<p>' . sprintf(
 				/* translators: %s: link to the Honk! Honk! privacy policy */
 				esc_html__( 'Honk! Honk! privacy policy: %s', 'honk-me' ),
@@ -212,8 +212,13 @@ final class Honk_Admin {
 				<tr>
 					<th scope="row"><label for="honk-server-url"><?php esc_html_e( 'Server URL', 'honk-me' ); ?></label></th>
 					<td>
-						<input type="url" id="honk-server-url" class="regular-text code" name="<?php echo esc_attr( $opt ); ?>[server_url]" value="<?php echo esc_attr( $s['server_url'] ); ?>" placeholder="<?php echo esc_attr( Honk_Settings::DEFAULT_SERVER ); ?>">
-						<p class="description"><?php esc_html_e( 'Leave this as https://honk-honk.app unless you run your own Honk! Honk! server.', 'honk-me' ); ?></p>
+						<?php if ( Honk_Settings::can_change_server() ) : ?>
+							<input type="url" id="honk-server-url" class="regular-text code" name="<?php echo esc_attr( $opt ); ?>[server_url]" value="<?php echo esc_attr( $s['server_url'] ); ?>" placeholder="<?php echo esc_attr( Honk_Settings::DEFAULT_SERVER ); ?>">
+							<p class="description"><?php esc_html_e( 'Leave this as https://honk-honk.app unless you run your own Honk! Honk! server.', 'honk-me' ); ?></p>
+						<?php else : ?>
+							<input type="url" id="honk-server-url" class="regular-text code" value="<?php echo esc_attr( $s['server_url'] ); ?>" readonly>
+							<p class="description"><?php esc_html_e( 'Only a network administrator can change the server.', 'honk-me' ); ?></p>
+						<?php endif; ?>
 					</td>
 				</tr>
 				<tr>
@@ -855,13 +860,13 @@ final class Honk_Admin {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
 			wp_send_json_error( array( 'message' => __( 'Sorry, you are not allowed to do that.', 'honk-me' ) ), 403 );
 		}
-		$server = isset( $_POST['server_url'] ) ? untrailingslashit( esc_url_raw( trim( sanitize_text_field( wp_unslash( $_POST['server_url'] ) ) ), array( 'https', 'http' ) ) ) : '';
+		$server = isset( $_POST['server_url'] ) && Honk_Settings::can_change_server() ? untrailingslashit( esc_url_raw( trim( sanitize_text_field( wp_unslash( $_POST['server_url'] ) ) ), array( 'https', 'http' ) ) ) : '';
 		$key    = isset( $_POST['api_key'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) ) : '';
 		$server = '' !== $server ? $server : Honk_Settings::server_url();
 		$key    = '' !== $key ? $key : Honk_Settings::api_key();
 
 		if ( ! Honk_Settings::is_valid_server_url( $server ) ) {
-			wp_send_json_error( array( 'message' => __( 'The server URL must start with https:// (http:// works only for local addresses).', 'honk-me' ) ) );
+			wp_send_json_error( array( 'message' => __( 'The server URL must start with https://. A local or private address works only with HONK_ALLOW_LOCAL_SERVER in wp-config.php.', 'honk-me' ) ) );
 		}
 		if ( '' === $key ) {
 			wp_send_json_error( array( 'message' => __( 'Enter your API key first.', 'honk-me' ) ) );

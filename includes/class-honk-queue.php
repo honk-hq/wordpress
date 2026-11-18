@@ -39,6 +39,9 @@ final class Honk_Queue {
 
 	const RUN_ACTION = 'honk_run';
 
+	/** Seconds a delivery made right away (a fatal error) waits for the server. */
+	const DELIVER_TIMEOUT = 2;
+
 	/**
 	 * Whether a WP-Cron event was scheduled in this request (spawn WP-Cron at shutdown).
 	 *
@@ -87,7 +90,9 @@ final class Honk_Queue {
 	 * @param array  $payload  Normalized payload (Honk_Payload::normalize()).
 	 * @param string $key      Idempotency key.
 	 * @param array  $options  pii (bool): the text may contain personal data; now (bool): start
-	 *                         delivery through a loopback request instead of waiting for WP-Cron.
+	 *                         delivery through a loopback request instead of waiting for WP-Cron;
+	 *                         deliver (bool): send it right here, waiting at most DELIVER_TIMEOUT
+	 *                         (a fatal error: the site's loopback and WP-Cron may be down too).
 	 * @return string|false
 	 */
 	public static function push( $event_id, array $payload, $key, array $options = array() ) {
@@ -118,6 +123,11 @@ final class Honk_Queue {
 
 		self::$pushed[] = $job_id;
 		if ( self::$sync ) {
+			return $job_id;
+		}
+		if ( ! empty( $options['deliver'] ) ) {
+			// A failed attempt schedules its retry as usual.
+			self::deliver( $job_id, self::DELIVER_TIMEOUT );
 			return $job_id;
 		}
 		if ( ! empty( $options['now'] ) ) {
@@ -179,10 +189,11 @@ final class Honk_Queue {
 	/**
 	 * Delivers one job (the scheduled action's callback).
 	 *
-	 * @param string $job_id Job id.
+	 * @param string     $job_id  Job id.
+	 * @param float|null $timeout Seconds to wait for the server (default: the client's).
 	 * @return void
 	 */
-	public static function deliver( $job_id ) {
+	public static function deliver( $job_id, $timeout = null ) {
 		$job_id = preg_replace( '/[^a-f0-9]/', '', strtolower( (string) $job_id ) );
 		$job    = get_option( self::JOB_PREFIX . $job_id );
 		if ( '' === $job_id || ! is_array( $job ) || empty( $job['body'] ) ) {
@@ -194,7 +205,7 @@ final class Honk_Queue {
 		}
 
 		++$job['attempts'];
-		$result = Honk_Client::send( Honk_Settings::server_url(), Honk_Settings::api_key(), $job['body'], $job['key'] );
+		$result = Honk_Client::send( Honk_Settings::server_url(), Honk_Settings::api_key(), $job['body'], $job['key'], null === $timeout ? array() : array( 'timeout' => (float) $timeout ) );
 		$fields = array(
 			'http'     => $result['status'],
 			'code'     => $result['code'],
@@ -277,11 +288,14 @@ final class Honk_Queue {
 
 	/**
 	 * Daily: reschedules jobs whose scheduled action was lost (e.g. WooCommerce, and with it
-	 * Action Scheduler, was deactivated) and drops jobs that are too old to send.
+	 * Action Scheduler, was deactivated) and drops jobs that are too old to send. On activation
+	 * (`$all`), every job without a scheduled action goes back on schedule at its own time, a
+	 * retry that was not due yet included.
 	 *
+	 * @param bool $all Reschedule every unscheduled job, not only the overdue ones.
 	 * @return void
 	 */
-	public static function maintenance() {
+	public static function maintenance( $all = false ) {
 		$index = get_option( self::INDEX_OPTION, array() );
 		if ( ! is_array( $index ) ) {
 			delete_option( self::INDEX_OPTION );
@@ -297,8 +311,9 @@ final class Honk_Queue {
 				self::finish( $job_id, $job, 'failed', array( 'code' => 'expired' ) );
 				continue;
 			}
-			if ( (int) $job['next'] < time() - 15 * MINUTE_IN_SECONDS && ! self::is_scheduled( $job_id ) ) {
-				self::schedule( $job_id, 0 );
+			$overdue = (int) $job['next'] < time() - 15 * MINUTE_IN_SECONDS;
+			if ( ( $all || $overdue ) && ! self::is_scheduled( $job_id ) ) {
+				self::schedule( $job_id, (int) $job['next'] - time() );
 			}
 		}
 	}

@@ -125,6 +125,19 @@ abstract class Honk_Test_Case extends \PHPUnit\Framework\TestCase {
 				return $self->responses ? array_shift( $self->responses ) : $self->response( 202, array( 'id' => 'msg_1', 'status' => 'accepted', 'duplicate' => false ) );
 			}
 		);
+		// The server is reached through wp_safe_remote_* unless a local server is allowed: the same fake.
+		Functions\when( 'wp_safe_remote_post' )->alias(
+			function ( $url, $args ) {
+				return wp_remote_post( $url, $args );
+			}
+		);
+		Functions\when( 'wp_safe_remote_get' )->alias(
+			function ( $url, $args = array() ) {
+				return wp_remote_get( $url, $args );
+			}
+		);
+		Functions\when( 'is_multisite' )->justReturn( false );
+		Functions\when( 'is_super_admin' )->justReturn( false );
 		Functions\when( 'wp_remote_retrieve_response_code' )->alias(
 			function ( $response ) {
 				return is_array( $response ) && isset( $response['response']['code'] ) ? $response['response']['code'] : '';

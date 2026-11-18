@@ -7,13 +7,41 @@ each entry in short.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-19
+
+The first release from this repository on WordPress.org, where the listing `honk-me` already had
+0.1.0 and 0.2.0 under the earlier name "Honk Me". It follows 0.2.0, so sites on it are offered
+the update; the [0.1.0] below is this repository's own first version, never published.
+
+### Security
+- The server URL setting and the test button can no longer reach the site's own network: every
+  request to the Honk! Honk! server goes through `wp_safe_remote_*`, and a local or private
+  address (localhost, `.local`/`.internal` names, private and reserved IPs) is accepted only with
+  `define( 'HONK_ALLOW_LOCAL_SERVER', true )` in wp-config.php or the `honk_allow_local_server`
+  filter. On a multisite network only a network administrator can change the server URL.
+
 ### Added
 - The delivery log shows what Honk! Honk! corrected in an accepted message (the `warnings` of
   its answer, e.g. `title: truncated, actions[1].url: ignored`), and the test button does too.
 - A refused message's log row names the server's error code and message, every field and the
   request id (`(request req_…)`).
 
+### Fixed
+- The heartbeat stopped for good after a deactivation and a reactivation (the "scheduled" flag
+  outlived the unscheduled check-in); retries that were waiting resume at their own time on
+  activation, not at the next daily clean-up.
+- A fatal error is delivered during the failing request (at most 2 s), not queued behind a
+  loopback and WP-Cron that fatal too.
+- Contact Form 7 sends only the form's own fields; captcha tokens (`g-recaptcha-response`,
+  `h-captcha-response`, `cf-turnstile-response` and the like) are never sent, from any form plugin.
+- A restock closes the problem that is open, even when the level went through a switched-off one
+  (out of stock, then low with low stock off, then back in stock).
+
 ### Changed
+- Privacy: an administrator's username is personal data. Without "Include customer names and
+  emails", the new-device sign-in title says "An administrator signed in from a new device", the
+  "who did it" detail of plugin, theme, file and update events is left out, and new
+  administrator, role and site address messages say "by an administrator".
 - The message builder no longer cuts or checks what the server now corrects itself ("deliver
   first", contracts/API.md §5.1): title, message, source, environment, channel and group key
   lengths, the number of metadata keys and their value lengths, button titles, links and count, level and priority

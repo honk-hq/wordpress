@@ -24,7 +24,8 @@ final class Honk_Notifier {
 	 *                           same key within 24 hours are dropped.
 	 * @param callable $builder  Returns the message fields.
 	 * @param array    $options  severity (overrides the event's level, e.g. for recoveries);
-	 *                           now (start delivery right away, for when WP-Cron is not running).
+	 *                           now (start delivery right away, for when WP-Cron is not running);
+	 *                           deliver (send it during this request: a fatal error).
 	 * @return string|false Job id, or false when nothing was queued.
 	 */
 	public static function emit( $event_id, $key, $builder, array $options = array() ) {
@@ -78,21 +79,24 @@ final class Honk_Notifier {
 			$payload,
 			$idempotency_key,
 			array(
-				'pii' => ! empty( $fields['pii'] ),
-				'now' => ! empty( $options['now'] ),
+				'pii'     => ! empty( $fields['pii'] ),
+				'now'     => ! empty( $options['now'] ),
+				'deliver' => ! empty( $options['deliver'] ),
 			)
 		);
 	}
 
 	/**
 	 * Who did something: the current user's login, "WP-CLI", or "WordPress" for background tasks.
+	 * A login is personal data: without "Include customer names and emails" it is "an
+	 * administrator" (0.3.0; the events whose "Who did it" is a choice leave it out instead).
 	 *
 	 * @return string
 	 */
 	public static function actor() {
 		$user = wp_get_current_user();
 		if ( $user && $user->exists() ) {
-			return $user->user_login;
+			return Honk_Settings::include_pii() ? $user->user_login : __( 'an administrator', 'honk-me' );
 		}
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			return 'WP-CLI';

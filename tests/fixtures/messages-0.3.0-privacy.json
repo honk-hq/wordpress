@@ -1,0 +1,376 @@
+{
+    "admin_login_new_device": {
+        "off": [
+            {
+                "event": "admin_login_new_device",
+                "pii": false,
+                "payload": {
+                    "title": "An administrator signed in from a new device",
+                    "message": "Device: Firefox on Linux\nNetwork: 203.0.113.0/24\nThis account hasn’t used this browser and device before.\nIf this wasn’t you, change the password and click “Log Out Everywhere Else” in Users → Profile.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admin-login",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/profile.php",
+                    "metadata": {
+                        "user_id": 1
+                    }
+                }
+            }
+        ]
+    },
+    "new_administrator": {
+        "off": [
+            {
+                "event": "new_administrator",
+                "pii": false,
+                "payload": {
+                    "title": "New administrator: ops",
+                    "message": "ops was created as an administrator by an administrator.\nIf you didn’t expect this, check the account now.",
+                    "severity": "critical",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=51",
+                    "metadata": {
+                        "user_id": 51
+                    }
+                }
+            },
+            {
+                "event": "new_administrator",
+                "pii": false,
+                "payload": {
+                    "title": "New administrator: eve",
+                    "message": "eve was made an administrator by an administrator.\nIf you didn’t expect this, check the account now.",
+                    "severity": "critical",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/admins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=52",
+                    "metadata": {
+                        "user_id": 52
+                    }
+                }
+            }
+        ]
+    },
+    "role_changed": {
+        "off": [
+            {
+                "event": "role_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Role changed for li",
+                    "message": "Author → Editor, by an administrator.",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/roles",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/user-edit.php?user_id=53",
+                    "metadata": {
+                        "user_id": 53
+                    }
+                }
+            }
+        ]
+    },
+    "site_identity_changed": {
+        "off": [
+            {
+                "event": "site_identity_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Administration email address changed",
+                    "message": "Changed by an administrator.\nIf you didn’t expect this, check Settings → General now.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/site-identity",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/options-general.php",
+                    "metadata": {
+                        "option": "admin_email"
+                    }
+                }
+            },
+            {
+                "event": "site_identity_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Site address (URL) changed",
+                    "message": "https://old.example.com → https://shop.example.com, by an administrator.\nIf you didn’t expect this, check Settings → General now.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/site-identity",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/options-general.php",
+                    "metadata": {
+                        "option": "home"
+                    }
+                }
+            }
+        ]
+    },
+    "plugin_changed": {
+        "off": [
+            {
+                "event": "plugin_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin activated: acme",
+                    "message": "acme/acme.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "acme/acme.php",
+                        "action": "activated"
+                    }
+                }
+            },
+            {
+                "event": "plugin_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin deactivated: hello-dolly",
+                    "message": "Network-wide.\nhello-dolly/hello.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "hello-dolly/hello.php",
+                        "action": "deactivated"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "plugin_changed",
+                "pii": true,
+                "payload": {
+                    "title": "Plugin activated: acme",
+                    "message": "By admin.\nacme/acme.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "acme/acme.php",
+                        "action": "activated"
+                    }
+                }
+            },
+            {
+                "event": "plugin_changed",
+                "pii": true,
+                "payload": {
+                    "title": "Plugin deactivated: hello-dolly",
+                    "message": "By admin. Network-wide.\nhello-dolly/hello.php",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/plugins",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugins.php",
+                    "metadata": {
+                        "plugin": "hello-dolly/hello.php",
+                        "action": "deactivated"
+                    }
+                }
+            }
+        ]
+    },
+    "theme_changed": {
+        "off": [
+            {
+                "event": "theme_changed",
+                "pii": false,
+                "payload": {
+                    "title": "Theme switched to Twenty Twenty-Five",
+                    "message": "Previous theme: Twenty Twenty-Four",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/themes",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/themes.php",
+                    "metadata": {
+                        "action": "switched"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "theme_changed",
+                "pii": true,
+                "payload": {
+                    "title": "Theme switched to Twenty Twenty-Five",
+                    "message": "By admin.\nPrevious theme: Twenty Twenty-Four",
+                    "severity": "warning",
+                    "priority": "normal",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/themes",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/themes.php",
+                    "metadata": {
+                        "action": "switched"
+                    }
+                }
+            }
+        ]
+    },
+    "file_edited": {
+        "off": [
+            {
+                "event": "file_edited",
+                "pii": false,
+                "payload": {
+                    "title": "Plugin file edited: Acme Tools",
+                    "message": "acme/acme.php was edited in the file editor.\nTip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/file-edits",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugin-editor.php",
+                    "metadata": {
+                        "file": "acme/acme.php"
+                    }
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "file_edited",
+                "pii": true,
+                "payload": {
+                    "title": "Plugin file edited: Acme Tools",
+                    "message": "acme/acme.php was edited in the file editor by admin.\nTip: to turn off the file editors, set DISALLOW_FILE_EDIT to true in wp-config.php.",
+                    "severity": "error",
+                    "priority": "high",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/file-edits",
+                    "category": "security",
+                    "url": "https://shop.example.com/wp-admin/plugin-editor.php",
+                    "metadata": {
+                        "file": "acme/acme.php"
+                    }
+                }
+            }
+        ]
+    },
+    "updates_installed": {
+        "off": [
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "2 plugins updated",
+                    "message": "WooCommerce 11.2.0\nAcme Tools 2.0.1",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            },
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "WordPress updated",
+                    "message": "WordPress 7.1\nUpdated automatically.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            }
+        ],
+        "on": [
+            {
+                "event": "updates_installed",
+                "pii": true,
+                "payload": {
+                    "title": "2 plugins updated",
+                    "message": "WooCommerce 11.2.0\nAcme Tools 2.0.1\nBy admin.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            },
+            {
+                "event": "updates_installed",
+                "pii": false,
+                "payload": {
+                    "title": "WordPress updated",
+                    "message": "WordPress 7.1\nUpdated automatically.",
+                    "severity": "info",
+                    "priority": "low",
+                    "source": "shop.example.com",
+                    "environment": "production",
+                    "channel": "security",
+                    "group_key": "wp/security/updates",
+                    "category": "deployments",
+                    "url": "https://shop.example.com/wp-admin/update-core.php"
+                }
+            }
+        ]
+    }
+}

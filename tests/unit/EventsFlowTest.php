@@ -252,4 +252,25 @@ class EventsFlowTest extends Honk_Test_Case {
 		$this->assertSame( array( 'warning', 'error', 'success' ), array_column( $payloads, 'severity' ) );
 		$this->assertSame( array( 'woo/stock/12' ), array_values( array_unique( array_column( $payloads, 'group_key' ) ) ) );
 	}
+
+	public function test_a_restock_closes_the_problem_that_is_open_even_through_a_switched_off_level() {
+		$this->configure( array( 'events' => array( 'woo_low_stock' => array( 'enabled' => false, 'severity' => 'warning', 'priority' => 'normal' ) ) ) );
+		Functions\when( 'wc_get_low_stock_amount' )->justReturn( 3 );
+		$product = Mockery::mock( 'WC_Product' );
+		$product->shouldReceive( 'managing_stock' )->andReturn( true );
+		$product->shouldReceive( 'get_id' )->andReturn( 14 );
+		$product->shouldReceive( 'get_name' )->andReturn( 'Wool Scarf' );
+		$product->shouldReceive( 'get_sku' )->andReturn( '' );
+		$product->shouldReceive( 'get_parent_id' )->andReturn( 0 );
+		$qty = 8;
+		$product->shouldReceive( 'get_stock_quantity' )->andReturnUsing( function () use ( &$qty ) { return $qty; } );
+
+		foreach ( array( 8, 0, 2, 10 ) as $value ) { // ok, out, low (switched off), ok
+			$qty = $value;
+			Honk_Module_Woocommerce::evaluate_stock( $product );
+		}
+		$payloads = $this->queued_payloads();
+		$this->assertSame( array( 'Out of stock: Wool Scarf', 'Back in stock: Wool Scarf' ), array_column( $payloads, 'title' ) );
+		$this->assertSame( array( 'problem', 'recovery' ), array_column( $payloads, 'event_type' ) );
+	}
 }

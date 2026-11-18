@@ -331,13 +331,17 @@ final class Honk_Module_Woocommerce {
 		);
 		update_option( self::STOCK_OPTION, $all, false );
 
+		// The event whose problem is open ('o'): the restock closes that one, even when the level
+		// went through another on the way (out of stock, then low with low stock switched off).
+		// States saved before 0.3.0 have no 'o': the last level's event, as then.
+		$open  = isset( $before['o'] ) ? (string) $before['o'] : ( 'ok' === $before['s'] ? '' : ( 'out' === $before['s'] ? 'woo_out_of_stock' : 'woo_low_stock' ) );
 		$event = 'out' === $state ? 'woo_out_of_stock' : 'woo_low_stock';
 		if ( 'ok' === $state ) {
-			$event = 'out' === $before['s'] ? 'woo_out_of_stock' : 'woo_low_stock';
+			$event = '' !== $open ? $open : ( 'out' === $before['s'] ? 'woo_out_of_stock' : 'woo_low_stock' );
 		}
 		$name = Honk_Payload::plain( $product->get_name(), true );
 		$sku  = $product->get_sku();
-		Honk_Notifier::emit(
+		$sent = Honk_Notifier::emit(
 			$event,
 			'stock-' . $id . '-' . $state . '-' . $seq,
 			function () use ( $event, $state, $qty, $name, $sku, $id, $product ) {
@@ -364,6 +368,11 @@ final class Honk_Module_Woocommerce {
 			},
 			'ok' === $state ? array( 'severity' => 'success' ) : array()
 		);
+
+		// Which problem is open now: none after a restock; this level's when its problem was sent;
+		// otherwise still the earlier one.
+		$all[ $id ]['o'] = 'ok' === $state ? '' : ( false !== $sent ? $event : $open );
+		update_option( self::STOCK_OPTION, $all, false );
 	}
 
 	/**

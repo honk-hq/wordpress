@@ -4,7 +4,7 @@ Tags: notifications, woocommerce, security, contact form, monitoring
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,7 +84,7 @@ This plugin connects to the Honk! Honk! API to deliver your notifications. Honk!
 What is sent, and when:
 
 * **When an event you turned on happens** (for example a new order, a failed payment, many failed sign-ins or a form entry), one message is sent to `POST /v1/messages` on the Honk! Honk! server. It contains a title and a text, the Honk-scale level and the priority, a group key, the event type, your site's address as the source, the environment (production, staging or development), a link to the related screen in your dashboard, and a few technical details (for example the order number, total and status, or the file name of a plugin that changed). If you choose buttons in an event's Details, it also contains them: a title and a link, such as a link to approve a comment in your dashboard, or an email address or phone number to write to or call, which is sent only when the notification already includes it.
-* **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24). A customer's phone number, billing city and country and order note are sent only if you also tick them in an event's Details, and Details let you leave out any of the others.
+* **Personal data is not sent by default.** If you turn on "Include customer names and emails," messages can also contain the name and email address of a customer, user or commenter, the text of a comment or review, the fields of a submitted form, the usernames tried during failed sign-ins, the username of an administrator who signs in or makes a change, and the full IP address of a new administrator sign-in (otherwise only its network, such as 203.0.113.0/24). A customer's phone number, billing city and country and order note are sent only if you also tick them in an event's Details, and Details let you leave out any of the others.
 * **When you click "Send test notification"**, one test message is sent.
 * **The settings screen** reads the server's public configuration (`GET /v1/config`) at most every 12 hours, and again when you save the settings or send a test, to know which features the server supports. While the heartbeat is on, it reads it in the background too: every 12 hours, or every 15 minutes while the server can't be reached. This request contains no data about your site.
 * **The heartbeat**, only if you turn it on, checks in every 5 minutes (`POST /v1/heartbeats/check-in`). A check-in contains your site's address, written as a short name such as `wp-shop-example-com`. The first one also sends the address as it is, to name the heartbeat in Honk! Honk!, and how often to expect a check-in.
@@ -131,7 +131,7 @@ Contact Form 7, WPForms, Gravity Forms, Elementor Pro Forms, Fluent Forms and Ni
 
 = Can I run my own Honk! Honk! server? =
 
-Yes. Enter its address as the server URL. It must use https; http works only for local and private addresses, for development.
+Yes. Enter its address as the server URL. It must use https. A server on a local or private address (for development, or on your own network) also needs `define( 'HONK_ALLOW_LOCAL_SERVER', true );` in wp-config.php; http works only there. On a multisite network, only a network administrator can change the server.
 
 = Why do some events come with an all-clear? =
 
@@ -171,10 +171,23 @@ The option appears once your API key is saved, if your Honk! Honk! server suppor
 
 == Changelog ==
 
+= 0.3.0 =
+* Honk Me is now Honk! Honk!: same plugin, same settings, new name.
+* The delivery log shows what Honk! Honk! corrected in a message, and why a refused message was refused.
+* Security: the server URL can no longer point at a local or private address unless wp-config.php allows it (HONK_ALLOW_LOCAL_SERVER); on a multisite network only a network administrator can change it.
+* Privacy: an administrator's username is now personal data: without "Include customer names and emails", notifications say "an administrator".
+* A fatal error is sent while the site is down, not after it recovers.
+* Contact Form 7 and other form plugins: captcha tokens are never sent as form fields.
+* The heartbeat and waiting retries start again after the plugin is deactivated and reactivated.
+* A restock closes the out-of-stock alert even when low stock notifications are off.
+
 = 0.1.0 =
 * First release: WooCommerce, security, site health, content and form notifications, plus a test button; for each event, a choice of what the notification says, with a preview, and optional buttons (email or call the customer, reply, approve); background sending with automatic retries; notifications in your site's language; an optional heartbeat that tells you when the site stops checking in.
 
 == Upgrade Notice ==
+
+= 0.3.0 =
+Security and privacy fixes. If your Honk! Honk! server runs on a local or private address, add HONK_ALLOW_LOCAL_SERVER to wp-config.php before updating.
 
 = 0.1.0 =
 First release.

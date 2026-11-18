@@ -280,7 +280,32 @@ final class Honk_Settings {
 	}
 
 	/**
-	 * Whether a server URL is acceptable: https, or http for a local or private host.
+	 * Whether a server on a local or private address may be used: only when the site owner says so
+	 * in wp-config.php (`define( 'HONK_ALLOW_LOCAL_SERVER', true );`) or with the
+	 * `honk_allow_local_server` filter. Otherwise every request to the server goes through
+	 * wp_safe_remote_*, which refuses local and private addresses, so the setting can't be used to
+	 * reach the site's own network (a cloud metadata address, an internal service).
+	 *
+	 * @return bool
+	 */
+	public static function allow_local_server() {
+		$allowed = defined( 'HONK_ALLOW_LOCAL_SERVER' ) && HONK_ALLOW_LOCAL_SERVER;
+		return (bool) apply_filters( 'honk_allow_local_server', $allowed );
+	}
+
+	/**
+	 * Whether the current user may change the server URL: on a multisite network, only a network
+	 * (super) administrator; each site's administrator still sets its own key.
+	 *
+	 * @return bool
+	 */
+	public static function can_change_server() {
+		return ! is_multisite() || is_super_admin();
+	}
+
+	/**
+	 * Whether a server URL is acceptable: https, or http for a local or private host; a local or
+	 * private host only when allowed (allow_local_server).
 	 *
 	 * @param string $url URL.
 	 * @return bool
@@ -293,10 +318,14 @@ final class Honk_Settings {
 		if ( isset( $parts['user'] ) || isset( $parts['pass'] ) || isset( $parts['query'] ) || isset( $parts['fragment'] ) ) {
 			return false;
 		}
+		$local = self::is_local_host( $parts['host'] );
+		if ( $local && ! self::allow_local_server() ) {
+			return false;
+		}
 		if ( 'https' === $parts['scheme'] ) {
 			return true;
 		}
-		return 'http' === $parts['scheme'] && self::is_local_host( $parts['host'] );
+		return 'http' === $parts['scheme'] && $local;
 	}
 
 	/**
@@ -330,14 +359,14 @@ final class Honk_Settings {
 		$input = is_array( $input ) ? $input : array();
 		$out   = $old;
 
-		if ( isset( $input['server_url'] ) ) {
+		if ( isset( $input['server_url'] ) && self::can_change_server() ) {
 			$url = untrailingslashit( esc_url_raw( trim( (string) $input['server_url'] ), array( 'https', 'http' ) ) );
 			if ( '' === $url ) {
 				$out['server_url'] = self::DEFAULT_SERVER;
 			} elseif ( self::is_valid_server_url( $url ) ) {
 				$out['server_url'] = $url;
 			} else {
-				add_settings_error( self::OPTION, 'server_url', __( 'The server URL must start with https:// (http:// works only for local addresses). Your previous URL was kept.', 'honk-me' ) );
+				add_settings_error( self::OPTION, 'server_url', __( 'The server URL must start with https://. A local or private address works only with HONK_ALLOW_LOCAL_SERVER in wp-config.php. Your previous URL was kept.', 'honk-me' ) );
 			}
 		}
 

@@ -28,7 +28,7 @@ final class Honk_Details {
 	const FACTS = array(
 		// Security.
 		'admin_login_new_device'  => array(
-			'username' => array( false, true ),
+			'username' => array( true, true ),
 			'device'   => array( false, true ),
 			'network'  => array( false, true ),
 			'ip'       => array( true, true ),
@@ -49,19 +49,19 @@ final class Honk_Details {
 			'emails' => array( true, true ),
 		),
 		'plugin_changed'          => array(
-			'actor' => array( false, true ),
+			'actor' => array( true, true ),
 			'file'  => array( false, true ),
 		),
 		'theme_changed'           => array(
-			'actor'    => array( false, true ),
+			'actor'    => array( true, true ),
 			'previous' => array( false, true ),
 		),
 		'file_edited'             => array(
-			'actor' => array( false, true ),
+			'actor' => array( true, true ),
 			'tip'   => array( false, true ),
 		),
 		'updates_installed'       => array(
-			'actor' => array( false, true ),
+			'actor' => array( true, true ),
 		),
 		// Site health.
 		'fatal_error'             => array(

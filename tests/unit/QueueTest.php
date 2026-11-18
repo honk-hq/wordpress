@@ -163,4 +163,18 @@ class QueueTest extends Honk_Test_Case {
 		$this->assertSame( array( $lost ), $this->cron[0]['args'] );
 		$this->assertArrayNotHasKey( 'honk_job_' . $expired, $this->options );
 	}
+
+	public function test_on_activation_every_waiting_job_goes_back_on_schedule_at_its_own_time() {
+		$retry = $this->push( 'retry' );
+		$this->options[ 'honk_job_' . $retry ]['next'] = time() + 600; // a retry due in 10 minutes
+		$this->cron = array(); // the deactivation unscheduled it
+		Functions\when( 'as_has_scheduled_action' )->justReturn( false );
+
+		Honk_Queue::maintenance();
+		$this->assertCount( 0, $this->cron, 'the daily clean-up leaves a retry that is not overdue' );
+
+		Honk_Queue::maintenance( true );
+		$this->assertSame( array( $retry ), $this->cron[0]['args'] );
+		$this->assertEqualsWithDelta( time() + 600, $this->cron[0]['time'], 2, 'at its own time, not now' );
+	}
 }

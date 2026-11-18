@@ -44,7 +44,42 @@ class SettingsTest extends Honk_Test_Case {
 		$this->assertStringNotContainsString( 'secret', Honk_Settings::mask_key( 'honk_ab12cd34_secretsecretsecret' ) );
 	}
 
+	public function test_a_local_or_private_server_needs_the_site_owner_to_allow_it() {
+		// Not allowed (the default): the settings can't point the site at its own network.
+		foreach ( array( 'http://localhost:8090', 'http://169.254.169.254', 'https://10.0.0.5', 'http://metadata.google.internal', 'https://honk.local' ) as $url ) {
+			$this->assertFalse( Honk_Settings::is_valid_server_url( $url ), $url );
+		}
+		$this->assertTrue( Honk_Settings::is_valid_server_url( 'https://honk-honk.app' ) );
+
+		// Every request then goes through wp_safe_remote_*.
+		$safe = array();
+		Functions\when( 'wp_safe_remote_post' )->alias(
+			function ( $url ) use ( &$safe ) {
+				$safe[] = $url;
+				return $this->response( 202, array( 'id' => 'msg_1', 'duplicate' => false ) );
+			}
+		);
+		Honk_Client::send( 'https://honk-honk.app', 'honk_k', '{}', 'k-1' );
+		$this->assertSame( array( 'https://honk-honk.app/v1/messages' ), $safe );
+		$this->assertCount( 0, $this->requests, 'never the unchecked wp_remote_post' );
+	}
+
+	public function test_on_a_network_only_a_network_administrator_changes_the_server() {
+		Functions\when( 'is_multisite' )->justReturn( true );
+		Functions\when( 'add_settings_error' )->justReturn( null );
+		$out = Honk_Settings::sanitize( array( 'server_url' => 'https://other.example' ) );
+		$this->assertSame( Honk_Settings::DEFAULT_SERVER, $out['server_url'], 'a site administrator: kept' );
+		Functions\when( 'is_super_admin' )->justReturn( true );
+		$out = Honk_Settings::sanitize( array( 'server_url' => 'https://other.example' ) );
+		$this->assertSame( 'https://other.example', $out['server_url'] );
+	}
+
 	public function test_server_urls_must_be_https_except_local_hosts() {
+		Functions\when( 'apply_filters' )->alias(
+			function ( $hook, $value ) {
+				return 'honk_allow_local_server' === $hook ? true : $value;
+			}
+		);
 		$this->assertTrue( Honk_Settings::is_valid_server_url( 'https://honk-honk.app' ) );
 		$this->assertTrue( Honk_Settings::is_valid_server_url( 'http://localhost:8090' ) );
 		$this->assertTrue( Honk_Settings::is_valid_server_url( 'http://host.docker.internal:28437' ) );

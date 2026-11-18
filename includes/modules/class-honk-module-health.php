@@ -148,7 +148,10 @@ final class Honk_Module_Health {
 					),
 					admin_url( 'plugins.php' )
 				);
-			}
+			},
+			// Sent right here, waiting at most 2 s: when a plugin fatals on every request, the loopback
+			// and WP-Cron fatal too, and a queued message would wait until the site works again.
+			array( 'deliver' => true )
 		);
 	}
 

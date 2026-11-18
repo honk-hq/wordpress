@@ -32,6 +32,29 @@ final class Honk_Client {
 	}
 
 	/**
+	 * POST to the Honk server: wp_safe_remote_post, which refuses local and private addresses,
+	 * unless a local server is allowed (Honk_Settings::allow_local_server).
+	 *
+	 * @param string $url  URL.
+	 * @param array  $args Request arguments.
+	 * @return array|WP_Error
+	 */
+	public static function remote_post( $url, array $args ) {
+		return Honk_Settings::allow_local_server() ? wp_remote_post( $url, $args ) : wp_safe_remote_post( $url, $args );
+	}
+
+	/**
+	 * GET from the Honk server, as remote_post.
+	 *
+	 * @param string $url  URL.
+	 * @param array  $args Request arguments.
+	 * @return array|WP_Error
+	 */
+	public static function remote_get( $url, array $args ) {
+		return Honk_Settings::allow_local_server() ? wp_remote_get( $url, $args ) : wp_safe_remote_get( $url, $args );
+	}
+
+	/**
 	 * Sends one message. Never throws; the result says what happened and whether a retry may help.
 	 *
 	 * @param string $server          Server URL without trailing slash.
@@ -44,7 +67,7 @@ final class Honk_Client {
 	public static function send( $server, $key, $body, $idempotency_key, array $options = array() ) {
 		$started  = microtime( true );
 		$blocking = ! isset( $options['blocking'] ) || (bool) $options['blocking'];
-		$response = wp_remote_post(
+		$response = self::remote_post(
 			$server . '/v1/messages',
 			array(
 				'timeout'     => isset( $options['timeout'] ) ? (float) $options['timeout'] : self::TIMEOUT,
@@ -230,7 +253,7 @@ final class Honk_Client {
 				return $cached;
 			}
 		}
-		$response = wp_remote_get(
+		$response = self::remote_get(
 			$server . '/v1/config',
 			array(
 				'timeout'     => self::TIMEOUT,

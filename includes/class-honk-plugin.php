@@ -111,7 +111,8 @@ final class Honk_Plugin {
 	public static function activate() {
 		Honk_Settings::site_id();
 		self::ensure_schedules();
-		Honk_Queue::maintenance();
+		// Deliveries still waiting from before a deactivation go back on schedule now, retries included.
+		Honk_Queue::maintenance( true );
 	}
 
 	/**
@@ -123,10 +124,13 @@ final class Honk_Plugin {
 		foreach ( self::cron_hooks() as $hook ) {
 			wp_unschedule_hook( $hook );
 		}
-		// Pending deliveries stay stored and are rescheduled by the daily clean-up after a reactivation.
+		// Pending deliveries stay stored and are rescheduled on the next activation.
 		if ( Honk_Queue::action_scheduler_ready() ) {
 			as_unschedule_all_actions( '', array(), Honk_Queue::GROUP );
 		}
+		// The heartbeat's check-in was just unscheduled: forget that it was, so the first request
+		// after a reactivation schedules it again (Honk_Heartbeat::sync_schedule).
+		delete_option( 'honk_heartbeat_scheduled' );
 	}
 
 	/**

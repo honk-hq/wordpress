@@ -19,7 +19,7 @@
 		var result = document.getElementById( 'honk-test-result' );
 
 		function show( ok, text ) {
-			result.innerHTML = '';
+			result.replaceChildren();
 			var notice = document.createElement( 'div' );
 			notice.className = 'notice inline ' + ( ok ? 'notice-success' : 'notice-error' );
 			var p = document.createElement( 'p' );
